@@ -1,4 +1,9 @@
+import http from 'http';
+import localVarRequest from 'request';
 import {Authentication, VoidAuth} from './Authentication';
+import {ObjectSerializer} from './ObjectSerializer';
+import {defaultBasePath} from './defaultBasePath';
+import {User} from './User';
 
 export enum ExternalUsersApiApiKeys {
 }
