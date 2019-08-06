@@ -1,4 +1,4 @@
-const baseUrl = "https://agilegrcsolutions.logicgate.com";
+export const baseUrl = "https://agilegrcsolutions.logicgate.com";
 
 /**
  * see [https://docs.logicgate.com/#/](https://docs.logicgate.com/#/)

@@ -1,0 +1,41 @@
+export const contactRecord = {
+  active: true,
+  dateFormat: "LLLL",
+  isPublic: false,
+  step: {
+    active: true,
+    allowEntitlements: true,
+    chain: false,
+    created: 1564684945767,
+    dateFormat: "LLLL",
+    end: false,
+    id: "7Ycf0hko",
+    isPublic: false,
+    name: "Add New Contact",
+    origin: true,
+    priority: 1,
+    sla: { enabled: false, duration: 0 },
+    stepType: "Origin",
+    updated: 1565069882824,
+    xpos: 75,
+    ypos: 56
+  },
+  origin: {
+    active: true,
+    allowEntitlements: true,
+    chain: false,
+    created: 1564684945767,
+    dateFormat: "LLLL",
+    end: false,
+    id: "7Ycf0hko",
+    isPublic: false,
+    name: "Add New Contact",
+    origin: true,
+    priority: 1,
+    sla: { enabled: false, duration: 0 },
+    stepType: "Origin",
+    updated: 1565069882824,
+    xpos: 75,
+    ypos: 56
+  }
+};

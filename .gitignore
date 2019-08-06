@@ -42,4 +42,7 @@ dist
 main.js
 main.js.map
 
+# IDE 
+.vscode/
+
 .idea

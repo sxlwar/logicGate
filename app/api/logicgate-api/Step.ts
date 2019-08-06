@@ -12,7 +12,7 @@ export class Step {
   'allowEntitlements'?: boolean;
   'chain'?: boolean;
   'contains'?: Workflow;
-  'created'?: Date;
+  'created'?: number | Date;
   'end'?: boolean;
   'id'?: string;
   /**
@@ -38,7 +38,7 @@ export class Step {
    * Node type.
    */
   'stepType'?: string;
-  'updated'?: Date;
+  'updated'?: Date | number;
   /**
    * Workflow that the node belongs to.
    */
