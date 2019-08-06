@@ -1,10 +1,10 @@
-import {Field} from './Field';
-import {Process} from './Process';
-import {ServiceLevelAgreement} from './ServiceLevelAgreement';
-import {Step} from './Step';
-import {WorkflowSequence} from './WorkflowSequence';
-import {UserGroup} from './UserGroup';
-import {WorkflowMap} from './WorkflowMap';
+import { Field } from './Field';
+import { Process } from './Process';
+import { ServiceLevelAgreement } from './ServiceLevelAgreement';
+import { Step } from './Step';
+import { WorkflowSequence } from './WorkflowSequence';
+import { UserGroup } from './UserGroup';
+import { WorkflowMap } from './WorkflowMap';
 
 /**
  * An entity that contains information about a set of steps within a particular process.
@@ -70,7 +70,7 @@ export class Workflow {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
     {
       "name": "active",
       "baseName": "active",
@@ -190,7 +190,7 @@ export class Workflow {
       "name": "ypos",
       "baseName": "ypos",
       "type": "number"
-    }    ];
+    }];
 
   static getAttributeTypeMap() {
     return Workflow.attributeTypeMap;

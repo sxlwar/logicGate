@@ -1,11 +1,11 @@
-import http from 'http';
-import localVarRequest from 'request';
-import {CurrentValue} from './CurrentValue';
-import {PageOfCurrentValue} from './PageOfCurrentValue';
-import {Authentication, VoidAuth} from './Authentication';
-import {defaultBasePath} from './defaultBasePath';
-import {ObjectSerializer} from './ObjectSerializer';
-
+import { CurrentValue } from './CurrentValue';
+import { PageOfCurrentValue } from './PageOfCurrentValue';
+import { Authentication, VoidAuth } from './Authentication';
+import { defaultBasePath } from './defaultBasePath';
+import { ObjectSerializer } from './ObjectSerializer';
+import { ClientResponse } from 'http';
+import { Options } from 'request'
+import * as request from 'request';
 export enum CurrentValuesApiApiKeys {
 }
 
@@ -58,7 +58,7 @@ export class CurrentValuesApi {
    * @param field field
    * @param {*} [options] Override http request options.
    */
-  public createUsingPOST(currentValues: Array<CurrentValue>, field: string, options: any = {}): Promise<{ response: http.ClientResponse; body: Array<CurrentValue>; }> {
+  public createUsingPOST(currentValues: Array<CurrentValue>, field: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<CurrentValue>; }> {
     const localVarPath = this.basePath + '/api/v1/currentValues';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -82,7 +82,7 @@ export class CurrentValuesApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'POST',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -101,16 +101,16 @@ export class CurrentValuesApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: Array<CurrentValue>; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: Array<CurrentValue>; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<CurrentValue>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -127,7 +127,7 @@ export class CurrentValuesApi {
    * @param sort Sorting criteria in the format: object.property(,asc|desc)
    * @param {*} [options] Override http request options.
    */
-  public findCurrentValuesByFieldUsingGET(id: string, page: string, size: string, query?: string, sort?: string, options: any = {}): Promise<{ response: http.ClientResponse; body: CurrentValue; }> {
+  public findCurrentValuesByFieldUsingGET(id: string, page: string, size: string, query?: string, sort?: string, options: any = {}): Promise<{ response: ClientResponse; body: CurrentValue; }> {
     const localVarPath = this.basePath + '/api/v1/currentValues/field/{id}'
       .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
     const localVarQueryParameters: any = {};
@@ -169,7 +169,7 @@ export class CurrentValuesApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'GET',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -187,16 +187,16 @@ export class CurrentValuesApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: CurrentValue; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: CurrentValue; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'CurrentValue');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -209,7 +209,7 @@ export class CurrentValuesApi {
    * @param workflow workflow
    * @param {*} [options] Override http request options.
    */
-  public findDefaultsByWorkflowUsingGET(workflow: string, options: any = {}): Promise<{ response: http.ClientResponse; body: Array<CurrentValue>; }> {
+  public findDefaultsByWorkflowUsingGET(workflow: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<CurrentValue>; }> {
     const localVarPath = this.basePath + '/api/v1/currentValues';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -228,7 +228,7 @@ export class CurrentValuesApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'GET',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -246,16 +246,16 @@ export class CurrentValuesApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: Array<CurrentValue>; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: Array<CurrentValue>; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<CurrentValue>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -272,7 +272,7 @@ export class CurrentValuesApi {
    * @param sort Sorting criteria in the format: object.property(,asc|desc)
    * @param {*} [options] Override http request options.
    */
-  public findUsersByFieldUsingGET(field: string, page: string, query: string, size: string, sort?: string, options: any = {}): Promise<{ response: http.ClientResponse; body: PageOfCurrentValue; }> {
+  public findUsersByFieldUsingGET(field: string, page: string, query: string, size: string, sort?: string, options: any = {}): Promise<{ response: ClientResponse; body: PageOfCurrentValue; }> {
     const localVarPath = this.basePath + '/api/v1/currentValues/users';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -322,7 +322,7 @@ export class CurrentValuesApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'GET',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -340,16 +340,16 @@ export class CurrentValuesApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: PageOfCurrentValue; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: PageOfCurrentValue; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'PageOfCurrentValue');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -364,7 +364,7 @@ export class CurrentValuesApi {
    * @param field field
    * @param {*} [options] Override http request options.
    */
-  public updateDefaultsUsingPATCH(currentValues: Array<CurrentValue>, _default: 'true', field: string, options: any = {}): Promise<{ response: http.ClientResponse; body: Array<CurrentValue>; }> {
+  public updateDefaultsUsingPATCH(currentValues: Array<CurrentValue>, _default: 'true', field: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<CurrentValue>; }> {
     const localVarPath = this.basePath + '/api/v1/currentValues';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -397,7 +397,7 @@ export class CurrentValuesApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'PATCH',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -416,16 +416,16 @@ export class CurrentValuesApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: Array<CurrentValue>; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: Array<CurrentValue>; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<CurrentValue>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
