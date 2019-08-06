@@ -1,4 +1,10 @@
-import {Authentication, VoidAuth} from './Authentication';
+import { ClientResponse } from 'http';
+import request, { Options } from 'request';
+
+import { Authentication, VoidAuth } from './Authentication';
+import { defaultBasePath } from './defaultBasePath';
+import { ObjectSerializer } from './ObjectSerializer';
+import { User } from './User';
 
 export enum ExternalUsersApiApiKeys {
 }
@@ -51,7 +57,7 @@ export class ExternalUsersApi {
    * @param user user
    * @param {*} [options] Override http request options.
    */
-  public createUsingPOST1(user: User, options: any = {}): Promise<{ response: http.ClientResponse; body: User; }> {
+  public createUsingPOST1(user: User, options: any = {}): Promise<{ response: ClientResponse; body: User; }> {
     const localVarPath = this.basePath + '/api/v1/users/external';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -66,7 +72,7 @@ export class ExternalUsersApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'POST',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -85,16 +91,16 @@ export class ExternalUsersApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: User; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: User; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'User');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });

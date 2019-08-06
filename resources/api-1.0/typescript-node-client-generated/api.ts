@@ -11,8 +11,11 @@
  */
 
 import localVarRequest = require('request');
-import http = require('http');
+import http from 'http';
 import Promise = require('bluebird');
+import { ClientResponse } from 'http';
+import { Options } from 'request'
+import * as request from 'request';
 
 let defaultBasePath = 'https://agilegrcsolutions.logicgate.com';
 
@@ -22,2389 +25,237 @@ let defaultBasePath = 'https://agilegrcsolutions.logicgate.com';
 
 /* tslint:disable:no-unused-variable */
 let primitives = [
-                    "string",
-                    "boolean",
-                    "double",
-                    "integer",
-                    "long",
-                    "float",
-                    "number",
-                    "any"
-                 ];
+    "string",
+    "boolean",
+    "double",
+    "integer",
+    "long",
+    "float",
+    "number",
+    "any"
+];
 
-class ObjectSerializer {
 
-    public static findCorrectType(data: any, expectedType: string) {
-        if (data == undefined) {
-            return expectedType;
-        } else if (primitives.indexOf(expectedType.toLowerCase()) !== -1) {
-            return expectedType;
-        } else if (expectedType === "Date") {
-            return expectedType;
-        } else {
-            if (enumsMap[expectedType]) {
-                return expectedType;
-            }
+/**
+* A super-class that is used to manage the relationship type between two connected workflows.
+*/
+export class WorkflowMap {
+    'active'?: boolean;
+    'childId'?: string;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'parentId'?: string;
+    'parentResult'?: WorkflowResult;
+    /**
+    * Parent workflow.
+    */
+    'parentWorkflow'?: Workflow;
+    'updated'?: Date;
+    /**
+    * Child workflow to be connected.
+    */
+    'workflow'?: Workflow;
+    'workflowMapType'?: string;
 
-            if (!typeMap[expectedType]) {
-                return expectedType; // w/e we don't know the type
-            }
+    static discriminator: string | undefined = "workflowMapType";
 
-            // Check the discriminator
-            let discriminatorProperty = typeMap[expectedType].discriminator;
-            if (discriminatorProperty == null) {
-                return expectedType; // the type does not have a discriminator. use it.
-            } else {
-                if (data[discriminatorProperty]) {
-                    return data[discriminatorProperty]; // use the type given in the discriminator
-                } else {
-                    return expectedType; // discriminator was not present (or an empty string)
-                }
-            }
-        }
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "childId",
+            "baseName": "childId",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "parentId",
+            "baseName": "parentId",
+            "type": "string"
+        },
+        {
+            "name": "parentResult",
+            "baseName": "parentResult",
+            "type": "WorkflowResult"
+        },
+        {
+            "name": "parentWorkflow",
+            "baseName": "parentWorkflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowMapType",
+            "baseName": "workflowMapType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return WorkflowMap.attributeTypeMap;
     }
+}
 
-    public static serialize(data: any, type: string) {
-        if (data == undefined) {
-            return data;
-        } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
-            return data;
-        } else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
-            let subType: string = type.replace("Array<", ""); // Array<Type> => Type>
-            subType = subType.substring(0, subType.length - 1); // Type> => Type
-            let transformedData: any[] = [];
-            for (let index in data) {
-                let date = data[index];
-                transformedData.push(ObjectSerializer.serialize(date, subType));
-            }
-            return transformedData;
-        } else if (type === "Date") {
-            return data.toString();
-        } else {
-            if (enumsMap[type]) {
-                return data;
-            }
-            if (!typeMap[type]) { // in case we dont know the type
-                return data;
-            }
+export class ManyToMany extends WorkflowMap {
+    'active'?: boolean;
+    'childId'?: string;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'parentId'?: string;
+    'parentResult'?: WorkflowResult;
+    /**
+    * Parent workflow.
+    */
+    'parentWorkflow'?: Workflow;
+    'updated'?: Date;
+    /**
+    * Child workflow to be connected.
+    */
+    'workflow'?: Workflow;
+    'workflowMapType'?: string;
 
-            // get the map for the correct type.
-            let attributeTypes = typeMap[type].getAttributeTypeMap();
-            let instance: {[index: string]: any} = {};
-            for (let index in attributeTypes) {
-                let attributeType = attributeTypes[index];
-                instance[attributeType.baseName] = ObjectSerializer.serialize(data[attributeType.name], attributeType.type);
-            }
-            return instance;
-        }
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "childId",
+            "baseName": "childId",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "parentId",
+            "baseName": "parentId",
+            "type": "string"
+        },
+        {
+            "name": "parentResult",
+            "baseName": "parentResult",
+            "type": "WorkflowResult"
+        },
+        {
+            "name": "parentWorkflow",
+            "baseName": "parentWorkflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowMapType",
+            "baseName": "workflowMapType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(ManyToMany.attributeTypeMap);
     }
+}
 
-    public static deserialize(data: any, type: string) {
-        // polymorphism may change the actual type.
-        type = ObjectSerializer.findCorrectType(data, type);
-        if (data == undefined) {
-            return data;
-        } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
-            return data;
-        } else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
-            let subType: string = type.replace("Array<", ""); // Array<Type> => Type>
-            subType = subType.substring(0, subType.length - 1); // Type> => Type
-            let transformedData: any[] = [];
-            for (let index in data) {
-                let date = data[index];
-                transformedData.push(ObjectSerializer.deserialize(date, subType));
-            }
-            return transformedData;
-        } else if (type === "Date") {
-            return new Date(data);
-        } else {
-            if (enumsMap[type]) {// is Enum
-                return data;
-            }
+export class ImportRequest {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'importType'?: string;
+    'labels'?: Array<string>;
+    'updated'?: Date;
 
-            if (!typeMap[type]) { // dont know the type
-                return data;
-            }
-            let instance = new typeMap[type]();
-            let attributeTypes = typeMap[type].getAttributeTypeMap();
-            for (let index in attributeTypes) {
-                let attributeType = attributeTypes[index];
-                instance[attributeType.name] = ObjectSerializer.deserialize(data[attributeType.baseName], attributeType.type);
-            }
-            return instance;
-        }
+    static discriminator: string | undefined = "importType";
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "importType",
+            "baseName": "importType",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return ImportRequest.attributeTypeMap;
     }
 }
 
 /**
-* Entity used to track authentication attempts.
+* An entity used to group a collection of layout fields related to record data
 */
-export class AccessAudit {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'remoteAddress'?: string;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = "accessType";
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "remoteAddress",
-            "baseName": "remoteAddress",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return AccessAudit.attributeTypeMap;
-    }
-}
-
-export class Active extends User {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'assignments'?: Array<Record>;
-    'company'?: string;
-    'created'?: Date;
-    '_default'?: boolean;
-    'disabled'?: boolean;
-    'discriminator'?: string;
-    'email'?: string;
-    'empty'?: boolean;
-    'field'?: Field;
-    'fieldId'?: string;
-    'first'?: string;
-    'hasValue'?: Field;
-    'id'?: string;
-    'imageUrl'?: string;
-    'intercomHash'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'languageTag'?: string;
-    'last'?: string;
-    'lastLogin'?: AccessAudit;
-    'locked'?: boolean;
-    'loginAttempts'?: number;
-    'name'?: string;
-    'numericValue'?: number;
-    'password'?: string;
-    'priority'?: number;
-    'records'?: Array<Record>;
-    'resetPasswordToken'?: string;
-    'roles'?: Array<Role>;
-    'sendEmail'?: boolean;
-    'status'?: string;
-    'superUser'?: boolean;
-    'textValue'?: string;
-    'tier'?: Active.TierEnum;
-    'timeZone'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "assignments",
-            "baseName": "assignments",
-            "type": "Array<Record>"
-        },
-        {
-            "name": "company",
-            "baseName": "company",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "disabled",
-            "baseName": "disabled",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "email",
-            "baseName": "email",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "first",
-            "baseName": "first",
-            "type": "string"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "imageUrl",
-            "baseName": "imageUrl",
-            "type": "string"
-        },
-        {
-            "name": "intercomHash",
-            "baseName": "intercomHash",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "languageTag",
-            "baseName": "languageTag",
-            "type": "string"
-        },
-        {
-            "name": "last",
-            "baseName": "last",
-            "type": "string"
-        },
-        {
-            "name": "lastLogin",
-            "baseName": "lastLogin",
-            "type": "AccessAudit"
-        },
-        {
-            "name": "locked",
-            "baseName": "locked",
-            "type": "boolean"
-        },
-        {
-            "name": "loginAttempts",
-            "baseName": "loginAttempts",
-            "type": "number"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "password",
-            "baseName": "password",
-            "type": "string"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "records",
-            "baseName": "records",
-            "type": "Array<Record>"
-        },
-        {
-            "name": "resetPasswordToken",
-            "baseName": "resetPasswordToken",
-            "type": "string"
-        },
-        {
-            "name": "roles",
-            "baseName": "roles",
-            "type": "Array<Role>"
-        },
-        {
-            "name": "sendEmail",
-            "baseName": "sendEmail",
-            "type": "boolean"
-        },
-        {
-            "name": "status",
-            "baseName": "status",
-            "type": "string"
-        },
-        {
-            "name": "superUser",
-            "baseName": "superUser",
-            "type": "boolean"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "tier",
-            "baseName": "tier",
-            "type": "Active.TierEnum"
-        },
-        {
-            "name": "timeZone",
-            "baseName": "timeZone",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Active.attributeTypeMap);
-    }
-}
-
-export namespace Active {
-    export enum TierEnum {
-        PRIMARY = <any> 'PRIMARY',
-        SECONDARY = <any> 'SECONDARY',
-        LIMITED = <any> 'LIMITED'
-    }
-}
-export class Attachment extends Field {
-    'active'?: boolean;
-    'convertibleTo'?: Array<string>;
-    'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'enableVersions'?: boolean;
-    'fieldType': Attachment.FieldTypeEnum;
-    'global'?: boolean;
-    'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
-    'labels'?: Array<string>;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'operators'?: Array<Attachment.OperatorsEnum>;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
-            "type": "boolean"
-        },
-        {
-            "name": "enableVersions",
-            "baseName": "enableVersions",
-            "type": "boolean"
-        },
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "Attachment.FieldTypeEnum"
-        },
-        {
-            "name": "global",
-            "baseName": "global",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<Attachment.OperatorsEnum>"
-        },
-        {
-            "name": "tooltip",
-            "baseName": "tooltip",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Attachment.attributeTypeMap);
-    }
-}
-
-export namespace Attachment {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class Calculation extends Field {
-    'active'?: boolean;
-    'convertibleTo'?: Array<string>;
-    'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'expression'?: string;
-    /**
-    * Fields used to evaluate the expression of the calculation
-    */
-    'fieldInputs'?: Array<FieldInput>;
-    'fieldType': Calculation.FieldTypeEnum;
-    'global'?: boolean;
-    'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
-    'labels'?: Array<string>;
-    'labelsEnabled'?: boolean;
-    'logicalHandling'?: Calculation.LogicalHandlingEnum;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'nullStrategy'?: Calculation.NullStrategyEnum;
-    'operators'?: Array<Calculation.OperatorsEnum>;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
-            "type": "boolean"
-        },
-        {
-            "name": "expression",
-            "baseName": "expression",
-            "type": "string"
-        },
-        {
-            "name": "fieldInputs",
-            "baseName": "fieldInputs",
-            "type": "Array<FieldInput>"
-        },
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "Calculation.FieldTypeEnum"
-        },
-        {
-            "name": "global",
-            "baseName": "global",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "labelsEnabled",
-            "baseName": "labelsEnabled",
-            "type": "boolean"
-        },
-        {
-            "name": "logicalHandling",
-            "baseName": "logicalHandling",
-            "type": "Calculation.LogicalHandlingEnum"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "nullStrategy",
-            "baseName": "nullStrategy",
-            "type": "Calculation.NullStrategyEnum"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<Calculation.OperatorsEnum>"
-        },
-        {
-            "name": "tooltip",
-            "baseName": "tooltip",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Calculation.attributeTypeMap);
-    }
-}
-
-export namespace Calculation {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum LogicalHandlingEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-    export enum NullStrategyEnum {
-        NULL = <any> 'NULL',
-        ZERO = <any> 'ZERO',
-        ONE = <any> 'ONE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class Chain extends Step {
-    'active'?: boolean;
-    /**
-    * Allow entitlements to the node.
-    */
-    'allowEntitlements'?: boolean;
-    'chain'?: boolean;
-    'contains'?: Workflow;
-    'created'?: Date;
-    'end'?: boolean;
-    'id'?: string;
-    /**
-    * Allows a node to become a public node.
-    */
-    'isPublic'?: boolean;
-    'labels'?: Array<string>;
-    /**
-    * Node name.
-    */
-    'name'?: string;
-    'origin'?: boolean;
-    /**
-    * Determines the node's place in the workflow.
-    */
-    'priority'?: number;
-    '_public'?: boolean;
-    /**
-    * Object containing all SLA information.
-    */
-    'sla'?: ServiceLevelAgreement;
-    /**
-    * Node type.
-    */
-    'stepType'?: string;
-    'updated'?: Date;
-    /**
-    * Workflow that the node belongs to.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-    /**
-    * Vertical position of the node on the process screen.
-    */
-    'xpos'?: number;
-    /**
-    * Horizontal position of the node on the process screen.
-    */
-    'ypos'?: number;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "allowEntitlements",
-            "baseName": "allowEntitlements",
-            "type": "boolean"
-        },
-        {
-            "name": "chain",
-            "baseName": "chain",
-            "type": "boolean"
-        },
-        {
-            "name": "contains",
-            "baseName": "contains",
-            "type": "Workflow"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "end",
-            "baseName": "end",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isPublic",
-            "baseName": "isPublic",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "origin",
-            "baseName": "origin",
-            "type": "boolean"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "_public",
-            "baseName": "public",
-            "type": "boolean"
-        },
-        {
-            "name": "sla",
-            "baseName": "sla",
-            "type": "ServiceLevelAgreement"
-        },
-        {
-            "name": "stepType",
-            "baseName": "stepType",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        },
-        {
-            "name": "xpos",
-            "baseName": "xpos",
-            "type": "number"
-        },
-        {
-            "name": "ypos",
-            "baseName": "ypos",
-            "type": "number"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Chain.attributeTypeMap);
-    }
-}
-
-export class Checkbox extends Field {
-    'active'?: boolean;
-    'convertibleTo'?: Array<string>;
-    'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'fieldType': Checkbox.FieldTypeEnum;
-    'global'?: boolean;
-    'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
-    'labels'?: Array<string>;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'operators'?: Array<Checkbox.OperatorsEnum>;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
-            "type": "boolean"
-        },
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "Checkbox.FieldTypeEnum"
-        },
-        {
-            "name": "global",
-            "baseName": "global",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<Checkbox.OperatorsEnum>"
-        },
-        {
-            "name": "tooltip",
-            "baseName": "tooltip",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Checkbox.attributeTypeMap);
-    }
-}
-
-export namespace Checkbox {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class ChildResult {
-    'children'?: Array<Record>;
-    'parent'?: Record;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "children",
-            "baseName": "children",
-            "type": "Array<Record>"
-        },
-        {
-            "name": "parent",
-            "baseName": "parent",
-            "type": "Record"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return ChildResult.attributeTypeMap;
-    }
-}
-
-export class CleanAttachment extends CurrentValue {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'attachmentStatus'?: CleanAttachment.AttachmentStatusEnum;
-    'awsS3Key'?: string;
-    'contentType'?: string;
-    'created'?: Date;
-    '_default'?: boolean;
-    'discriminator'?: string;
-    'empty'?: boolean;
-    'field'?: Field;
-    'fieldId'?: string;
-    'fileExtension'?: string;
-    'fileSize'?: number;
-    'hasValue'?: Field;
-    'id'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'numericValue'?: number;
-    'originalFileExtension'?: string;
-    'priority'?: number;
-    'textValue'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    'versionCount'?: number;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "attachmentStatus",
-            "baseName": "attachmentStatus",
-            "type": "CleanAttachment.AttachmentStatusEnum"
-        },
-        {
-            "name": "awsS3Key",
-            "baseName": "awsS3Key",
-            "type": "string"
-        },
-        {
-            "name": "contentType",
-            "baseName": "contentType",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "fileExtension",
-            "baseName": "fileExtension",
-            "type": "string"
-        },
-        {
-            "name": "fileSize",
-            "baseName": "fileSize",
-            "type": "number"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "originalFileExtension",
-            "baseName": "originalFileExtension",
-            "type": "string"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "versionCount",
-            "baseName": "versionCount",
-            "type": "number"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(CleanAttachment.attributeTypeMap);
-    }
-}
-
-export namespace CleanAttachment {
-    export enum AttachmentStatusEnum {
-        PENDING = <any> 'PENDING',
-        CLEAN = <any> 'CLEAN',
-        DIRTY = <any> 'DIRTY'
-    }
-}
-export class CurrentCommonValue extends CurrentValue {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'created'?: Date;
-    '_default'?: boolean;
-    'discriminator'?: string;
-    'empty'?: boolean;
-    'field'?: Field;
-    'fieldId'?: string;
-    'hasValue'?: Field;
-    'id'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'numericValue'?: number;
-    'priority'?: number;
-    'textValue'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(CurrentCommonValue.attributeTypeMap);
-    }
-}
-
-export class CurrentDateRangeValue extends CurrentValue {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'created'?: Date;
-    '_default'?: boolean;
-    'defaultToNow'?: boolean;
-    'discriminator'?: string;
-    'empty'?: boolean;
-    'endTemporalValue'?: Date;
-    'field'?: Field;
-    'fieldId'?: string;
-    'hasTime'?: boolean;
-    'hasValue'?: Field;
-    'id'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'numericValue'?: number;
-    'priority'?: number;
-    'temporalValue'?: Date;
-    'textValue'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "defaultToNow",
-            "baseName": "defaultToNow",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "endTemporalValue",
-            "baseName": "endTemporalValue",
-            "type": "Date"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "hasTime",
-            "baseName": "hasTime",
-            "type": "boolean"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "temporalValue",
-            "baseName": "temporalValue",
-            "type": "Date"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(CurrentDateRangeValue.attributeTypeMap);
-    }
-}
-
-export class CurrentDateValue extends CurrentValue {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'created'?: Date;
-    '_default'?: boolean;
-    'defaultToNow'?: boolean;
-    'discriminator'?: string;
-    'empty'?: boolean;
-    'field'?: Field;
-    'fieldId'?: string;
-    'hasTime'?: boolean;
-    'hasValue'?: Field;
-    'id'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'numericValue'?: number;
-    'priority'?: number;
-    'temporalValue'?: Date;
-    'textValue'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "defaultToNow",
-            "baseName": "defaultToNow",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "hasTime",
-            "baseName": "hasTime",
-            "type": "boolean"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "temporalValue",
-            "baseName": "temporalValue",
-            "type": "Date"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(CurrentDateValue.attributeTypeMap);
-    }
-}
-
-/**
-* Entity used to manage record's field data.
-*/
-export class CurrentValue {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'created'?: Date;
-    '_default'?: boolean;
-    'discriminator'?: string;
-    'empty'?: boolean;
-    'field'?: Field;
-    'fieldId'?: string;
-    'hasValue'?: Field;
-    'id'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'numericValue'?: number;
-    'priority'?: number;
-    'textValue'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-
-    static discriminator: string | undefined = "discriminator";
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return CurrentValue.attributeTypeMap;
-    }
-}
-
-export class DatePicker extends Field {
-    'active'?: boolean;
-    'convertibleTo'?: Array<string>;
-    'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'fieldType': DatePicker.FieldTypeEnum;
-    'global'?: boolean;
-    'hasTime'?: boolean;
-    'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
-    'labels'?: Array<string>;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'operators'?: Array<DatePicker.OperatorsEnum>;
-    'presentOrFuture'?: boolean;
-    'presentOrPast'?: boolean;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
-            "type": "boolean"
-        },
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "DatePicker.FieldTypeEnum"
-        },
-        {
-            "name": "global",
-            "baseName": "global",
-            "type": "boolean"
-        },
-        {
-            "name": "hasTime",
-            "baseName": "hasTime",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<DatePicker.OperatorsEnum>"
-        },
-        {
-            "name": "presentOrFuture",
-            "baseName": "presentOrFuture",
-            "type": "boolean"
-        },
-        {
-            "name": "presentOrPast",
-            "baseName": "presentOrPast",
-            "type": "boolean"
-        },
-        {
-            "name": "tooltip",
-            "baseName": "tooltip",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(DatePicker.attributeTypeMap);
-    }
-}
-
-export namespace DatePicker {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class DirtyAttachment extends CurrentValue {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'attachmentStatus'?: DirtyAttachment.AttachmentStatusEnum;
-    'awsS3Key'?: string;
-    'contentType'?: string;
-    'created'?: Date;
-    '_default'?: boolean;
-    'discriminator'?: string;
-    'empty'?: boolean;
-    'field'?: Field;
-    'fieldId'?: string;
-    'fileExtension'?: string;
-    'fileSize'?: number;
-    'hasValue'?: Field;
-    'id'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'numericValue'?: number;
-    'originalFileExtension'?: string;
-    'priority'?: number;
-    'textValue'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    'versionCount'?: number;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "attachmentStatus",
-            "baseName": "attachmentStatus",
-            "type": "DirtyAttachment.AttachmentStatusEnum"
-        },
-        {
-            "name": "awsS3Key",
-            "baseName": "awsS3Key",
-            "type": "string"
-        },
-        {
-            "name": "contentType",
-            "baseName": "contentType",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "fileExtension",
-            "baseName": "fileExtension",
-            "type": "string"
-        },
-        {
-            "name": "fileSize",
-            "baseName": "fileSize",
-            "type": "number"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "originalFileExtension",
-            "baseName": "originalFileExtension",
-            "type": "string"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "versionCount",
-            "baseName": "versionCount",
-            "type": "number"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(DirtyAttachment.attributeTypeMap);
-    }
-}
-
-export namespace DirtyAttachment {
-    export enum AttachmentStatusEnum {
-        PENDING = <any> 'PENDING',
-        CLEAN = <any> 'CLEAN',
-        DIRTY = <any> 'DIRTY'
-    }
-}
-export class Disabled extends User {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'assignments'?: Array<Record>;
-    'company'?: string;
-    'created'?: Date;
-    '_default'?: boolean;
-    'disabled'?: boolean;
-    'discriminator'?: string;
-    'email'?: string;
-    'empty'?: boolean;
-    'field'?: Field;
-    'fieldId'?: string;
-    'first'?: string;
-    'hasValue'?: Field;
-    'id'?: string;
-    'imageUrl'?: string;
-    'intercomHash'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'languageTag'?: string;
-    'last'?: string;
-    'lastLogin'?: AccessAudit;
-    'locked'?: boolean;
-    'loginAttempts'?: number;
-    'name'?: string;
-    'numericValue'?: number;
-    'password'?: string;
-    'priority'?: number;
-    'records'?: Array<Record>;
-    'resetPasswordToken'?: string;
-    'roles'?: Array<Role>;
-    'sendEmail'?: boolean;
-    'status'?: string;
-    'superUser'?: boolean;
-    'textValue'?: string;
-    'tier'?: Disabled.TierEnum;
-    'timeZone'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "assignments",
-            "baseName": "assignments",
-            "type": "Array<Record>"
-        },
-        {
-            "name": "company",
-            "baseName": "company",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "disabled",
-            "baseName": "disabled",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "email",
-            "baseName": "email",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "first",
-            "baseName": "first",
-            "type": "string"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "imageUrl",
-            "baseName": "imageUrl",
-            "type": "string"
-        },
-        {
-            "name": "intercomHash",
-            "baseName": "intercomHash",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "languageTag",
-            "baseName": "languageTag",
-            "type": "string"
-        },
-        {
-            "name": "last",
-            "baseName": "last",
-            "type": "string"
-        },
-        {
-            "name": "lastLogin",
-            "baseName": "lastLogin",
-            "type": "AccessAudit"
-        },
-        {
-            "name": "locked",
-            "baseName": "locked",
-            "type": "boolean"
-        },
-        {
-            "name": "loginAttempts",
-            "baseName": "loginAttempts",
-            "type": "number"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "password",
-            "baseName": "password",
-            "type": "string"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "records",
-            "baseName": "records",
-            "type": "Array<Record>"
-        },
-        {
-            "name": "resetPasswordToken",
-            "baseName": "resetPasswordToken",
-            "type": "string"
-        },
-        {
-            "name": "roles",
-            "baseName": "roles",
-            "type": "Array<Role>"
-        },
-        {
-            "name": "sendEmail",
-            "baseName": "sendEmail",
-            "type": "boolean"
-        },
-        {
-            "name": "status",
-            "baseName": "status",
-            "type": "string"
-        },
-        {
-            "name": "superUser",
-            "baseName": "superUser",
-            "type": "boolean"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "tier",
-            "baseName": "tier",
-            "type": "Disabled.TierEnum"
-        },
-        {
-            "name": "timeZone",
-            "baseName": "timeZone",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Disabled.attributeTypeMap);
-    }
-}
-
-export namespace Disabled {
-    export enum TierEnum {
-        PRIMARY = <any> 'PRIMARY',
-        SECONDARY = <any> 'SECONDARY',
-        LIMITED = <any> 'LIMITED'
-    }
-}
-export class Display extends Layout {
+export class Layout {
     'active'?: boolean;
     'created'?: Date;
     'defaultLayout'?: boolean;
@@ -2416,9 +267,9 @@ export class Display extends Layout {
     'workflow'?: Workflow;
     'workflowId'?: string;
 
-    static discriminator: string | undefined = undefined;
+    static discriminator: string | undefined = "layoutType";
 
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
         {
             "name": "active",
             "baseName": "active",
@@ -2468,59 +319,48 @@ export class Display extends Layout {
             "name": "workflowId",
             "baseName": "workflowId",
             "type": "string"
-        }    ];
+        }];
 
     static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Display.attributeTypeMap);
+        return Layout.attributeTypeMap;
     }
 }
 
-export class DueDate extends Field {
+
+/**
+* Entity used to manage record's field data.
+*/
+export class CurrentValue {
     'active'?: boolean;
-    'convertibleTo'?: Array<string>;
+    'archived'?: boolean;
     'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'fieldType': DueDate.FieldTypeEnum;
-    'global'?: boolean;
+    '_default'?: boolean;
+    'discriminator'?: string;
+    'empty'?: boolean;
+    'field'?: Field;
+    'fieldId'?: string;
+    'hasValue'?: Field;
     'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
+    'isDefault'?: boolean;
     'labels'?: Array<string>;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'operators'?: Array<DueDate.OperatorsEnum>;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
+    'numericValue'?: number;
+    'priority'?: number;
+    'textValue'?: string;
     'updated'?: Date;
     'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
 
-    static discriminator: string | undefined = undefined;
+    static discriminator: string | undefined = "discriminator";
 
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
         {
             "name": "active",
             "baseName": "active",
             "type": "boolean"
         },
         {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
         },
         {
             "name": "created",
@@ -2528,24 +368,34 @@ export class DueDate extends Field {
             "type": "Date"
         },
         {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
+            "name": "_default",
+            "baseName": "default",
             "type": "boolean"
         },
         {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "DueDate.FieldTypeEnum"
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
         },
         {
-            "name": "global",
-            "baseName": "global",
+            "name": "empty",
+            "baseName": "empty",
             "type": "boolean"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
         },
         {
             "name": "id",
@@ -2553,9 +403,9 @@ export class DueDate extends Field {
             "type": "string"
         },
         {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
         },
         {
             "name": "labels",
@@ -2563,18 +413,18 @@ export class DueDate extends Field {
             "type": "Array<string>"
         },
         {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
         },
         {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<DueDate.OperatorsEnum>"
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
         },
         {
-            "name": "tooltip",
-            "baseName": "tooltip",
+            "name": "textValue",
+            "baseName": "textValue",
             "type": "string"
         },
         {
@@ -2586,220 +436,17 @@ export class DueDate extends Field {
             "name": "valueType",
             "baseName": "valueType",
             "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
+        }];
 
     static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(DueDate.attributeTypeMap);
+        return CurrentValue.attributeTypeMap;
     }
 }
 
-export namespace DueDate {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class ESignature extends Field {
-    'active'?: boolean;
-    'convertibleTo'?: Array<string>;
-    'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'fieldType': ESignature.FieldTypeEnum;
-    'global'?: boolean;
-    'hasSignature'?: boolean;
-    'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
-    'labels'?: Array<string>;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'operators'?: Array<ESignature.OperatorsEnum>;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
-            "type": "boolean"
-        },
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "ESignature.FieldTypeEnum"
-        },
-        {
-            "name": "global",
-            "baseName": "global",
-            "type": "boolean"
-        },
-        {
-            "name": "hasSignature",
-            "baseName": "hasSignature",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<ESignature.OperatorsEnum>"
-        },
-        {
-            "name": "tooltip",
-            "baseName": "tooltip",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(ESignature.attributeTypeMap);
-    }
-}
-
-export namespace ESignature {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class End extends Step {
+/**
+* An entity to store details about a specific step within a workflow
+*/
+export class Step {
     'active'?: boolean;
     /**
     * Allow entitlements to the node.
@@ -2848,9 +495,9 @@ export class End extends Step {
     */
     'ypos'?: number;
 
-    static discriminator: string | undefined = undefined;
+    static discriminator: string | undefined = "stepType";
 
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
         {
             "name": "active",
             "baseName": "active",
@@ -2950,265 +597,13 @@ export class End extends Step {
             "name": "ypos",
             "baseName": "ypos",
             "type": "number"
-        }    ];
+        }];
 
     static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(End.attributeTypeMap);
+        return Step.attributeTypeMap;
     }
 }
 
-export class External extends User {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'assignments'?: Array<Record>;
-    'company'?: string;
-    'created'?: Date;
-    '_default'?: boolean;
-    'disabled'?: boolean;
-    'discriminator'?: string;
-    'email'?: string;
-    'empty'?: boolean;
-    'field'?: Field;
-    'fieldId'?: string;
-    'first'?: string;
-    'hasValue'?: Field;
-    'id'?: string;
-    'imageUrl'?: string;
-    'intercomHash'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'languageTag'?: string;
-    'last'?: string;
-    'lastLogin'?: AccessAudit;
-    'locked'?: boolean;
-    'loginAttempts'?: number;
-    'name'?: string;
-    'numericValue'?: number;
-    'password'?: string;
-    'priority'?: number;
-    'records'?: Array<Record>;
-    'resetPasswordToken'?: string;
-    'roles'?: Array<Role>;
-    'sendEmail'?: boolean;
-    'status'?: string;
-    'superUser'?: boolean;
-    'textValue'?: string;
-    'tier'?: External.TierEnum;
-    'timeZone'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "assignments",
-            "baseName": "assignments",
-            "type": "Array<Record>"
-        },
-        {
-            "name": "company",
-            "baseName": "company",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "disabled",
-            "baseName": "disabled",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "email",
-            "baseName": "email",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "first",
-            "baseName": "first",
-            "type": "string"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "imageUrl",
-            "baseName": "imageUrl",
-            "type": "string"
-        },
-        {
-            "name": "intercomHash",
-            "baseName": "intercomHash",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "languageTag",
-            "baseName": "languageTag",
-            "type": "string"
-        },
-        {
-            "name": "last",
-            "baseName": "last",
-            "type": "string"
-        },
-        {
-            "name": "lastLogin",
-            "baseName": "lastLogin",
-            "type": "AccessAudit"
-        },
-        {
-            "name": "locked",
-            "baseName": "locked",
-            "type": "boolean"
-        },
-        {
-            "name": "loginAttempts",
-            "baseName": "loginAttempts",
-            "type": "number"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "password",
-            "baseName": "password",
-            "type": "string"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "records",
-            "baseName": "records",
-            "type": "Array<Record>"
-        },
-        {
-            "name": "resetPasswordToken",
-            "baseName": "resetPasswordToken",
-            "type": "string"
-        },
-        {
-            "name": "roles",
-            "baseName": "roles",
-            "type": "Array<Role>"
-        },
-        {
-            "name": "sendEmail",
-            "baseName": "sendEmail",
-            "type": "boolean"
-        },
-        {
-            "name": "status",
-            "baseName": "status",
-            "type": "string"
-        },
-        {
-            "name": "superUser",
-            "baseName": "superUser",
-            "type": "boolean"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "tier",
-            "baseName": "tier",
-            "type": "External.TierEnum"
-        },
-        {
-            "name": "timeZone",
-            "baseName": "timeZone",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(External.attributeTypeMap);
-    }
-}
-
-export namespace External {
-    export enum TierEnum {
-        PRIMARY = <any> 'PRIMARY',
-        SECONDARY = <any> 'SECONDARY',
-        LIMITED = <any> 'LIMITED'
-    }
-}
 /**
 * An entity used to manage input fields used to capture record data for different workflows.
 */
@@ -3248,7 +643,7 @@ export class Field {
 
     static discriminator: string | undefined = "fieldType";
 
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
         {
             "name": "active",
             "baseName": "active",
@@ -3333,4870 +728,10 @@ export class Field {
             "name": "workflowId",
             "baseName": "workflowId",
             "type": "string"
-        }    ];
+        }];
 
     static getAttributeTypeMap() {
         return Field.attributeTypeMap;
-    }
-}
-
-export namespace Field {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-/**
-* A relationship object managing how to use fields and their associated current value maps in an expression.
-*/
-export class FieldInput {
-    'active'?: boolean;
-    'created'?: Date;
-    'fieldResult'?: FieldInputResult;
-    'id'?: string;
-    /**
-    * Field input to be used in the parent field's expression
-    */
-    'input'?: Field;
-    'inputId'?: string;
-    'labels'?: Array<string>;
-    /**
-    * Parent field that will use the input field in the expression.
-    */
-    'parent'?: Field;
-    /**
-    * Determines the fields place within the expression.
-    */
-    'priority'?: number;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "fieldResult",
-            "baseName": "fieldResult",
-            "type": "FieldInputResult"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "input",
-            "baseName": "input",
-            "type": "Field"
-        },
-        {
-            "name": "inputId",
-            "baseName": "inputId",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "parent",
-            "baseName": "parent",
-            "type": "Field"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return FieldInput.attributeTypeMap;
-    }
-}
-
-export class FieldInputResult {
-    'fieldType'?: string;
-    'id'?: string;
-    'name'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "string"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return FieldInputResult.attributeTypeMap;
-    }
-}
-
-export class FilteredRecord {
-    'assignment'?: RecordDetails;
-    'properties'?: Array<RecordProperty>;
-    'record'?: RecordDetails;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "assignment",
-            "baseName": "assignment",
-            "type": "RecordDetails"
-        },
-        {
-            "name": "properties",
-            "baseName": "properties",
-            "type": "Array<RecordProperty>"
-        },
-        {
-            "name": "record",
-            "baseName": "record",
-            "type": "RecordDetails"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return FilteredRecord.attributeTypeMap;
-    }
-}
-
-export class GraphEntity {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return GraphEntity.attributeTypeMap;
-    }
-}
-
-export class ImportRecordRequest extends ImportRequest {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'importType'?: string;
-    'labels'?: Array<string>;
-    'layout'?: Layout;
-    'targetStep'?: Step;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "importType",
-            "baseName": "importType",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "layout",
-            "baseName": "layout",
-            "type": "Layout"
-        },
-        {
-            "name": "targetStep",
-            "baseName": "targetStep",
-            "type": "Step"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(ImportRecordRequest.attributeTypeMap);
-    }
-}
-
-export class ImportRequest {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'importType'?: string;
-    'labels'?: Array<string>;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = "importType";
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "importType",
-            "baseName": "importType",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return ImportRequest.attributeTypeMap;
-    }
-}
-
-export class ImportUserRequest extends ImportRequest {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'importType'?: string;
-    'labels'?: Array<string>;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "importType",
-            "baseName": "importType",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(ImportUserRequest.attributeTypeMap);
-    }
-}
-
-export class InputStream {
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-    ];
-
-    static getAttributeTypeMap() {
-        return InputStream.attributeTypeMap;
-    }
-}
-
-export class LabelValue extends CurrentValue {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'color'?: string;
-    'created'?: Date;
-    '_default'?: boolean;
-    'discriminator'?: string;
-    'empty'?: boolean;
-    'field'?: Field;
-    'fieldId'?: string;
-    'hasValue'?: Field;
-    'icon'?: string;
-    'id'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'numericValue'?: number;
-    'priority'?: number;
-    'textValue'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "color",
-            "baseName": "color",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "icon",
-            "baseName": "icon",
-            "type": "string"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(LabelValue.attributeTypeMap);
-    }
-}
-
-/**
-* An entity used to group a collection of layout fields related to record data
-*/
-export class Layout {
-    'active'?: boolean;
-    'created'?: Date;
-    'defaultLayout'?: boolean;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'layoutFields'?: Array<LayoutField>;
-    'title'?: string;
-    'updated'?: Date;
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = "layoutType";
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "defaultLayout",
-            "baseName": "defaultLayout",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "layoutFields",
-            "baseName": "layoutFields",
-            "type": "Array<LayoutField>"
-        },
-        {
-            "name": "title",
-            "baseName": "title",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return Layout.attributeTypeMap;
-    }
-}
-
-export class LayoutField {
-    'active'?: boolean;
-    'category'?: LayoutField.CategoryEnum;
-    'created'?: Date;
-    'direction'?: LayoutField.DirectionEnum;
-    'field'?: Field;
-    'fieldId'?: string;
-    'header'?: string;
-    'headerOrFieldName'?: string;
-    'id'?: string;
-    'labelDisplayType'?: LayoutField.LabelDisplayTypeEnum;
-    'labels'?: Array<string>;
-    'layoutId'?: string;
-    'link'?: boolean;
-    'operators'?: Array<LayoutField.OperatorsEnum>;
-    'priority'?: number;
-    'sortProperty'?: string;
-    'sortable'?: boolean;
-    'systemField'?: LayoutField.SystemFieldEnum;
-    'toDelete'?: boolean;
-    'updated'?: Date;
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-    'workflowMap'?: WorkflowMap;
-    'workflowMapId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "category",
-            "baseName": "category",
-            "type": "LayoutField.CategoryEnum"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "direction",
-            "baseName": "direction",
-            "type": "LayoutField.DirectionEnum"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "header",
-            "baseName": "header",
-            "type": "string"
-        },
-        {
-            "name": "headerOrFieldName",
-            "baseName": "headerOrFieldName",
-            "type": "string"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labelDisplayType",
-            "baseName": "labelDisplayType",
-            "type": "LayoutField.LabelDisplayTypeEnum"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "layoutId",
-            "baseName": "layoutId",
-            "type": "string"
-        },
-        {
-            "name": "link",
-            "baseName": "link",
-            "type": "boolean"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<LayoutField.OperatorsEnum>"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "sortProperty",
-            "baseName": "sortProperty",
-            "type": "string"
-        },
-        {
-            "name": "sortable",
-            "baseName": "sortable",
-            "type": "boolean"
-        },
-        {
-            "name": "systemField",
-            "baseName": "systemField",
-            "type": "LayoutField.SystemFieldEnum"
-        },
-        {
-            "name": "toDelete",
-            "baseName": "toDelete",
-            "type": "boolean"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        },
-        {
-            "name": "workflowMap",
-            "baseName": "workflowMap",
-            "type": "WorkflowMap"
-        },
-        {
-            "name": "workflowMapId",
-            "baseName": "workflowMapId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return LayoutField.attributeTypeMap;
-    }
-}
-
-export namespace LayoutField {
-    export enum CategoryEnum {
-        RECORD = <any> 'RECORD',
-        USERS = <any> 'USERS',
-        PROCESS = <any> 'PROCESS',
-        WORKFLOW = <any> 'WORKFLOW',
-        GLOBAL = <any> 'GLOBAL'
-    }
-    export enum DirectionEnum {
-        ASC = <any> 'ASC',
-        DESC = <any> 'DESC'
-    }
-    export enum LabelDisplayTypeEnum {
-        VALUE = <any> 'VALUE',
-        LABEL = <any> 'LABEL',
-        ALL = <any> 'ALL'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-    export enum SystemFieldEnum {
-        NAME = <any> 'NAME',
-        STATUS = <any> 'STATUS',
-        CREATED = <any> 'CREATED',
-        USERDATE = <any> 'USER_DATE',
-        EFFECTIVEDUEDATE = <any> 'EFFECTIVE_DUE_DATE',
-        DUEDATE = <any> 'DUE_DATE',
-        ID = <any> 'ID',
-        USERNAME = <any> 'USER_NAME',
-        USERID = <any> 'USER_ID',
-        CREATORNAME = <any> 'CREATOR_NAME',
-        USERGROUP = <any> 'USER_GROUP',
-        STEPNAME = <any> 'STEP_NAME',
-        STEPID = <any> 'STEP_ID',
-        ORIGINNAME = <any> 'ORIGIN_NAME',
-        WORKFLOWNAME = <any> 'WORKFLOW_NAME',
-        WORKFLOWRECORDPREFIX = <any> 'WORKFLOW_RECORD_PREFIX',
-        WORKFLOWID = <any> 'WORKFLOW_ID'
-    }
-}
-export class Locked extends User {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'assignments'?: Array<Record>;
-    'company'?: string;
-    'created'?: Date;
-    '_default'?: boolean;
-    'disabled'?: boolean;
-    'discriminator'?: string;
-    'email'?: string;
-    'empty'?: boolean;
-    'field'?: Field;
-    'fieldId'?: string;
-    'first'?: string;
-    'hasValue'?: Field;
-    'id'?: string;
-    'imageUrl'?: string;
-    'intercomHash'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'languageTag'?: string;
-    'last'?: string;
-    'lastLogin'?: AccessAudit;
-    'locked'?: boolean;
-    'loginAttempts'?: number;
-    'name'?: string;
-    'numericValue'?: number;
-    'password'?: string;
-    'priority'?: number;
-    'records'?: Array<Record>;
-    'resetPasswordToken'?: string;
-    'roles'?: Array<Role>;
-    'sendEmail'?: boolean;
-    'status'?: string;
-    'superUser'?: boolean;
-    'textValue'?: string;
-    'tier'?: Locked.TierEnum;
-    'timeZone'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "assignments",
-            "baseName": "assignments",
-            "type": "Array<Record>"
-        },
-        {
-            "name": "company",
-            "baseName": "company",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "disabled",
-            "baseName": "disabled",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "email",
-            "baseName": "email",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "first",
-            "baseName": "first",
-            "type": "string"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "imageUrl",
-            "baseName": "imageUrl",
-            "type": "string"
-        },
-        {
-            "name": "intercomHash",
-            "baseName": "intercomHash",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "languageTag",
-            "baseName": "languageTag",
-            "type": "string"
-        },
-        {
-            "name": "last",
-            "baseName": "last",
-            "type": "string"
-        },
-        {
-            "name": "lastLogin",
-            "baseName": "lastLogin",
-            "type": "AccessAudit"
-        },
-        {
-            "name": "locked",
-            "baseName": "locked",
-            "type": "boolean"
-        },
-        {
-            "name": "loginAttempts",
-            "baseName": "loginAttempts",
-            "type": "number"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "password",
-            "baseName": "password",
-            "type": "string"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "records",
-            "baseName": "records",
-            "type": "Array<Record>"
-        },
-        {
-            "name": "resetPasswordToken",
-            "baseName": "resetPasswordToken",
-            "type": "string"
-        },
-        {
-            "name": "roles",
-            "baseName": "roles",
-            "type": "Array<Role>"
-        },
-        {
-            "name": "sendEmail",
-            "baseName": "sendEmail",
-            "type": "boolean"
-        },
-        {
-            "name": "status",
-            "baseName": "status",
-            "type": "string"
-        },
-        {
-            "name": "superUser",
-            "baseName": "superUser",
-            "type": "boolean"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "tier",
-            "baseName": "tier",
-            "type": "Locked.TierEnum"
-        },
-        {
-            "name": "timeZone",
-            "baseName": "timeZone",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Locked.attributeTypeMap);
-    }
-}
-
-export namespace Locked {
-    export enum TierEnum {
-        PRIMARY = <any> 'PRIMARY',
-        SECONDARY = <any> 'SECONDARY',
-        LIMITED = <any> 'LIMITED'
-    }
-}
-export class LogIn extends AccessAudit {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'remoteAddress'?: string;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "remoteAddress",
-            "baseName": "remoteAddress",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(LogIn.attributeTypeMap);
-    }
-}
-
-export class LogInFail extends AccessAudit {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'remoteAddress'?: string;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "remoteAddress",
-            "baseName": "remoteAddress",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(LogInFail.attributeTypeMap);
-    }
-}
-
-export class LogOut extends AccessAudit {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'remoteAddress'?: string;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "remoteAddress",
-            "baseName": "remoteAddress",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(LogOut.attributeTypeMap);
-    }
-}
-
-export class ManyToMany extends WorkflowMap {
-    'active'?: boolean;
-    'childId'?: string;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'parentId'?: string;
-    'parentResult'?: WorkflowResult;
-    /**
-    * Parent workflow.
-    */
-    'parentWorkflow'?: Workflow;
-    'updated'?: Date;
-    /**
-    * Child workflow to be connected.
-    */
-    'workflow'?: Workflow;
-    'workflowMapType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "childId",
-            "baseName": "childId",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "parentId",
-            "baseName": "parentId",
-            "type": "string"
-        },
-        {
-            "name": "parentResult",
-            "baseName": "parentResult",
-            "type": "WorkflowResult"
-        },
-        {
-            "name": "parentWorkflow",
-            "baseName": "parentWorkflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowMapType",
-            "baseName": "workflowMapType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(ManyToMany.attributeTypeMap);
-    }
-}
-
-export class ManyToOne extends WorkflowMap {
-    'active'?: boolean;
-    'childId'?: string;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'parentId'?: string;
-    'parentResult'?: WorkflowResult;
-    /**
-    * Parent workflow.
-    */
-    'parentWorkflow'?: Workflow;
-    'updated'?: Date;
-    /**
-    * Child workflow to be connected.
-    */
-    'workflow'?: Workflow;
-    'workflowMapType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "childId",
-            "baseName": "childId",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "parentId",
-            "baseName": "parentId",
-            "type": "string"
-        },
-        {
-            "name": "parentResult",
-            "baseName": "parentResult",
-            "type": "WorkflowResult"
-        },
-        {
-            "name": "parentWorkflow",
-            "baseName": "parentWorkflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowMapType",
-            "baseName": "workflowMapType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(ManyToOne.attributeTypeMap);
-    }
-}
-
-/**
-* The \"default\" layout functions as the application's fallback when there is no workflow specific layout to use or a user specific layout to use.
-*/
-export class ModelDefault extends Layout {
-    'active'?: boolean;
-    'created'?: Date;
-    'defaultLayout'?: boolean;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'layoutFields'?: Array<LayoutField>;
-    'title'?: string;
-    'updated'?: Date;
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "defaultLayout",
-            "baseName": "defaultLayout",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "layoutFields",
-            "baseName": "layoutFields",
-            "type": "Array<LayoutField>"
-        },
-        {
-            "name": "title",
-            "baseName": "title",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(ModelDefault.attributeTypeMap);
-    }
-}
-
-export class ModelFile {
-    'absolute'?: boolean;
-    'absoluteFile'?: any;
-    'absolutePath'?: string;
-    'canonicalFile'?: any;
-    'canonicalPath'?: string;
-    'directory'?: boolean;
-    'executable'?: boolean;
-    'file'?: boolean;
-    'freeSpace'?: number;
-    'hidden'?: boolean;
-    'lastModified'?: number;
-    'name'?: string;
-    'parent'?: string;
-    'parentFile'?: any;
-    'path'?: string;
-    'readable'?: boolean;
-    'totalSpace'?: number;
-    'usableSpace'?: number;
-    'writable'?: boolean;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "absolute",
-            "baseName": "absolute",
-            "type": "boolean"
-        },
-        {
-            "name": "absoluteFile",
-            "baseName": "absoluteFile",
-            "type": "any"
-        },
-        {
-            "name": "absolutePath",
-            "baseName": "absolutePath",
-            "type": "string"
-        },
-        {
-            "name": "canonicalFile",
-            "baseName": "canonicalFile",
-            "type": "any"
-        },
-        {
-            "name": "canonicalPath",
-            "baseName": "canonicalPath",
-            "type": "string"
-        },
-        {
-            "name": "directory",
-            "baseName": "directory",
-            "type": "boolean"
-        },
-        {
-            "name": "executable",
-            "baseName": "executable",
-            "type": "boolean"
-        },
-        {
-            "name": "file",
-            "baseName": "file",
-            "type": "boolean"
-        },
-        {
-            "name": "freeSpace",
-            "baseName": "freeSpace",
-            "type": "number"
-        },
-        {
-            "name": "hidden",
-            "baseName": "hidden",
-            "type": "boolean"
-        },
-        {
-            "name": "lastModified",
-            "baseName": "lastModified",
-            "type": "number"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "parent",
-            "baseName": "parent",
-            "type": "string"
-        },
-        {
-            "name": "parentFile",
-            "baseName": "parentFile",
-            "type": "any"
-        },
-        {
-            "name": "path",
-            "baseName": "path",
-            "type": "string"
-        },
-        {
-            "name": "readable",
-            "baseName": "readable",
-            "type": "boolean"
-        },
-        {
-            "name": "totalSpace",
-            "baseName": "totalSpace",
-            "type": "number"
-        },
-        {
-            "name": "usableSpace",
-            "baseName": "usableSpace",
-            "type": "number"
-        },
-        {
-            "name": "writable",
-            "baseName": "writable",
-            "type": "boolean"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return ModelFile.attributeTypeMap;
-    }
-}
-
-export class Module {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'name'?: string;
-    'onlyUse'?: boolean;
-    'tab'?: string;
-    'updated'?: Date;
-    'value'?: Module.ValueEnum;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "onlyUse",
-            "baseName": "onlyUse",
-            "type": "boolean"
-        },
-        {
-            "name": "tab",
-            "baseName": "tab",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "value",
-            "baseName": "value",
-            "type": "Module.ValueEnum"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return Module.attributeTypeMap;
-    }
-}
-
-export namespace Module {
-    export enum ValueEnum {
-        AASSIGN = <any> 'A_ASSIGN',
-        AIMPORT = <any> 'A_IMPORT',
-        AALLFIELDS = <any> 'A_ALL_FIELDS',
-        ABUILD = <any> 'A_BUILD',
-        AAPIACCESS = <any> 'A_API_ACCESS',
-        RRECORDS = <any> 'R_RECORDS',
-        RSTATUS = <any> 'R_STATUS',
-        RPRODUCTIVITY = <any> 'R_PRODUCTIVITY',
-        RTABLEREPORTS = <any> 'R_TABLE_REPORTS',
-        RDASHBOARDS = <any> 'R_DASHBOARDS',
-        ADMINALL = <any> 'ADMIN_ALL'
-    }
-}
-export class ModuleEntitlement {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'module'?: Module;
-    'operationType'?: string;
-    'role'?: Role;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "module",
-            "baseName": "module",
-            "type": "Module"
-        },
-        {
-            "name": "operationType",
-            "baseName": "operationType",
-            "type": "string"
-        },
-        {
-            "name": "role",
-            "baseName": "role",
-            "type": "Role"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return ModuleEntitlement.attributeTypeMap;
-    }
-}
-
-export class MultiSelect extends Field {
-    'active'?: boolean;
-    'convertibleTo'?: Array<string>;
-    'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'fieldType': MultiSelect.FieldTypeEnum;
-    'global'?: boolean;
-    'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
-    'labels'?: Array<string>;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'operators'?: Array<MultiSelect.OperatorsEnum>;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
-            "type": "boolean"
-        },
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "MultiSelect.FieldTypeEnum"
-        },
-        {
-            "name": "global",
-            "baseName": "global",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<MultiSelect.OperatorsEnum>"
-        },
-        {
-            "name": "tooltip",
-            "baseName": "tooltip",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(MultiSelect.attributeTypeMap);
-    }
-}
-
-export namespace MultiSelect {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class Number extends Field {
-    'active'?: boolean;
-    'convertibleTo'?: Array<string>;
-    'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'fieldType': Number.FieldTypeEnum;
-    'global'?: boolean;
-    'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
-    'labels'?: Array<string>;
-    'message'?: string;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'operators'?: Array<Number.OperatorsEnum>;
-    'pattern'?: string;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
-            "type": "boolean"
-        },
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "Number.FieldTypeEnum"
-        },
-        {
-            "name": "global",
-            "baseName": "global",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "message",
-            "baseName": "message",
-            "type": "string"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<Number.OperatorsEnum>"
-        },
-        {
-            "name": "pattern",
-            "baseName": "pattern",
-            "type": "string"
-        },
-        {
-            "name": "tooltip",
-            "baseName": "tooltip",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Number.attributeTypeMap);
-    }
-}
-
-export namespace Number {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class OneToMany extends WorkflowMap {
-    'active'?: boolean;
-    'childId'?: string;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'parentId'?: string;
-    'parentResult'?: WorkflowResult;
-    /**
-    * Parent workflow.
-    */
-    'parentWorkflow'?: Workflow;
-    'updated'?: Date;
-    /**
-    * Child workflow to be connected.
-    */
-    'workflow'?: Workflow;
-    'workflowMapType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "childId",
-            "baseName": "childId",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "parentId",
-            "baseName": "parentId",
-            "type": "string"
-        },
-        {
-            "name": "parentResult",
-            "baseName": "parentResult",
-            "type": "WorkflowResult"
-        },
-        {
-            "name": "parentWorkflow",
-            "baseName": "parentWorkflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowMapType",
-            "baseName": "workflowMapType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(OneToMany.attributeTypeMap);
-    }
-}
-
-export class OneToOne extends WorkflowMap {
-    'active'?: boolean;
-    'childId'?: string;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'parentId'?: string;
-    'parentResult'?: WorkflowResult;
-    /**
-    * Parent workflow.
-    */
-    'parentWorkflow'?: Workflow;
-    'updated'?: Date;
-    /**
-    * Child workflow to be connected.
-    */
-    'workflow'?: Workflow;
-    'workflowMapType'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "childId",
-            "baseName": "childId",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "parentId",
-            "baseName": "parentId",
-            "type": "string"
-        },
-        {
-            "name": "parentResult",
-            "baseName": "parentResult",
-            "type": "WorkflowResult"
-        },
-        {
-            "name": "parentWorkflow",
-            "baseName": "parentWorkflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowMapType",
-            "baseName": "workflowMapType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(OneToOne.attributeTypeMap);
-    }
-}
-
-export class Origin extends Step {
-    'active'?: boolean;
-    /**
-    * Allow entitlements to the node.
-    */
-    'allowEntitlements'?: boolean;
-    'chain'?: boolean;
-    'contains'?: Workflow;
-    'created'?: Date;
-    'end'?: boolean;
-    'id'?: string;
-    /**
-    * Allows a node to become a public node.
-    */
-    'isPublic'?: boolean;
-    'labels'?: Array<string>;
-    /**
-    * Node name.
-    */
-    'name'?: string;
-    'origin'?: boolean;
-    /**
-    * Determines the node's place in the workflow.
-    */
-    'priority'?: number;
-    '_public'?: boolean;
-    /**
-    * Object containing all SLA information.
-    */
-    'sla'?: ServiceLevelAgreement;
-    /**
-    * Node type.
-    */
-    'stepType'?: string;
-    'updated'?: Date;
-    /**
-    * Workflow that the node belongs to.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-    /**
-    * Vertical position of the node on the process screen.
-    */
-    'xpos'?: number;
-    /**
-    * Horizontal position of the node on the process screen.
-    */
-    'ypos'?: number;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "allowEntitlements",
-            "baseName": "allowEntitlements",
-            "type": "boolean"
-        },
-        {
-            "name": "chain",
-            "baseName": "chain",
-            "type": "boolean"
-        },
-        {
-            "name": "contains",
-            "baseName": "contains",
-            "type": "Workflow"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "end",
-            "baseName": "end",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isPublic",
-            "baseName": "isPublic",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "origin",
-            "baseName": "origin",
-            "type": "boolean"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "_public",
-            "baseName": "public",
-            "type": "boolean"
-        },
-        {
-            "name": "sla",
-            "baseName": "sla",
-            "type": "ServiceLevelAgreement"
-        },
-        {
-            "name": "stepType",
-            "baseName": "stepType",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        },
-        {
-            "name": "xpos",
-            "baseName": "xpos",
-            "type": "number"
-        },
-        {
-            "name": "ypos",
-            "baseName": "ypos",
-            "type": "number"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Origin.attributeTypeMap);
-    }
-}
-
-export class PageOfCurrentValue {
-    'content'?: Array<CurrentValue>;
-    'empty'?: boolean;
-    'first'?: boolean;
-    'last'?: boolean;
-    'number'?: number;
-    'numberOfElements'?: number;
-    'size'?: number;
-    'sort'?: Sort;
-    'totalElements'?: number;
-    'totalPages'?: number;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "content",
-            "baseName": "content",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "first",
-            "baseName": "first",
-            "type": "boolean"
-        },
-        {
-            "name": "last",
-            "baseName": "last",
-            "type": "boolean"
-        },
-        {
-            "name": "number",
-            "baseName": "number",
-            "type": "number"
-        },
-        {
-            "name": "numberOfElements",
-            "baseName": "numberOfElements",
-            "type": "number"
-        },
-        {
-            "name": "size",
-            "baseName": "size",
-            "type": "number"
-        },
-        {
-            "name": "sort",
-            "baseName": "sort",
-            "type": "Sort"
-        },
-        {
-            "name": "totalElements",
-            "baseName": "totalElements",
-            "type": "number"
-        },
-        {
-            "name": "totalPages",
-            "baseName": "totalPages",
-            "type": "number"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return PageOfCurrentValue.attributeTypeMap;
-    }
-}
-
-export class PageOfField {
-    'content'?: Array<Field>;
-    'empty'?: boolean;
-    'first'?: boolean;
-    'last'?: boolean;
-    'number'?: number;
-    'numberOfElements'?: number;
-    'size'?: number;
-    'sort'?: Sort;
-    'totalElements'?: number;
-    'totalPages'?: number;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "content",
-            "baseName": "content",
-            "type": "Array<Field>"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "first",
-            "baseName": "first",
-            "type": "boolean"
-        },
-        {
-            "name": "last",
-            "baseName": "last",
-            "type": "boolean"
-        },
-        {
-            "name": "number",
-            "baseName": "number",
-            "type": "number"
-        },
-        {
-            "name": "numberOfElements",
-            "baseName": "numberOfElements",
-            "type": "number"
-        },
-        {
-            "name": "size",
-            "baseName": "size",
-            "type": "number"
-        },
-        {
-            "name": "sort",
-            "baseName": "sort",
-            "type": "Sort"
-        },
-        {
-            "name": "totalElements",
-            "baseName": "totalElements",
-            "type": "number"
-        },
-        {
-            "name": "totalPages",
-            "baseName": "totalPages",
-            "type": "number"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return PageOfField.attributeTypeMap;
-    }
-}
-
-export class PageOfWorkflowResult {
-    'content'?: Array<WorkflowResult>;
-    'empty'?: boolean;
-    'first'?: boolean;
-    'last'?: boolean;
-    'number'?: number;
-    'numberOfElements'?: number;
-    'size'?: number;
-    'sort'?: Sort;
-    'totalElements'?: number;
-    'totalPages'?: number;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "content",
-            "baseName": "content",
-            "type": "Array<WorkflowResult>"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "first",
-            "baseName": "first",
-            "type": "boolean"
-        },
-        {
-            "name": "last",
-            "baseName": "last",
-            "type": "boolean"
-        },
-        {
-            "name": "number",
-            "baseName": "number",
-            "type": "number"
-        },
-        {
-            "name": "numberOfElements",
-            "baseName": "numberOfElements",
-            "type": "number"
-        },
-        {
-            "name": "size",
-            "baseName": "size",
-            "type": "number"
-        },
-        {
-            "name": "sort",
-            "baseName": "sort",
-            "type": "Sort"
-        },
-        {
-            "name": "totalElements",
-            "baseName": "totalElements",
-            "type": "number"
-        },
-        {
-            "name": "totalPages",
-            "baseName": "totalPages",
-            "type": "number"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return PageOfWorkflowResult.attributeTypeMap;
-    }
-}
-
-export class PendingAttachment extends CurrentValue {
-    'active'?: boolean;
-    'archived'?: boolean;
-    'attachmentStatus'?: PendingAttachment.AttachmentStatusEnum;
-    'awsS3Key'?: string;
-    'contentType'?: string;
-    'created'?: Date;
-    '_default'?: boolean;
-    'discriminator'?: string;
-    'empty'?: boolean;
-    'field'?: Field;
-    'fieldId'?: string;
-    'fileExtension'?: string;
-    'fileSize'?: number;
-    'hasValue'?: Field;
-    'id'?: string;
-    'isDefault'?: boolean;
-    'labels'?: Array<string>;
-    'numericValue'?: number;
-    'originalFileExtension'?: string;
-    'priority'?: number;
-    'textValue'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    'versionCount'?: number;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "archived",
-            "baseName": "archived",
-            "type": "boolean"
-        },
-        {
-            "name": "attachmentStatus",
-            "baseName": "attachmentStatus",
-            "type": "PendingAttachment.AttachmentStatusEnum"
-        },
-        {
-            "name": "awsS3Key",
-            "baseName": "awsS3Key",
-            "type": "string"
-        },
-        {
-            "name": "contentType",
-            "baseName": "contentType",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "_default",
-            "baseName": "default",
-            "type": "boolean"
-        },
-        {
-            "name": "discriminator",
-            "baseName": "discriminator",
-            "type": "string"
-        },
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "fieldId",
-            "baseName": "fieldId",
-            "type": "string"
-        },
-        {
-            "name": "fileExtension",
-            "baseName": "fileExtension",
-            "type": "string"
-        },
-        {
-            "name": "fileSize",
-            "baseName": "fileSize",
-            "type": "number"
-        },
-        {
-            "name": "hasValue",
-            "baseName": "hasValue",
-            "type": "Field"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isDefault",
-            "baseName": "isDefault",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "numericValue",
-            "baseName": "numericValue",
-            "type": "number"
-        },
-        {
-            "name": "originalFileExtension",
-            "baseName": "originalFileExtension",
-            "type": "string"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "textValue",
-            "baseName": "textValue",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "versionCount",
-            "baseName": "versionCount",
-            "type": "number"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(PendingAttachment.attributeTypeMap);
-    }
-}
-
-export namespace PendingAttachment {
-    export enum AttachmentStatusEnum {
-        PENDING = <any> 'PENDING',
-        CLEAN = <any> 'CLEAN',
-        DIRTY = <any> 'DIRTY'
-    }
-}
-/**
-* An entity for managing top-level process data. A process represents the highest level of organization for other entities within the application.
-*/
-export class Process {
-    'active'?: boolean;
-    /**
-    * Icon color of the process.
-    */
-    'color'?: string;
-    'copied'?: boolean;
-    'created'?: Date;
-    /**
-    * Icon type of the process.
-    */
-    'icon'?: Process.IconEnum;
-    'id'?: string;
-    'imported'?: boolean;
-    'labels'?: Array<string>;
-    /**
-    * Name of the process.
-    */
-    'name'?: string;
-    'updated'?: Date;
-    /**
-    * Workflows associated to the process.
-    */
-    'workflows'?: Array<Workflow>;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "color",
-            "baseName": "color",
-            "type": "string"
-        },
-        {
-            "name": "copied",
-            "baseName": "copied",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "icon",
-            "baseName": "icon",
-            "type": "Process.IconEnum"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "imported",
-            "baseName": "imported",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflows",
-            "baseName": "workflows",
-            "type": "Array<Workflow>"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return Process.attributeTypeMap;
-    }
-}
-
-export namespace Process {
-    export enum IconEnum {
-        Bookmark = <any> 'fa-bookmark',
-        Bolt = <any> 'fa-bolt',
-        Bullhorn = <any> 'fa-bullhorn',
-        Certificate = <any> 'fa-certificate',
-        CheckSquareO = <any> 'fa-check-square-o',
-        Cloud = <any> 'fa-cloud',
-        Comments = <any> 'fa-comments',
-        Dollar = <any> 'fa-dollar',
-        ExclamationTriangle = <any> 'fa-exclamation-triangle',
-        FileTextO = <any> 'fa-file-text-o',
-        Folder = <any> 'fa-folder',
-        Gift = <any> 'fa-gift',
-        Globe = <any> 'fa-globe',
-        Heartbeat = <any> 'fa-heartbeat',
-        Leaf = <any> 'fa-leaf',
-        Legal = <any> 'fa-legal',
-        LifeRing = <any> 'fa-life-ring',
-        Medkit = <any> 'fa-medkit',
-        Money = <any> 'fa-money',
-        Percent = <any> 'fa-percent',
-        Rocket = <any> 'fa-rocket',
-        Signal = <any> 'fa-signal',
-        University = <any> 'fa-university',
-        UserCircle = <any> 'fa-user-circle'
-    }
-}
-export class Radio extends Field {
-    'active'?: boolean;
-    'convertibleTo'?: Array<string>;
-    'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'fieldType': Radio.FieldTypeEnum;
-    'global'?: boolean;
-    'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
-    'labels'?: Array<string>;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'operators'?: Array<Radio.OperatorsEnum>;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
-            "type": "boolean"
-        },
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "Radio.FieldTypeEnum"
-        },
-        {
-            "name": "global",
-            "baseName": "global",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<Radio.OperatorsEnum>"
-        },
-        {
-            "name": "tooltip",
-            "baseName": "tooltip",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Radio.attributeTypeMap);
-    }
-}
-
-export namespace Radio {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class Record {
-    'active'?: boolean;
-    'activeDate'?: Date;
-    'assignee'?: User;
-    'assignments'?: Array<Record>;
-    'created'?: Date;
-    'creator'?: User;
-    'currentValueMaps'?: Array<ValueMap>;
-    'dueDate'?: Date;
-    'enteredNodeDate'?: Date;
-    'enteredStepDate'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'name'?: string;
-    'node'?: Step;
-    'nodeDueDate'?: Date;
-    'origin'?: Step;
-    '_public'?: boolean;
-    'records'?: Array<Record>;
-    'sequenceId'?: number;
-    'status'?: Record.StatusEnum;
-    'step'?: Step;
-    'stepDueDate'?: Date;
-    'updated'?: Date;
-    'user'?: User;
-    'userDate'?: Date;
-    'userGroups'?: Array<UserGroup>;
-    'workflow'?: Workflow;
-    'workflowDueDate'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "activeDate",
-            "baseName": "activeDate",
-            "type": "Date"
-        },
-        {
-            "name": "assignee",
-            "baseName": "assignee",
-            "type": "User"
-        },
-        {
-            "name": "assignments",
-            "baseName": "assignments",
-            "type": "Array<Record>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "creator",
-            "baseName": "creator",
-            "type": "User"
-        },
-        {
-            "name": "currentValueMaps",
-            "baseName": "currentValueMaps",
-            "type": "Array<ValueMap>"
-        },
-        {
-            "name": "dueDate",
-            "baseName": "dueDate",
-            "type": "Date"
-        },
-        {
-            "name": "enteredNodeDate",
-            "baseName": "enteredNodeDate",
-            "type": "Date"
-        },
-        {
-            "name": "enteredStepDate",
-            "baseName": "enteredStepDate",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "node",
-            "baseName": "node",
-            "type": "Step"
-        },
-        {
-            "name": "nodeDueDate",
-            "baseName": "nodeDueDate",
-            "type": "Date"
-        },
-        {
-            "name": "origin",
-            "baseName": "origin",
-            "type": "Step"
-        },
-        {
-            "name": "_public",
-            "baseName": "public",
-            "type": "boolean"
-        },
-        {
-            "name": "records",
-            "baseName": "records",
-            "type": "Array<Record>"
-        },
-        {
-            "name": "sequenceId",
-            "baseName": "sequenceId",
-            "type": "number"
-        },
-        {
-            "name": "status",
-            "baseName": "status",
-            "type": "Record.StatusEnum"
-        },
-        {
-            "name": "step",
-            "baseName": "step",
-            "type": "Step"
-        },
-        {
-            "name": "stepDueDate",
-            "baseName": "stepDueDate",
-            "type": "Date"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "user",
-            "baseName": "user",
-            "type": "User"
-        },
-        {
-            "name": "userDate",
-            "baseName": "userDate",
-            "type": "Date"
-        },
-        {
-            "name": "userGroups",
-            "baseName": "userGroups",
-            "type": "Array<UserGroup>"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowDueDate",
-            "baseName": "workflowDueDate",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return Record.attributeTypeMap;
-    }
-}
-
-export namespace Record {
-    export enum StatusEnum {
-        INACTIVE = <any> 'INACTIVE',
-        NOTASSIGNED = <any> 'NOT_ASSIGNED',
-        ASSIGNED = <any> 'ASSIGNED',
-        INPROGRESS = <any> 'IN_PROGRESS',
-        COMPLETE = <any> 'COMPLETE'
-    }
-}
-export class RecordDetails {
-    'canEdit'?: boolean;
-    'canRead'?: boolean;
-    'depth'?: number;
-    'dueDate'?: Date;
-    'id'?: string;
-    'name'?: string;
-    'step'?: Step;
-    'stepEnd'?: boolean;
-    'stepId'?: string;
-    'user'?: boolean;
-    'workflow'?: Workflow;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "canEdit",
-            "baseName": "canEdit",
-            "type": "boolean"
-        },
-        {
-            "name": "canRead",
-            "baseName": "canRead",
-            "type": "boolean"
-        },
-        {
-            "name": "depth",
-            "baseName": "depth",
-            "type": "number"
-        },
-        {
-            "name": "dueDate",
-            "baseName": "dueDate",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "step",
-            "baseName": "step",
-            "type": "Step"
-        },
-        {
-            "name": "stepEnd",
-            "baseName": "stepEnd",
-            "type": "boolean"
-        },
-        {
-            "name": "stepId",
-            "baseName": "stepId",
-            "type": "string"
-        },
-        {
-            "name": "user",
-            "baseName": "user",
-            "type": "boolean"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return RecordDetails.attributeTypeMap;
-    }
-}
-
-export class RecordProperty {
-    'fieldType'?: RecordProperty.FieldTypeEnum;
-    'formattedValue'?: string;
-    'header'?: string;
-    'rawValue'?: any;
-    'systemField'?: RecordProperty.SystemFieldEnum;
-    'url'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "RecordProperty.FieldTypeEnum"
-        },
-        {
-            "name": "formattedValue",
-            "baseName": "formattedValue",
-            "type": "string"
-        },
-        {
-            "name": "header",
-            "baseName": "header",
-            "type": "string"
-        },
-        {
-            "name": "rawValue",
-            "baseName": "rawValue",
-            "type": "any"
-        },
-        {
-            "name": "systemField",
-            "baseName": "systemField",
-            "type": "RecordProperty.SystemFieldEnum"
-        },
-        {
-            "name": "url",
-            "baseName": "url",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return RecordProperty.attributeTypeMap;
-    }
-}
-
-export namespace RecordProperty {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum SystemFieldEnum {
-        NAME = <any> 'NAME',
-        STATUS = <any> 'STATUS',
-        CREATED = <any> 'CREATED',
-        USERDATE = <any> 'USER_DATE',
-        EFFECTIVEDUEDATE = <any> 'EFFECTIVE_DUE_DATE',
-        DUEDATE = <any> 'DUE_DATE',
-        ID = <any> 'ID',
-        USERNAME = <any> 'USER_NAME',
-        USERID = <any> 'USER_ID',
-        CREATORNAME = <any> 'CREATOR_NAME',
-        USERGROUP = <any> 'USER_GROUP',
-        STEPNAME = <any> 'STEP_NAME',
-        STEPID = <any> 'STEP_ID',
-        ORIGINNAME = <any> 'ORIGIN_NAME',
-        WORKFLOWNAME = <any> 'WORKFLOW_NAME',
-        WORKFLOWRECORDPREFIX = <any> 'WORKFLOW_RECORD_PREFIX',
-        WORKFLOWID = <any> 'WORKFLOW_ID'
-    }
-}
-export class ReportFilter {
-    'active'?: boolean;
-    'created'?: Date;
-    'field'?: Field;
-    'filteredRelativeIds'?: Array<string>;
-    'filteredRelatives'?: Array<GraphEntity>;
-    'fixed'?: boolean;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'operator'?: ReportFilter.OperatorEnum;
-    'recordRelationship'?: ReportFilter.RecordRelationshipEnum;
-    'systemField'?: ReportFilter.SystemFieldEnum;
-    'updated'?: Date;
-    'valid'?: boolean;
-    'values'?: Array<CurrentValue>;
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "field",
-            "baseName": "field",
-            "type": "Field"
-        },
-        {
-            "name": "filteredRelativeIds",
-            "baseName": "filteredRelativeIds",
-            "type": "Array<string>"
-        },
-        {
-            "name": "filteredRelatives",
-            "baseName": "filteredRelatives",
-            "type": "Array<GraphEntity>"
-        },
-        {
-            "name": "fixed",
-            "baseName": "fixed",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "operator",
-            "baseName": "operator",
-            "type": "ReportFilter.OperatorEnum"
-        },
-        {
-            "name": "recordRelationship",
-            "baseName": "recordRelationship",
-            "type": "ReportFilter.RecordRelationshipEnum"
-        },
-        {
-            "name": "systemField",
-            "baseName": "systemField",
-            "type": "ReportFilter.SystemFieldEnum"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valid",
-            "baseName": "valid",
-            "type": "boolean"
-        },
-        {
-            "name": "values",
-            "baseName": "values",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return ReportFilter.attributeTypeMap;
-    }
-}
-
-export namespace ReportFilter {
-    export enum OperatorEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-    export enum RecordRelationshipEnum {
-        CURRENTSTEP = <any> 'CURRENT_STEP',
-        ORIGINSTEP = <any> 'ORIGIN_STEP'
-    }
-    export enum SystemFieldEnum {
-        NAME = <any> 'NAME',
-        STATUS = <any> 'STATUS',
-        CREATED = <any> 'CREATED',
-        USERDATE = <any> 'USER_DATE',
-        EFFECTIVEDUEDATE = <any> 'EFFECTIVE_DUE_DATE',
-        DUEDATE = <any> 'DUE_DATE',
-        ID = <any> 'ID',
-        USERNAME = <any> 'USER_NAME',
-        USERID = <any> 'USER_ID',
-        CREATORNAME = <any> 'CREATOR_NAME',
-        USERGROUP = <any> 'USER_GROUP',
-        STEPNAME = <any> 'STEP_NAME',
-        STEPID = <any> 'STEP_ID',
-        ORIGINNAME = <any> 'ORIGIN_NAME',
-        WORKFLOWNAME = <any> 'WORKFLOW_NAME',
-        WORKFLOWRECORDPREFIX = <any> 'WORKFLOW_RECORD_PREFIX',
-        WORKFLOWID = <any> 'WORKFLOW_ID'
-    }
-}
-export class Repository extends Layout {
-    'active'?: boolean;
-    'created'?: Date;
-    'defaultLayout'?: boolean;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'layoutFields'?: Array<LayoutField>;
-    'title'?: string;
-    'updated'?: Date;
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "defaultLayout",
-            "baseName": "defaultLayout",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "layoutFields",
-            "baseName": "layoutFields",
-            "type": "Array<LayoutField>"
-        },
-        {
-            "name": "title",
-            "baseName": "title",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Repository.attributeTypeMap);
-    }
-}
-
-export class Resource {
-    'description'?: string;
-    'file'?: any;
-    'filename'?: string;
-    'inputStream'?: InputStream;
-    'open'?: boolean;
-    'readable'?: boolean;
-    'uri'?: URI;
-    'url'?: URL;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "description",
-            "baseName": "description",
-            "type": "string"
-        },
-        {
-            "name": "file",
-            "baseName": "file",
-            "type": "any"
-        },
-        {
-            "name": "filename",
-            "baseName": "filename",
-            "type": "string"
-        },
-        {
-            "name": "inputStream",
-            "baseName": "inputStream",
-            "type": "InputStream"
-        },
-        {
-            "name": "open",
-            "baseName": "open",
-            "type": "boolean"
-        },
-        {
-            "name": "readable",
-            "baseName": "readable",
-            "type": "boolean"
-        },
-        {
-            "name": "uri",
-            "baseName": "uri",
-            "type": "URI"
-        },
-        {
-            "name": "url",
-            "baseName": "url",
-            "type": "URL"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return Resource.attributeTypeMap;
-    }
-}
-
-export class Role {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'locked'?: boolean;
-    'moduleCount'?: number;
-    'moduleEntitlements'?: Array<ModuleEntitlement>;
-    'name'?: string;
-    'nodeEntitlements'?: Array<StepEntitlement>;
-    'stepCount'?: number;
-    'stepEntitlements'?: Array<StepEntitlement>;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "locked",
-            "baseName": "locked",
-            "type": "boolean"
-        },
-        {
-            "name": "moduleCount",
-            "baseName": "moduleCount",
-            "type": "number"
-        },
-        {
-            "name": "moduleEntitlements",
-            "baseName": "moduleEntitlements",
-            "type": "Array<ModuleEntitlement>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "nodeEntitlements",
-            "baseName": "nodeEntitlements",
-            "type": "Array<StepEntitlement>"
-        },
-        {
-            "name": "stepCount",
-            "baseName": "stepCount",
-            "type": "number"
-        },
-        {
-            "name": "stepEntitlements",
-            "baseName": "stepEntitlements",
-            "type": "Array<StepEntitlement>"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return Role.attributeTypeMap;
-    }
-}
-
-export class Select extends Field {
-    'active'?: boolean;
-    'convertibleTo'?: Array<string>;
-    'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'fieldType': Select.FieldTypeEnum;
-    'global'?: boolean;
-    'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
-    'labels'?: Array<string>;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'operators'?: Array<Select.OperatorsEnum>;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
-            "type": "boolean"
-        },
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "Select.FieldTypeEnum"
-        },
-        {
-            "name": "global",
-            "baseName": "global",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<Select.OperatorsEnum>"
-        },
-        {
-            "name": "tooltip",
-            "baseName": "tooltip",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Select.attributeTypeMap);
-    }
-}
-
-export namespace Select {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class ServiceLevelAgreement {
-    'duration'?: number;
-    'enabled'?: boolean;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "duration",
-            "baseName": "duration",
-            "type": "number"
-        },
-        {
-            "name": "enabled",
-            "baseName": "enabled",
-            "type": "boolean"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return ServiceLevelAgreement.attributeTypeMap;
-    }
-}
-
-export class Sort {
-    'empty'?: boolean;
-    'sorted'?: boolean;
-    'unsorted'?: boolean;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "empty",
-            "baseName": "empty",
-            "type": "boolean"
-        },
-        {
-            "name": "sorted",
-            "baseName": "sorted",
-            "type": "boolean"
-        },
-        {
-            "name": "unsorted",
-            "baseName": "unsorted",
-            "type": "boolean"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return Sort.attributeTypeMap;
-    }
-}
-
-/**
-* An entity to store details about a specific step within a workflow
-*/
-export class Step {
-    'active'?: boolean;
-    /**
-    * Allow entitlements to the node.
-    */
-    'allowEntitlements'?: boolean;
-    'chain'?: boolean;
-    'contains'?: Workflow;
-    'created'?: Date;
-    'end'?: boolean;
-    'id'?: string;
-    /**
-    * Allows a node to become a public node.
-    */
-    'isPublic'?: boolean;
-    'labels'?: Array<string>;
-    /**
-    * Node name.
-    */
-    'name'?: string;
-    'origin'?: boolean;
-    /**
-    * Determines the node's place in the workflow.
-    */
-    'priority'?: number;
-    '_public'?: boolean;
-    /**
-    * Object containing all SLA information.
-    */
-    'sla'?: ServiceLevelAgreement;
-    /**
-    * Node type.
-    */
-    'stepType'?: string;
-    'updated'?: Date;
-    /**
-    * Workflow that the node belongs to.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-    /**
-    * Vertical position of the node on the process screen.
-    */
-    'xpos'?: number;
-    /**
-    * Horizontal position of the node on the process screen.
-    */
-    'ypos'?: number;
-
-    static discriminator: string | undefined = "stepType";
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "allowEntitlements",
-            "baseName": "allowEntitlements",
-            "type": "boolean"
-        },
-        {
-            "name": "chain",
-            "baseName": "chain",
-            "type": "boolean"
-        },
-        {
-            "name": "contains",
-            "baseName": "contains",
-            "type": "Workflow"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "end",
-            "baseName": "end",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isPublic",
-            "baseName": "isPublic",
-            "type": "boolean"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "origin",
-            "baseName": "origin",
-            "type": "boolean"
-        },
-        {
-            "name": "priority",
-            "baseName": "priority",
-            "type": "number"
-        },
-        {
-            "name": "_public",
-            "baseName": "public",
-            "type": "boolean"
-        },
-        {
-            "name": "sla",
-            "baseName": "sla",
-            "type": "ServiceLevelAgreement"
-        },
-        {
-            "name": "stepType",
-            "baseName": "stepType",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        },
-        {
-            "name": "xpos",
-            "baseName": "xpos",
-            "type": "number"
-        },
-        {
-            "name": "ypos",
-            "baseName": "ypos",
-            "type": "number"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return Step.attributeTypeMap;
-    }
-}
-
-export class StepEntitlement {
-    'active'?: boolean;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'node'?: Step;
-    'operationType'?: string;
-    'role'?: Role;
-    'step'?: Step;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "node",
-            "baseName": "node",
-            "type": "Step"
-        },
-        {
-            "name": "operationType",
-            "baseName": "operationType",
-            "type": "string"
-        },
-        {
-            "name": "role",
-            "baseName": "role",
-            "type": "Role"
-        },
-        {
-            "name": "step",
-            "baseName": "step",
-            "type": "Step"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return StepEntitlement.attributeTypeMap;
-    }
-}
-
-export class TableReport extends Layout {
-    'active'?: boolean;
-    'created'?: Date;
-    'defaultLayout'?: boolean;
-    'filterList'?: Array<ReportFilter>;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'layoutFields'?: Array<LayoutField>;
-    'title'?: string;
-    'updated'?: Date;
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-    'workflowJoins'?: Array<TableReportJoin>;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "defaultLayout",
-            "baseName": "defaultLayout",
-            "type": "boolean"
-        },
-        {
-            "name": "filterList",
-            "baseName": "filterList",
-            "type": "Array<ReportFilter>"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "layoutFields",
-            "baseName": "layoutFields",
-            "type": "Array<LayoutField>"
-        },
-        {
-            "name": "title",
-            "baseName": "title",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        },
-        {
-            "name": "workflowJoins",
-            "baseName": "workflowJoins",
-            "type": "Array<TableReportJoin>"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(TableReport.attributeTypeMap);
-    }
-}
-
-export class TableReportJoin {
-    'active'?: boolean;
-    'childrenJoins'?: Array<TableReportJoin>;
-    'comesFrom'?: TableReportJoin;
-    'comesFromId'?: string;
-    'created'?: Date;
-    'distinct'?: boolean;
-    'id'?: string;
-    'isDistinct'?: boolean;
-    'joinedThrough'?: WorkflowMap;
-    'joinedWorkflow'?: Workflow;
-    'labels'?: Array<string>;
-    'updated'?: Date;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "childrenJoins",
-            "baseName": "childrenJoins",
-            "type": "Array<TableReportJoin>"
-        },
-        {
-            "name": "comesFrom",
-            "baseName": "comesFrom",
-            "type": "TableReportJoin"
-        },
-        {
-            "name": "comesFromId",
-            "baseName": "comesFromId",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "distinct",
-            "baseName": "distinct",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "isDistinct",
-            "baseName": "isDistinct",
-            "type": "boolean"
-        },
-        {
-            "name": "joinedThrough",
-            "baseName": "joinedThrough",
-            "type": "WorkflowMap"
-        },
-        {
-            "name": "joinedWorkflow",
-            "baseName": "joinedWorkflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return TableReportJoin.attributeTypeMap;
-    }
-}
-
-export class Text extends Field {
-    'active'?: boolean;
-    'convertibleTo'?: Array<string>;
-    'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'fieldType': Text.FieldTypeEnum;
-    'global'?: boolean;
-    'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
-    'labels'?: Array<string>;
-    'message'?: string;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'operators'?: Array<Text.OperatorsEnum>;
-    'pattern'?: string;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
-            "type": "boolean"
-        },
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "Text.FieldTypeEnum"
-        },
-        {
-            "name": "global",
-            "baseName": "global",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "message",
-            "baseName": "message",
-            "type": "string"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<Text.OperatorsEnum>"
-        },
-        {
-            "name": "pattern",
-            "baseName": "pattern",
-            "type": "string"
-        },
-        {
-            "name": "tooltip",
-            "baseName": "tooltip",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(Text.attributeTypeMap);
-    }
-}
-
-export namespace Text {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class TextArea extends Field {
-    'active'?: boolean;
-    'convertibleTo'?: Array<string>;
-    'created'?: Date;
-    /**
-    * Relationship to current values that are associated to the field.
-    */
-    'currentValues'?: Array<CurrentValue>;
-    'discrete'?: boolean;
-    'fieldType': TextArea.FieldTypeEnum;
-    'global'?: boolean;
-    'hasHtml'?: boolean;
-    'id'?: string;
-    /**
-    * The label will appear as the label for the field when it appears on forms for user's to complete.
-    */
-    'label'?: string;
-    'labels'?: Array<string>;
-    'message'?: string;
-    /**
-    * The name of the field.
-    */
-    'name'?: string;
-    'operators'?: Array<TextArea.OperatorsEnum>;
-    'pattern'?: string;
-    /**
-    * A text value that will populate any tooltip information.
-    */
-    'tooltip'?: string;
-    'updated'?: Date;
-    'valueType'?: string;
-    /**
-    * Workflow object that is associated to the field.
-    */
-    'workflow'?: Workflow;
-    'workflowId'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "convertibleTo",
-            "baseName": "convertibleTo",
-            "type": "Array<string>"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "currentValues",
-            "baseName": "currentValues",
-            "type": "Array<CurrentValue>"
-        },
-        {
-            "name": "discrete",
-            "baseName": "discrete",
-            "type": "boolean"
-        },
-        {
-            "name": "fieldType",
-            "baseName": "fieldType",
-            "type": "TextArea.FieldTypeEnum"
-        },
-        {
-            "name": "global",
-            "baseName": "global",
-            "type": "boolean"
-        },
-        {
-            "name": "hasHtml",
-            "baseName": "hasHtml",
-            "type": "boolean"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "label",
-            "baseName": "label",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "message",
-            "baseName": "message",
-            "type": "string"
-        },
-        {
-            "name": "name",
-            "baseName": "name",
-            "type": "string"
-        },
-        {
-            "name": "operators",
-            "baseName": "operators",
-            "type": "Array<TextArea.OperatorsEnum>"
-        },
-        {
-            "name": "pattern",
-            "baseName": "pattern",
-            "type": "string"
-        },
-        {
-            "name": "tooltip",
-            "baseName": "tooltip",
-            "type": "string"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "valueType",
-            "baseName": "valueType",
-            "type": "string"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowId",
-            "baseName": "workflowId",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return super.getAttributeTypeMap().concat(TextArea.attributeTypeMap);
-    }
-}
-
-export namespace TextArea {
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-}
-export class URI {
-    'absolute'?: boolean;
-    'authority'?: string;
-    'fragment'?: string;
-    'host'?: string;
-    'opaque'?: boolean;
-    'path'?: string;
-    'port'?: number;
-    'query'?: string;
-    'rawAuthority'?: string;
-    'rawFragment'?: string;
-    'rawPath'?: string;
-    'rawQuery'?: string;
-    'rawSchemeSpecificPart'?: string;
-    'rawUserInfo'?: string;
-    'scheme'?: string;
-    'schemeSpecificPart'?: string;
-    'userInfo'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "absolute",
-            "baseName": "absolute",
-            "type": "boolean"
-        },
-        {
-            "name": "authority",
-            "baseName": "authority",
-            "type": "string"
-        },
-        {
-            "name": "fragment",
-            "baseName": "fragment",
-            "type": "string"
-        },
-        {
-            "name": "host",
-            "baseName": "host",
-            "type": "string"
-        },
-        {
-            "name": "opaque",
-            "baseName": "opaque",
-            "type": "boolean"
-        },
-        {
-            "name": "path",
-            "baseName": "path",
-            "type": "string"
-        },
-        {
-            "name": "port",
-            "baseName": "port",
-            "type": "number"
-        },
-        {
-            "name": "query",
-            "baseName": "query",
-            "type": "string"
-        },
-        {
-            "name": "rawAuthority",
-            "baseName": "rawAuthority",
-            "type": "string"
-        },
-        {
-            "name": "rawFragment",
-            "baseName": "rawFragment",
-            "type": "string"
-        },
-        {
-            "name": "rawPath",
-            "baseName": "rawPath",
-            "type": "string"
-        },
-        {
-            "name": "rawQuery",
-            "baseName": "rawQuery",
-            "type": "string"
-        },
-        {
-            "name": "rawSchemeSpecificPart",
-            "baseName": "rawSchemeSpecificPart",
-            "type": "string"
-        },
-        {
-            "name": "rawUserInfo",
-            "baseName": "rawUserInfo",
-            "type": "string"
-        },
-        {
-            "name": "scheme",
-            "baseName": "scheme",
-            "type": "string"
-        },
-        {
-            "name": "schemeSpecificPart",
-            "baseName": "schemeSpecificPart",
-            "type": "string"
-        },
-        {
-            "name": "userInfo",
-            "baseName": "userInfo",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return URI.attributeTypeMap;
-    }
-}
-
-export class URL {
-    'authority'?: string;
-    'content'?: any;
-    'defaultPort'?: number;
-    'deserializedFields'?: URLStreamHandler;
-    'file'?: string;
-    'host'?: string;
-    'path'?: string;
-    'port'?: number;
-    'protocol'?: string;
-    'query'?: string;
-    'ref'?: string;
-    'serializedHashCode'?: number;
-    'userInfo'?: string;
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "authority",
-            "baseName": "authority",
-            "type": "string"
-        },
-        {
-            "name": "content",
-            "baseName": "content",
-            "type": "any"
-        },
-        {
-            "name": "defaultPort",
-            "baseName": "defaultPort",
-            "type": "number"
-        },
-        {
-            "name": "deserializedFields",
-            "baseName": "deserializedFields",
-            "type": "URLStreamHandler"
-        },
-        {
-            "name": "file",
-            "baseName": "file",
-            "type": "string"
-        },
-        {
-            "name": "host",
-            "baseName": "host",
-            "type": "string"
-        },
-        {
-            "name": "path",
-            "baseName": "path",
-            "type": "string"
-        },
-        {
-            "name": "port",
-            "baseName": "port",
-            "type": "number"
-        },
-        {
-            "name": "protocol",
-            "baseName": "protocol",
-            "type": "string"
-        },
-        {
-            "name": "query",
-            "baseName": "query",
-            "type": "string"
-        },
-        {
-            "name": "ref",
-            "baseName": "ref",
-            "type": "string"
-        },
-        {
-            "name": "serializedHashCode",
-            "baseName": "serializedHashCode",
-            "type": "number"
-        },
-        {
-            "name": "userInfo",
-            "baseName": "userInfo",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return URL.attributeTypeMap;
-    }
-}
-
-export class URLStreamHandler {
-
-    static discriminator: string | undefined = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-    ];
-
-    static getAttributeTypeMap() {
-        return URLStreamHandler.attributeTypeMap;
     }
 }
 
@@ -8246,7 +781,7 @@ export class User extends Field {
 
     static discriminator: string | undefined = "status";
 
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
         {
             "name": "active",
             "baseName": "active",
@@ -8441,18 +976,7588 @@ export class User extends Field {
             "name": "valueType",
             "baseName": "valueType",
             "type": "string"
-        }    ];
+        }];
 
     static getAttributeTypeMap() {
         return super.getAttributeTypeMap().concat(User.attributeTypeMap);
     }
 }
 
+class ObjectSerializer {
+
+    public static findCorrectType(data: any, expectedType: string) {
+        if (data == undefined) {
+            return expectedType;
+        } else if (primitives.indexOf(expectedType.toLowerCase()) !== -1) {
+            return expectedType;
+        } else if (expectedType === "Date") {
+            return expectedType;
+        } else {
+            if (enumsMap[expectedType]) {
+                return expectedType;
+            }
+
+            if (!typeMap[expectedType]) {
+                return expectedType; // w/e we don't know the type
+            }
+
+            // Check the discriminator
+            let discriminatorProperty = typeMap[expectedType].discriminator;
+            if (discriminatorProperty == null) {
+                return expectedType; // the type does not have a discriminator. use it.
+            } else {
+                if (data[discriminatorProperty]) {
+                    return data[discriminatorProperty]; // use the type given in the discriminator
+                } else {
+                    return expectedType; // discriminator was not present (or an empty string)
+                }
+            }
+        }
+    }
+
+    public static serialize(data: any, type: string) {
+        if (data == undefined) {
+            return data;
+        } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
+            return data;
+        } else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
+            let subType: string = type.replace("Array<", ""); // Array<Type> => Type>
+            subType = subType.substring(0, subType.length - 1); // Type> => Type
+            let transformedData: any[] = [];
+            for (let index in data) {
+                let date = data[index];
+                transformedData.push(ObjectSerializer.serialize(date, subType));
+            }
+            return transformedData;
+        } else if (type === "Date") {
+            return data.toString();
+        } else {
+            if (enumsMap[type]) {
+                return data;
+            }
+            if (!typeMap[type]) { // in case we dont know the type
+                return data;
+            }
+
+            // get the map for the correct type.
+            let attributeTypes = typeMap[type].getAttributeTypeMap();
+            let instance: { [index: string]: any } = {};
+            for (let index in attributeTypes) {
+                let attributeType = attributeTypes[index];
+                instance[attributeType.baseName] = ObjectSerializer.serialize(data[attributeType.name], attributeType.type);
+            }
+            return instance;
+        }
+    }
+
+    public static deserialize(data: any, type: string) {
+        // polymorphism may change the actual type.
+        type = ObjectSerializer.findCorrectType(data, type);
+        if (data == undefined) {
+            return data;
+        } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
+            return data;
+        } else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
+            let subType: string = type.replace("Array<", ""); // Array<Type> => Type>
+            subType = subType.substring(0, subType.length - 1); // Type> => Type
+            let transformedData: any[] = [];
+            for (let index in data) {
+                let date = data[index];
+                transformedData.push(ObjectSerializer.deserialize(date, subType));
+            }
+            return transformedData;
+        } else if (type === "Date") {
+            return new Date(data);
+        } else {
+            if (enumsMap[type]) {// is Enum
+                return data;
+            }
+
+            if (!typeMap[type]) { // dont know the type
+                return data;
+            }
+            let instance = new typeMap[type]();
+            let attributeTypes = typeMap[type].getAttributeTypeMap();
+            for (let index in attributeTypes) {
+                let attributeType = attributeTypes[index];
+                instance[attributeType.name] = ObjectSerializer.deserialize(data[attributeType.baseName], attributeType.type);
+            }
+            return instance;
+        }
+    }
+}
+
+/**
+* Entity used to track authentication attempts.
+*/
+export class AccessAudit {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'remoteAddress'?: string;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = "accessType";
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "remoteAddress",
+            "baseName": "remoteAddress",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return AccessAudit.attributeTypeMap;
+    }
+}
+
+export class Active extends User {
+    'active'?: boolean;
+    'archived'?: boolean;
+    'assignments'?: Array<Record>;
+    'company'?: string;
+    'created'?: Date;
+    '_default'?: boolean;
+    'disabled'?: boolean;
+    'discriminator'?: string;
+    'email'?: string;
+    'empty'?: boolean;
+    'field'?: Field;
+    'fieldId'?: string;
+    'first'?: string;
+    'hasValue'?: Field;
+    'id'?: string;
+    'imageUrl'?: string;
+    'intercomHash'?: string;
+    'isDefault'?: boolean;
+    'labels'?: Array<string>;
+    'languageTag'?: string;
+    'last'?: string;
+    'lastLogin'?: AccessAudit;
+    'locked'?: boolean;
+    'loginAttempts'?: number;
+    'name'?: string;
+    'numericValue'?: number;
+    'password'?: string;
+    'priority'?: number;
+    'records'?: Array<Record>;
+    'resetPasswordToken'?: string;
+    'roles'?: Array<Role>;
+    'sendEmail'?: boolean;
+    'status'?: string;
+    'superUser'?: boolean;
+    'textValue'?: string;
+    'tier'?: Active.TierEnum;
+    'timeZone'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
+        },
+        {
+            "name": "assignments",
+            "baseName": "assignments",
+            "type": "Array<Record>"
+        },
+        {
+            "name": "company",
+            "baseName": "company",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "_default",
+            "baseName": "default",
+            "type": "boolean"
+        },
+        {
+            "name": "disabled",
+            "baseName": "disabled",
+            "type": "boolean"
+        },
+        {
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
+        },
+        {
+            "name": "email",
+            "baseName": "email",
+            "type": "string"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "first",
+            "baseName": "first",
+            "type": "string"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "imageUrl",
+            "baseName": "imageUrl",
+            "type": "string"
+        },
+        {
+            "name": "intercomHash",
+            "baseName": "intercomHash",
+            "type": "string"
+        },
+        {
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "languageTag",
+            "baseName": "languageTag",
+            "type": "string"
+        },
+        {
+            "name": "last",
+            "baseName": "last",
+            "type": "string"
+        },
+        {
+            "name": "lastLogin",
+            "baseName": "lastLogin",
+            "type": "AccessAudit"
+        },
+        {
+            "name": "locked",
+            "baseName": "locked",
+            "type": "boolean"
+        },
+        {
+            "name": "loginAttempts",
+            "baseName": "loginAttempts",
+            "type": "number"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
+        },
+        {
+            "name": "password",
+            "baseName": "password",
+            "type": "string"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "records",
+            "baseName": "records",
+            "type": "Array<Record>"
+        },
+        {
+            "name": "resetPasswordToken",
+            "baseName": "resetPasswordToken",
+            "type": "string"
+        },
+        {
+            "name": "roles",
+            "baseName": "roles",
+            "type": "Array<Role>"
+        },
+        {
+            "name": "sendEmail",
+            "baseName": "sendEmail",
+            "type": "boolean"
+        },
+        {
+            "name": "status",
+            "baseName": "status",
+            "type": "string"
+        },
+        {
+            "name": "superUser",
+            "baseName": "superUser",
+            "type": "boolean"
+        },
+        {
+            "name": "textValue",
+            "baseName": "textValue",
+            "type": "string"
+        },
+        {
+            "name": "tier",
+            "baseName": "tier",
+            "type": "Active.TierEnum"
+        },
+        {
+            "name": "timeZone",
+            "baseName": "timeZone",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Active.attributeTypeMap);
+    }
+}
+
+export namespace Active {
+    export enum TierEnum {
+        PRIMARY = <any>'PRIMARY',
+        SECONDARY = <any>'SECONDARY',
+        LIMITED = <any>'LIMITED'
+    }
+}
+export class Attachment extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'enableVersions'?: boolean;
+    'fieldType': Attachment.FieldTypeEnum;
+    'global'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'operators'?: Array<Attachment.OperatorsEnum>;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "enableVersions",
+            "baseName": "enableVersions",
+            "type": "boolean"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "Attachment.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<Attachment.OperatorsEnum>"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Attachment.attributeTypeMap);
+    }
+}
+
+export namespace Attachment {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class Calculation extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'expression'?: string;
+    /**
+    * Fields used to evaluate the expression of the calculation
+    */
+    'fieldInputs'?: Array<FieldInput>;
+    'fieldType': Calculation.FieldTypeEnum;
+    'global'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    'labelsEnabled'?: boolean;
+    'logicalHandling'?: Calculation.LogicalHandlingEnum;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'nullStrategy'?: Calculation.NullStrategyEnum;
+    'operators'?: Array<Calculation.OperatorsEnum>;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "expression",
+            "baseName": "expression",
+            "type": "string"
+        },
+        {
+            "name": "fieldInputs",
+            "baseName": "fieldInputs",
+            "type": "Array<FieldInput>"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "Calculation.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "labelsEnabled",
+            "baseName": "labelsEnabled",
+            "type": "boolean"
+        },
+        {
+            "name": "logicalHandling",
+            "baseName": "logicalHandling",
+            "type": "Calculation.LogicalHandlingEnum"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "nullStrategy",
+            "baseName": "nullStrategy",
+            "type": "Calculation.NullStrategyEnum"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<Calculation.OperatorsEnum>"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Calculation.attributeTypeMap);
+    }
+}
+
+export namespace Calculation {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum LogicalHandlingEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+    export enum NullStrategyEnum {
+        NULL = <any>'NULL',
+        ZERO = <any>'ZERO',
+        ONE = <any>'ONE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class Chain extends Step {
+    'active'?: boolean;
+    /**
+    * Allow entitlements to the node.
+    */
+    'allowEntitlements'?: boolean;
+    'chain'?: boolean;
+    'contains'?: Workflow;
+    'created'?: Date;
+    'end'?: boolean;
+    'id'?: string;
+    /**
+    * Allows a node to become a public node.
+    */
+    'isPublic'?: boolean;
+    'labels'?: Array<string>;
+    /**
+    * Node name.
+    */
+    'name'?: string;
+    'origin'?: boolean;
+    /**
+    * Determines the node's place in the workflow.
+    */
+    'priority'?: number;
+    '_public'?: boolean;
+    /**
+    * Object containing all SLA information.
+    */
+    'sla'?: ServiceLevelAgreement;
+    /**
+    * Node type.
+    */
+    'stepType'?: string;
+    'updated'?: Date;
+    /**
+    * Workflow that the node belongs to.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+    /**
+    * Vertical position of the node on the process screen.
+    */
+    'xpos'?: number;
+    /**
+    * Horizontal position of the node on the process screen.
+    */
+    'ypos'?: number;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "allowEntitlements",
+            "baseName": "allowEntitlements",
+            "type": "boolean"
+        },
+        {
+            "name": "chain",
+            "baseName": "chain",
+            "type": "boolean"
+        },
+        {
+            "name": "contains",
+            "baseName": "contains",
+            "type": "Workflow"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "end",
+            "baseName": "end",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "isPublic",
+            "baseName": "isPublic",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "origin",
+            "baseName": "origin",
+            "type": "boolean"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "_public",
+            "baseName": "public",
+            "type": "boolean"
+        },
+        {
+            "name": "sla",
+            "baseName": "sla",
+            "type": "ServiceLevelAgreement"
+        },
+        {
+            "name": "stepType",
+            "baseName": "stepType",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        },
+        {
+            "name": "xpos",
+            "baseName": "xpos",
+            "type": "number"
+        },
+        {
+            "name": "ypos",
+            "baseName": "ypos",
+            "type": "number"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Chain.attributeTypeMap);
+    }
+}
+
+export class Checkbox extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'fieldType': Checkbox.FieldTypeEnum;
+    'global'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'operators'?: Array<Checkbox.OperatorsEnum>;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "Checkbox.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<Checkbox.OperatorsEnum>"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Checkbox.attributeTypeMap);
+    }
+}
+
+export namespace Checkbox {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class ChildResult {
+    'children'?: Array<Record>;
+    'parent'?: Record;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "children",
+            "baseName": "children",
+            "type": "Array<Record>"
+        },
+        {
+            "name": "parent",
+            "baseName": "parent",
+            "type": "Record"
+        }];
+
+    static getAttributeTypeMap() {
+        return ChildResult.attributeTypeMap;
+    }
+}
+
+export class CleanAttachment extends CurrentValue {
+    'active'?: boolean;
+    'archived'?: boolean;
+    'attachmentStatus'?: CleanAttachment.AttachmentStatusEnum;
+    'awsS3Key'?: string;
+    'contentType'?: string;
+    'created'?: Date;
+    '_default'?: boolean;
+    'discriminator'?: string;
+    'empty'?: boolean;
+    'field'?: Field;
+    'fieldId'?: string;
+    'fileExtension'?: string;
+    'fileSize'?: number;
+    'hasValue'?: Field;
+    'id'?: string;
+    'isDefault'?: boolean;
+    'labels'?: Array<string>;
+    'numericValue'?: number;
+    'originalFileExtension'?: string;
+    'priority'?: number;
+    'textValue'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    'versionCount'?: number;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
+        },
+        {
+            "name": "attachmentStatus",
+            "baseName": "attachmentStatus",
+            "type": "CleanAttachment.AttachmentStatusEnum"
+        },
+        {
+            "name": "awsS3Key",
+            "baseName": "awsS3Key",
+            "type": "string"
+        },
+        {
+            "name": "contentType",
+            "baseName": "contentType",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "_default",
+            "baseName": "default",
+            "type": "boolean"
+        },
+        {
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "fileExtension",
+            "baseName": "fileExtension",
+            "type": "string"
+        },
+        {
+            "name": "fileSize",
+            "baseName": "fileSize",
+            "type": "number"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
+        },
+        {
+            "name": "originalFileExtension",
+            "baseName": "originalFileExtension",
+            "type": "string"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "textValue",
+            "baseName": "textValue",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "versionCount",
+            "baseName": "versionCount",
+            "type": "number"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(CleanAttachment.attributeTypeMap);
+    }
+}
+
+export namespace CleanAttachment {
+    export enum AttachmentStatusEnum {
+        PENDING = <any>'PENDING',
+        CLEAN = <any>'CLEAN',
+        DIRTY = <any>'DIRTY'
+    }
+}
+export class CurrentCommonValue extends CurrentValue {
+    'active'?: boolean;
+    'archived'?: boolean;
+    'created'?: Date;
+    '_default'?: boolean;
+    'discriminator'?: string;
+    'empty'?: boolean;
+    'field'?: Field;
+    'fieldId'?: string;
+    'hasValue'?: Field;
+    'id'?: string;
+    'isDefault'?: boolean;
+    'labels'?: Array<string>;
+    'numericValue'?: number;
+    'priority'?: number;
+    'textValue'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "_default",
+            "baseName": "default",
+            "type": "boolean"
+        },
+        {
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "textValue",
+            "baseName": "textValue",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(CurrentCommonValue.attributeTypeMap);
+    }
+}
+
+export class CurrentDateRangeValue extends CurrentValue {
+    'active'?: boolean;
+    'archived'?: boolean;
+    'created'?: Date;
+    '_default'?: boolean;
+    'defaultToNow'?: boolean;
+    'discriminator'?: string;
+    'empty'?: boolean;
+    'endTemporalValue'?: Date;
+    'field'?: Field;
+    'fieldId'?: string;
+    'hasTime'?: boolean;
+    'hasValue'?: Field;
+    'id'?: string;
+    'isDefault'?: boolean;
+    'labels'?: Array<string>;
+    'numericValue'?: number;
+    'priority'?: number;
+    'temporalValue'?: Date;
+    'textValue'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "_default",
+            "baseName": "default",
+            "type": "boolean"
+        },
+        {
+            "name": "defaultToNow",
+            "baseName": "defaultToNow",
+            "type": "boolean"
+        },
+        {
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "endTemporalValue",
+            "baseName": "endTemporalValue",
+            "type": "Date"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "hasTime",
+            "baseName": "hasTime",
+            "type": "boolean"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "temporalValue",
+            "baseName": "temporalValue",
+            "type": "Date"
+        },
+        {
+            "name": "textValue",
+            "baseName": "textValue",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(CurrentDateRangeValue.attributeTypeMap);
+    }
+}
+
+export class CurrentDateValue extends CurrentValue {
+    'active'?: boolean;
+    'archived'?: boolean;
+    'created'?: Date;
+    '_default'?: boolean;
+    'defaultToNow'?: boolean;
+    'discriminator'?: string;
+    'empty'?: boolean;
+    'field'?: Field;
+    'fieldId'?: string;
+    'hasTime'?: boolean;
+    'hasValue'?: Field;
+    'id'?: string;
+    'isDefault'?: boolean;
+    'labels'?: Array<string>;
+    'numericValue'?: number;
+    'priority'?: number;
+    'temporalValue'?: Date;
+    'textValue'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "_default",
+            "baseName": "default",
+            "type": "boolean"
+        },
+        {
+            "name": "defaultToNow",
+            "baseName": "defaultToNow",
+            "type": "boolean"
+        },
+        {
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "hasTime",
+            "baseName": "hasTime",
+            "type": "boolean"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "temporalValue",
+            "baseName": "temporalValue",
+            "type": "Date"
+        },
+        {
+            "name": "textValue",
+            "baseName": "textValue",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(CurrentDateValue.attributeTypeMap);
+    }
+}
+
+
+
+export class DatePicker extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'fieldType': DatePicker.FieldTypeEnum;
+    'global'?: boolean;
+    'hasTime'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'operators'?: Array<DatePicker.OperatorsEnum>;
+    'presentOrFuture'?: boolean;
+    'presentOrPast'?: boolean;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "DatePicker.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "hasTime",
+            "baseName": "hasTime",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<DatePicker.OperatorsEnum>"
+        },
+        {
+            "name": "presentOrFuture",
+            "baseName": "presentOrFuture",
+            "type": "boolean"
+        },
+        {
+            "name": "presentOrPast",
+            "baseName": "presentOrPast",
+            "type": "boolean"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(DatePicker.attributeTypeMap);
+    }
+}
+
+export namespace DatePicker {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class DirtyAttachment extends CurrentValue {
+    'active'?: boolean;
+    'archived'?: boolean;
+    'attachmentStatus'?: DirtyAttachment.AttachmentStatusEnum;
+    'awsS3Key'?: string;
+    'contentType'?: string;
+    'created'?: Date;
+    '_default'?: boolean;
+    'discriminator'?: string;
+    'empty'?: boolean;
+    'field'?: Field;
+    'fieldId'?: string;
+    'fileExtension'?: string;
+    'fileSize'?: number;
+    'hasValue'?: Field;
+    'id'?: string;
+    'isDefault'?: boolean;
+    'labels'?: Array<string>;
+    'numericValue'?: number;
+    'originalFileExtension'?: string;
+    'priority'?: number;
+    'textValue'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    'versionCount'?: number;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
+        },
+        {
+            "name": "attachmentStatus",
+            "baseName": "attachmentStatus",
+            "type": "DirtyAttachment.AttachmentStatusEnum"
+        },
+        {
+            "name": "awsS3Key",
+            "baseName": "awsS3Key",
+            "type": "string"
+        },
+        {
+            "name": "contentType",
+            "baseName": "contentType",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "_default",
+            "baseName": "default",
+            "type": "boolean"
+        },
+        {
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "fileExtension",
+            "baseName": "fileExtension",
+            "type": "string"
+        },
+        {
+            "name": "fileSize",
+            "baseName": "fileSize",
+            "type": "number"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
+        },
+        {
+            "name": "originalFileExtension",
+            "baseName": "originalFileExtension",
+            "type": "string"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "textValue",
+            "baseName": "textValue",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "versionCount",
+            "baseName": "versionCount",
+            "type": "number"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(DirtyAttachment.attributeTypeMap);
+    }
+}
+
+export namespace DirtyAttachment {
+    export enum AttachmentStatusEnum {
+        PENDING = <any>'PENDING',
+        CLEAN = <any>'CLEAN',
+        DIRTY = <any>'DIRTY'
+    }
+}
+export class Disabled extends User {
+    'active'?: boolean;
+    'archived'?: boolean;
+    'assignments'?: Array<Record>;
+    'company'?: string;
+    'created'?: Date;
+    '_default'?: boolean;
+    'disabled'?: boolean;
+    'discriminator'?: string;
+    'email'?: string;
+    'empty'?: boolean;
+    'field'?: Field;
+    'fieldId'?: string;
+    'first'?: string;
+    'hasValue'?: Field;
+    'id'?: string;
+    'imageUrl'?: string;
+    'intercomHash'?: string;
+    'isDefault'?: boolean;
+    'labels'?: Array<string>;
+    'languageTag'?: string;
+    'last'?: string;
+    'lastLogin'?: AccessAudit;
+    'locked'?: boolean;
+    'loginAttempts'?: number;
+    'name'?: string;
+    'numericValue'?: number;
+    'password'?: string;
+    'priority'?: number;
+    'records'?: Array<Record>;
+    'resetPasswordToken'?: string;
+    'roles'?: Array<Role>;
+    'sendEmail'?: boolean;
+    'status'?: string;
+    'superUser'?: boolean;
+    'textValue'?: string;
+    'tier'?: Disabled.TierEnum;
+    'timeZone'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
+        },
+        {
+            "name": "assignments",
+            "baseName": "assignments",
+            "type": "Array<Record>"
+        },
+        {
+            "name": "company",
+            "baseName": "company",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "_default",
+            "baseName": "default",
+            "type": "boolean"
+        },
+        {
+            "name": "disabled",
+            "baseName": "disabled",
+            "type": "boolean"
+        },
+        {
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
+        },
+        {
+            "name": "email",
+            "baseName": "email",
+            "type": "string"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "first",
+            "baseName": "first",
+            "type": "string"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "imageUrl",
+            "baseName": "imageUrl",
+            "type": "string"
+        },
+        {
+            "name": "intercomHash",
+            "baseName": "intercomHash",
+            "type": "string"
+        },
+        {
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "languageTag",
+            "baseName": "languageTag",
+            "type": "string"
+        },
+        {
+            "name": "last",
+            "baseName": "last",
+            "type": "string"
+        },
+        {
+            "name": "lastLogin",
+            "baseName": "lastLogin",
+            "type": "AccessAudit"
+        },
+        {
+            "name": "locked",
+            "baseName": "locked",
+            "type": "boolean"
+        },
+        {
+            "name": "loginAttempts",
+            "baseName": "loginAttempts",
+            "type": "number"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
+        },
+        {
+            "name": "password",
+            "baseName": "password",
+            "type": "string"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "records",
+            "baseName": "records",
+            "type": "Array<Record>"
+        },
+        {
+            "name": "resetPasswordToken",
+            "baseName": "resetPasswordToken",
+            "type": "string"
+        },
+        {
+            "name": "roles",
+            "baseName": "roles",
+            "type": "Array<Role>"
+        },
+        {
+            "name": "sendEmail",
+            "baseName": "sendEmail",
+            "type": "boolean"
+        },
+        {
+            "name": "status",
+            "baseName": "status",
+            "type": "string"
+        },
+        {
+            "name": "superUser",
+            "baseName": "superUser",
+            "type": "boolean"
+        },
+        {
+            "name": "textValue",
+            "baseName": "textValue",
+            "type": "string"
+        },
+        {
+            "name": "tier",
+            "baseName": "tier",
+            "type": "Disabled.TierEnum"
+        },
+        {
+            "name": "timeZone",
+            "baseName": "timeZone",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Disabled.attributeTypeMap);
+    }
+}
+
+export namespace Disabled {
+    export enum TierEnum {
+        PRIMARY = <any>'PRIMARY',
+        SECONDARY = <any>'SECONDARY',
+        LIMITED = <any>'LIMITED'
+    }
+}
+export class Display extends Layout {
+    'active'?: boolean;
+    'created'?: Date;
+    'defaultLayout'?: boolean;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'layoutFields'?: Array<LayoutField>;
+    'title'?: string;
+    'updated'?: Date;
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "defaultLayout",
+            "baseName": "defaultLayout",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "layoutFields",
+            "baseName": "layoutFields",
+            "type": "Array<LayoutField>"
+        },
+        {
+            "name": "title",
+            "baseName": "title",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Display.attributeTypeMap);
+    }
+}
+
+export class DueDate extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'fieldType': DueDate.FieldTypeEnum;
+    'global'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'operators'?: Array<DueDate.OperatorsEnum>;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "DueDate.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<DueDate.OperatorsEnum>"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(DueDate.attributeTypeMap);
+    }
+}
+
+export namespace DueDate {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class ESignature extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'fieldType': ESignature.FieldTypeEnum;
+    'global'?: boolean;
+    'hasSignature'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'operators'?: Array<ESignature.OperatorsEnum>;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "ESignature.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "hasSignature",
+            "baseName": "hasSignature",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<ESignature.OperatorsEnum>"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(ESignature.attributeTypeMap);
+    }
+}
+
+export namespace ESignature {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class End extends Step {
+    'active'?: boolean;
+    /**
+    * Allow entitlements to the node.
+    */
+    'allowEntitlements'?: boolean;
+    'chain'?: boolean;
+    'contains'?: Workflow;
+    'created'?: Date;
+    'end'?: boolean;
+    'id'?: string;
+    /**
+    * Allows a node to become a public node.
+    */
+    'isPublic'?: boolean;
+    'labels'?: Array<string>;
+    /**
+    * Node name.
+    */
+    'name'?: string;
+    'origin'?: boolean;
+    /**
+    * Determines the node's place in the workflow.
+    */
+    'priority'?: number;
+    '_public'?: boolean;
+    /**
+    * Object containing all SLA information.
+    */
+    'sla'?: ServiceLevelAgreement;
+    /**
+    * Node type.
+    */
+    'stepType'?: string;
+    'updated'?: Date;
+    /**
+    * Workflow that the node belongs to.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+    /**
+    * Vertical position of the node on the process screen.
+    */
+    'xpos'?: number;
+    /**
+    * Horizontal position of the node on the process screen.
+    */
+    'ypos'?: number;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "allowEntitlements",
+            "baseName": "allowEntitlements",
+            "type": "boolean"
+        },
+        {
+            "name": "chain",
+            "baseName": "chain",
+            "type": "boolean"
+        },
+        {
+            "name": "contains",
+            "baseName": "contains",
+            "type": "Workflow"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "end",
+            "baseName": "end",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "isPublic",
+            "baseName": "isPublic",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "origin",
+            "baseName": "origin",
+            "type": "boolean"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "_public",
+            "baseName": "public",
+            "type": "boolean"
+        },
+        {
+            "name": "sla",
+            "baseName": "sla",
+            "type": "ServiceLevelAgreement"
+        },
+        {
+            "name": "stepType",
+            "baseName": "stepType",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        },
+        {
+            "name": "xpos",
+            "baseName": "xpos",
+            "type": "number"
+        },
+        {
+            "name": "ypos",
+            "baseName": "ypos",
+            "type": "number"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(End.attributeTypeMap);
+    }
+}
+
+export class External extends User {
+    'active'?: boolean;
+    'archived'?: boolean;
+    'assignments'?: Array<Record>;
+    'company'?: string;
+    'created'?: Date;
+    '_default'?: boolean;
+    'disabled'?: boolean;
+    'discriminator'?: string;
+    'email'?: string;
+    'empty'?: boolean;
+    'field'?: Field;
+    'fieldId'?: string;
+    'first'?: string;
+    'hasValue'?: Field;
+    'id'?: string;
+    'imageUrl'?: string;
+    'intercomHash'?: string;
+    'isDefault'?: boolean;
+    'labels'?: Array<string>;
+    'languageTag'?: string;
+    'last'?: string;
+    'lastLogin'?: AccessAudit;
+    'locked'?: boolean;
+    'loginAttempts'?: number;
+    'name'?: string;
+    'numericValue'?: number;
+    'password'?: string;
+    'priority'?: number;
+    'records'?: Array<Record>;
+    'resetPasswordToken'?: string;
+    'roles'?: Array<Role>;
+    'sendEmail'?: boolean;
+    'status'?: string;
+    'superUser'?: boolean;
+    'textValue'?: string;
+    'tier'?: External.TierEnum;
+    'timeZone'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
+        },
+        {
+            "name": "assignments",
+            "baseName": "assignments",
+            "type": "Array<Record>"
+        },
+        {
+            "name": "company",
+            "baseName": "company",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "_default",
+            "baseName": "default",
+            "type": "boolean"
+        },
+        {
+            "name": "disabled",
+            "baseName": "disabled",
+            "type": "boolean"
+        },
+        {
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
+        },
+        {
+            "name": "email",
+            "baseName": "email",
+            "type": "string"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "first",
+            "baseName": "first",
+            "type": "string"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "imageUrl",
+            "baseName": "imageUrl",
+            "type": "string"
+        },
+        {
+            "name": "intercomHash",
+            "baseName": "intercomHash",
+            "type": "string"
+        },
+        {
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "languageTag",
+            "baseName": "languageTag",
+            "type": "string"
+        },
+        {
+            "name": "last",
+            "baseName": "last",
+            "type": "string"
+        },
+        {
+            "name": "lastLogin",
+            "baseName": "lastLogin",
+            "type": "AccessAudit"
+        },
+        {
+            "name": "locked",
+            "baseName": "locked",
+            "type": "boolean"
+        },
+        {
+            "name": "loginAttempts",
+            "baseName": "loginAttempts",
+            "type": "number"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
+        },
+        {
+            "name": "password",
+            "baseName": "password",
+            "type": "string"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "records",
+            "baseName": "records",
+            "type": "Array<Record>"
+        },
+        {
+            "name": "resetPasswordToken",
+            "baseName": "resetPasswordToken",
+            "type": "string"
+        },
+        {
+            "name": "roles",
+            "baseName": "roles",
+            "type": "Array<Role>"
+        },
+        {
+            "name": "sendEmail",
+            "baseName": "sendEmail",
+            "type": "boolean"
+        },
+        {
+            "name": "status",
+            "baseName": "status",
+            "type": "string"
+        },
+        {
+            "name": "superUser",
+            "baseName": "superUser",
+            "type": "boolean"
+        },
+        {
+            "name": "textValue",
+            "baseName": "textValue",
+            "type": "string"
+        },
+        {
+            "name": "tier",
+            "baseName": "tier",
+            "type": "External.TierEnum"
+        },
+        {
+            "name": "timeZone",
+            "baseName": "timeZone",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(External.attributeTypeMap);
+    }
+}
+
+export namespace External {
+    export enum TierEnum {
+        PRIMARY = <any>'PRIMARY',
+        SECONDARY = <any>'SECONDARY',
+        LIMITED = <any>'LIMITED'
+    }
+}
+
+
+export namespace Field {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+/**
+* A relationship object managing how to use fields and their associated current value maps in an expression.
+*/
+export class FieldInput {
+    'active'?: boolean;
+    'created'?: Date;
+    'fieldResult'?: FieldInputResult;
+    'id'?: string;
+    /**
+    * Field input to be used in the parent field's expression
+    */
+    'input'?: Field;
+    'inputId'?: string;
+    'labels'?: Array<string>;
+    /**
+    * Parent field that will use the input field in the expression.
+    */
+    'parent'?: Field;
+    /**
+    * Determines the fields place within the expression.
+    */
+    'priority'?: number;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "fieldResult",
+            "baseName": "fieldResult",
+            "type": "FieldInputResult"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "input",
+            "baseName": "input",
+            "type": "Field"
+        },
+        {
+            "name": "inputId",
+            "baseName": "inputId",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "parent",
+            "baseName": "parent",
+            "type": "Field"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return FieldInput.attributeTypeMap;
+    }
+}
+
+export class FieldInputResult {
+    'fieldType'?: string;
+    'id'?: string;
+    'name'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "string"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return FieldInputResult.attributeTypeMap;
+    }
+}
+
+export class FilteredRecord {
+    'assignment'?: RecordDetails;
+    'properties'?: Array<RecordProperty>;
+    'record'?: RecordDetails;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "assignment",
+            "baseName": "assignment",
+            "type": "RecordDetails"
+        },
+        {
+            "name": "properties",
+            "baseName": "properties",
+            "type": "Array<RecordProperty>"
+        },
+        {
+            "name": "record",
+            "baseName": "record",
+            "type": "RecordDetails"
+        }];
+
+    static getAttributeTypeMap() {
+        return FilteredRecord.attributeTypeMap;
+    }
+}
+
+export class GraphEntity {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return GraphEntity.attributeTypeMap;
+    }
+}
+
+export class ImportRecordRequest extends ImportRequest {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'importType'?: string;
+    'labels'?: Array<string>;
+    'layout'?: Layout;
+    'targetStep'?: Step;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "importType",
+            "baseName": "importType",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "layout",
+            "baseName": "layout",
+            "type": "Layout"
+        },
+        {
+            "name": "targetStep",
+            "baseName": "targetStep",
+            "type": "Step"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(ImportRecordRequest.attributeTypeMap);
+    }
+}
+
+
+
+export class ImportUserRequest extends ImportRequest {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'importType'?: string;
+    'labels'?: Array<string>;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "importType",
+            "baseName": "importType",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(ImportUserRequest.attributeTypeMap);
+    }
+}
+
+export class InputStream {
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+    ];
+
+    static getAttributeTypeMap() {
+        return InputStream.attributeTypeMap;
+    }
+}
+
+export class LabelValue extends CurrentValue {
+    'active'?: boolean;
+    'archived'?: boolean;
+    'color'?: string;
+    'created'?: Date;
+    '_default'?: boolean;
+    'discriminator'?: string;
+    'empty'?: boolean;
+    'field'?: Field;
+    'fieldId'?: string;
+    'hasValue'?: Field;
+    'icon'?: string;
+    'id'?: string;
+    'isDefault'?: boolean;
+    'labels'?: Array<string>;
+    'numericValue'?: number;
+    'priority'?: number;
+    'textValue'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
+        },
+        {
+            "name": "color",
+            "baseName": "color",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "_default",
+            "baseName": "default",
+            "type": "boolean"
+        },
+        {
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
+        },
+        {
+            "name": "icon",
+            "baseName": "icon",
+            "type": "string"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "textValue",
+            "baseName": "textValue",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(LabelValue.attributeTypeMap);
+    }
+}
+
+
+
+export class LayoutField {
+    'active'?: boolean;
+    'category'?: LayoutField.CategoryEnum;
+    'created'?: Date;
+    'direction'?: LayoutField.DirectionEnum;
+    'field'?: Field;
+    'fieldId'?: string;
+    'header'?: string;
+    'headerOrFieldName'?: string;
+    'id'?: string;
+    'labelDisplayType'?: LayoutField.LabelDisplayTypeEnum;
+    'labels'?: Array<string>;
+    'layoutId'?: string;
+    'link'?: boolean;
+    'operators'?: Array<LayoutField.OperatorsEnum>;
+    'priority'?: number;
+    'sortProperty'?: string;
+    'sortable'?: boolean;
+    'systemField'?: LayoutField.SystemFieldEnum;
+    'toDelete'?: boolean;
+    'updated'?: Date;
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+    'workflowMap'?: WorkflowMap;
+    'workflowMapId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "category",
+            "baseName": "category",
+            "type": "LayoutField.CategoryEnum"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "direction",
+            "baseName": "direction",
+            "type": "LayoutField.DirectionEnum"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "header",
+            "baseName": "header",
+            "type": "string"
+        },
+        {
+            "name": "headerOrFieldName",
+            "baseName": "headerOrFieldName",
+            "type": "string"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labelDisplayType",
+            "baseName": "labelDisplayType",
+            "type": "LayoutField.LabelDisplayTypeEnum"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "layoutId",
+            "baseName": "layoutId",
+            "type": "string"
+        },
+        {
+            "name": "link",
+            "baseName": "link",
+            "type": "boolean"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<LayoutField.OperatorsEnum>"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "sortProperty",
+            "baseName": "sortProperty",
+            "type": "string"
+        },
+        {
+            "name": "sortable",
+            "baseName": "sortable",
+            "type": "boolean"
+        },
+        {
+            "name": "systemField",
+            "baseName": "systemField",
+            "type": "LayoutField.SystemFieldEnum"
+        },
+        {
+            "name": "toDelete",
+            "baseName": "toDelete",
+            "type": "boolean"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        },
+        {
+            "name": "workflowMap",
+            "baseName": "workflowMap",
+            "type": "WorkflowMap"
+        },
+        {
+            "name": "workflowMapId",
+            "baseName": "workflowMapId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return LayoutField.attributeTypeMap;
+    }
+}
+
+export namespace LayoutField {
+    export enum CategoryEnum {
+        RECORD = <any>'RECORD',
+        USERS = <any>'USERS',
+        PROCESS = <any>'PROCESS',
+        WORKFLOW = <any>'WORKFLOW',
+        GLOBAL = <any>'GLOBAL'
+    }
+    export enum DirectionEnum {
+        ASC = <any>'ASC',
+        DESC = <any>'DESC'
+    }
+    export enum LabelDisplayTypeEnum {
+        VALUE = <any>'VALUE',
+        LABEL = <any>'LABEL',
+        ALL = <any>'ALL'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+    export enum SystemFieldEnum {
+        NAME = <any>'NAME',
+        STATUS = <any>'STATUS',
+        CREATED = <any>'CREATED',
+        USERDATE = <any>'USER_DATE',
+        EFFECTIVEDUEDATE = <any>'EFFECTIVE_DUE_DATE',
+        DUEDATE = <any>'DUE_DATE',
+        ID = <any>'ID',
+        USERNAME = <any>'USER_NAME',
+        USERID = <any>'USER_ID',
+        CREATORNAME = <any>'CREATOR_NAME',
+        USERGROUP = <any>'USER_GROUP',
+        STEPNAME = <any>'STEP_NAME',
+        STEPID = <any>'STEP_ID',
+        ORIGINNAME = <any>'ORIGIN_NAME',
+        WORKFLOWNAME = <any>'WORKFLOW_NAME',
+        WORKFLOWRECORDPREFIX = <any>'WORKFLOW_RECORD_PREFIX',
+        WORKFLOWID = <any>'WORKFLOW_ID'
+    }
+}
+export class Locked extends User {
+    'active'?: boolean;
+    'archived'?: boolean;
+    'assignments'?: Array<Record>;
+    'company'?: string;
+    'created'?: Date;
+    '_default'?: boolean;
+    'disabled'?: boolean;
+    'discriminator'?: string;
+    'email'?: string;
+    'empty'?: boolean;
+    'field'?: Field;
+    'fieldId'?: string;
+    'first'?: string;
+    'hasValue'?: Field;
+    'id'?: string;
+    'imageUrl'?: string;
+    'intercomHash'?: string;
+    'isDefault'?: boolean;
+    'labels'?: Array<string>;
+    'languageTag'?: string;
+    'last'?: string;
+    'lastLogin'?: AccessAudit;
+    'locked'?: boolean;
+    'loginAttempts'?: number;
+    'name'?: string;
+    'numericValue'?: number;
+    'password'?: string;
+    'priority'?: number;
+    'records'?: Array<Record>;
+    'resetPasswordToken'?: string;
+    'roles'?: Array<Role>;
+    'sendEmail'?: boolean;
+    'status'?: string;
+    'superUser'?: boolean;
+    'textValue'?: string;
+    'tier'?: Locked.TierEnum;
+    'timeZone'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
+        },
+        {
+            "name": "assignments",
+            "baseName": "assignments",
+            "type": "Array<Record>"
+        },
+        {
+            "name": "company",
+            "baseName": "company",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "_default",
+            "baseName": "default",
+            "type": "boolean"
+        },
+        {
+            "name": "disabled",
+            "baseName": "disabled",
+            "type": "boolean"
+        },
+        {
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
+        },
+        {
+            "name": "email",
+            "baseName": "email",
+            "type": "string"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "first",
+            "baseName": "first",
+            "type": "string"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "imageUrl",
+            "baseName": "imageUrl",
+            "type": "string"
+        },
+        {
+            "name": "intercomHash",
+            "baseName": "intercomHash",
+            "type": "string"
+        },
+        {
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "languageTag",
+            "baseName": "languageTag",
+            "type": "string"
+        },
+        {
+            "name": "last",
+            "baseName": "last",
+            "type": "string"
+        },
+        {
+            "name": "lastLogin",
+            "baseName": "lastLogin",
+            "type": "AccessAudit"
+        },
+        {
+            "name": "locked",
+            "baseName": "locked",
+            "type": "boolean"
+        },
+        {
+            "name": "loginAttempts",
+            "baseName": "loginAttempts",
+            "type": "number"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
+        },
+        {
+            "name": "password",
+            "baseName": "password",
+            "type": "string"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "records",
+            "baseName": "records",
+            "type": "Array<Record>"
+        },
+        {
+            "name": "resetPasswordToken",
+            "baseName": "resetPasswordToken",
+            "type": "string"
+        },
+        {
+            "name": "roles",
+            "baseName": "roles",
+            "type": "Array<Role>"
+        },
+        {
+            "name": "sendEmail",
+            "baseName": "sendEmail",
+            "type": "boolean"
+        },
+        {
+            "name": "status",
+            "baseName": "status",
+            "type": "string"
+        },
+        {
+            "name": "superUser",
+            "baseName": "superUser",
+            "type": "boolean"
+        },
+        {
+            "name": "textValue",
+            "baseName": "textValue",
+            "type": "string"
+        },
+        {
+            "name": "tier",
+            "baseName": "tier",
+            "type": "Locked.TierEnum"
+        },
+        {
+            "name": "timeZone",
+            "baseName": "timeZone",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Locked.attributeTypeMap);
+    }
+}
+
+export namespace Locked {
+    export enum TierEnum {
+        PRIMARY = <any>'PRIMARY',
+        SECONDARY = <any>'SECONDARY',
+        LIMITED = <any>'LIMITED'
+    }
+}
+export class LogIn extends AccessAudit {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'remoteAddress'?: string;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "remoteAddress",
+            "baseName": "remoteAddress",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(LogIn.attributeTypeMap);
+    }
+}
+
+export class LogInFail extends AccessAudit {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'remoteAddress'?: string;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "remoteAddress",
+            "baseName": "remoteAddress",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(LogInFail.attributeTypeMap);
+    }
+}
+
+export class LogOut extends AccessAudit {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'remoteAddress'?: string;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "remoteAddress",
+            "baseName": "remoteAddress",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(LogOut.attributeTypeMap);
+    }
+}
+
+
+
+export class ManyToOne extends WorkflowMap {
+    'active'?: boolean;
+    'childId'?: string;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'parentId'?: string;
+    'parentResult'?: WorkflowResult;
+    /**
+    * Parent workflow.
+    */
+    'parentWorkflow'?: Workflow;
+    'updated'?: Date;
+    /**
+    * Child workflow to be connected.
+    */
+    'workflow'?: Workflow;
+    'workflowMapType'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "childId",
+            "baseName": "childId",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "parentId",
+            "baseName": "parentId",
+            "type": "string"
+        },
+        {
+            "name": "parentResult",
+            "baseName": "parentResult",
+            "type": "WorkflowResult"
+        },
+        {
+            "name": "parentWorkflow",
+            "baseName": "parentWorkflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowMapType",
+            "baseName": "workflowMapType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(ManyToOne.attributeTypeMap);
+    }
+}
+
+/**
+* The \"default\" layout functions as the application's fallback when there is no workflow specific layout to use or a user specific layout to use.
+*/
+export class ModelDefault extends Layout {
+    'active'?: boolean;
+    'created'?: Date;
+    'defaultLayout'?: boolean;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'layoutFields'?: Array<LayoutField>;
+    'title'?: string;
+    'updated'?: Date;
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "defaultLayout",
+            "baseName": "defaultLayout",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "layoutFields",
+            "baseName": "layoutFields",
+            "type": "Array<LayoutField>"
+        },
+        {
+            "name": "title",
+            "baseName": "title",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(ModelDefault.attributeTypeMap);
+    }
+}
+
+export class ModelFile {
+    'absolute'?: boolean;
+    'absoluteFile'?: any;
+    'absolutePath'?: string;
+    'canonicalFile'?: any;
+    'canonicalPath'?: string;
+    'directory'?: boolean;
+    'executable'?: boolean;
+    'file'?: boolean;
+    'freeSpace'?: number;
+    'hidden'?: boolean;
+    'lastModified'?: number;
+    'name'?: string;
+    'parent'?: string;
+    'parentFile'?: any;
+    'path'?: string;
+    'readable'?: boolean;
+    'totalSpace'?: number;
+    'usableSpace'?: number;
+    'writable'?: boolean;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "absolute",
+            "baseName": "absolute",
+            "type": "boolean"
+        },
+        {
+            "name": "absoluteFile",
+            "baseName": "absoluteFile",
+            "type": "any"
+        },
+        {
+            "name": "absolutePath",
+            "baseName": "absolutePath",
+            "type": "string"
+        },
+        {
+            "name": "canonicalFile",
+            "baseName": "canonicalFile",
+            "type": "any"
+        },
+        {
+            "name": "canonicalPath",
+            "baseName": "canonicalPath",
+            "type": "string"
+        },
+        {
+            "name": "directory",
+            "baseName": "directory",
+            "type": "boolean"
+        },
+        {
+            "name": "executable",
+            "baseName": "executable",
+            "type": "boolean"
+        },
+        {
+            "name": "file",
+            "baseName": "file",
+            "type": "boolean"
+        },
+        {
+            "name": "freeSpace",
+            "baseName": "freeSpace",
+            "type": "number"
+        },
+        {
+            "name": "hidden",
+            "baseName": "hidden",
+            "type": "boolean"
+        },
+        {
+            "name": "lastModified",
+            "baseName": "lastModified",
+            "type": "number"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "parent",
+            "baseName": "parent",
+            "type": "string"
+        },
+        {
+            "name": "parentFile",
+            "baseName": "parentFile",
+            "type": "any"
+        },
+        {
+            "name": "path",
+            "baseName": "path",
+            "type": "string"
+        },
+        {
+            "name": "readable",
+            "baseName": "readable",
+            "type": "boolean"
+        },
+        {
+            "name": "totalSpace",
+            "baseName": "totalSpace",
+            "type": "number"
+        },
+        {
+            "name": "usableSpace",
+            "baseName": "usableSpace",
+            "type": "number"
+        },
+        {
+            "name": "writable",
+            "baseName": "writable",
+            "type": "boolean"
+        }];
+
+    static getAttributeTypeMap() {
+        return ModelFile.attributeTypeMap;
+    }
+}
+
+export class Module {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'name'?: string;
+    'onlyUse'?: boolean;
+    'tab'?: string;
+    'updated'?: Date;
+    'value'?: Module.ValueEnum;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "onlyUse",
+            "baseName": "onlyUse",
+            "type": "boolean"
+        },
+        {
+            "name": "tab",
+            "baseName": "tab",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "value",
+            "baseName": "value",
+            "type": "Module.ValueEnum"
+        }];
+
+    static getAttributeTypeMap() {
+        return Module.attributeTypeMap;
+    }
+}
+
+export namespace Module {
+    export enum ValueEnum {
+        AASSIGN = <any>'A_ASSIGN',
+        AIMPORT = <any>'A_IMPORT',
+        AALLFIELDS = <any>'A_ALL_FIELDS',
+        ABUILD = <any>'A_BUILD',
+        AAPIACCESS = <any>'A_API_ACCESS',
+        RRECORDS = <any>'R_RECORDS',
+        RSTATUS = <any>'R_STATUS',
+        RPRODUCTIVITY = <any>'R_PRODUCTIVITY',
+        RTABLEREPORTS = <any>'R_TABLE_REPORTS',
+        RDASHBOARDS = <any>'R_DASHBOARDS',
+        ADMINALL = <any>'ADMIN_ALL'
+    }
+}
+export class ModuleEntitlement {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'module'?: Module;
+    'operationType'?: string;
+    'role'?: Role;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "module",
+            "baseName": "module",
+            "type": "Module"
+        },
+        {
+            "name": "operationType",
+            "baseName": "operationType",
+            "type": "string"
+        },
+        {
+            "name": "role",
+            "baseName": "role",
+            "type": "Role"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return ModuleEntitlement.attributeTypeMap;
+    }
+}
+
+export class MultiSelect extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'fieldType': MultiSelect.FieldTypeEnum;
+    'global'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'operators'?: Array<MultiSelect.OperatorsEnum>;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "MultiSelect.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<MultiSelect.OperatorsEnum>"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(MultiSelect.attributeTypeMap);
+    }
+}
+
+export namespace MultiSelect {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class Number extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'fieldType': Number.FieldTypeEnum;
+    'global'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    'message'?: string;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'operators'?: Array<Number.OperatorsEnum>;
+    'pattern'?: string;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "Number.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "message",
+            "baseName": "message",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<Number.OperatorsEnum>"
+        },
+        {
+            "name": "pattern",
+            "baseName": "pattern",
+            "type": "string"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Number.attributeTypeMap);
+    }
+}
+
+export namespace Number {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class OneToMany extends WorkflowMap {
+    'active'?: boolean;
+    'childId'?: string;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'parentId'?: string;
+    'parentResult'?: WorkflowResult;
+    /**
+    * Parent workflow.
+    */
+    'parentWorkflow'?: Workflow;
+    'updated'?: Date;
+    /**
+    * Child workflow to be connected.
+    */
+    'workflow'?: Workflow;
+    'workflowMapType'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "childId",
+            "baseName": "childId",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "parentId",
+            "baseName": "parentId",
+            "type": "string"
+        },
+        {
+            "name": "parentResult",
+            "baseName": "parentResult",
+            "type": "WorkflowResult"
+        },
+        {
+            "name": "parentWorkflow",
+            "baseName": "parentWorkflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowMapType",
+            "baseName": "workflowMapType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(OneToMany.attributeTypeMap);
+    }
+}
+
+export class OneToOne extends WorkflowMap {
+    'active'?: boolean;
+    'childId'?: string;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'parentId'?: string;
+    'parentResult'?: WorkflowResult;
+    /**
+    * Parent workflow.
+    */
+    'parentWorkflow'?: Workflow;
+    'updated'?: Date;
+    /**
+    * Child workflow to be connected.
+    */
+    'workflow'?: Workflow;
+    'workflowMapType'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "childId",
+            "baseName": "childId",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "parentId",
+            "baseName": "parentId",
+            "type": "string"
+        },
+        {
+            "name": "parentResult",
+            "baseName": "parentResult",
+            "type": "WorkflowResult"
+        },
+        {
+            "name": "parentWorkflow",
+            "baseName": "parentWorkflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowMapType",
+            "baseName": "workflowMapType",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(OneToOne.attributeTypeMap);
+    }
+}
+
+export class Origin extends Step {
+    'active'?: boolean;
+    /**
+    * Allow entitlements to the node.
+    */
+    'allowEntitlements'?: boolean;
+    'chain'?: boolean;
+    'contains'?: Workflow;
+    'created'?: Date;
+    'end'?: boolean;
+    'id'?: string;
+    /**
+    * Allows a node to become a public node.
+    */
+    'isPublic'?: boolean;
+    'labels'?: Array<string>;
+    /**
+    * Node name.
+    */
+    'name'?: string;
+    'origin'?: boolean;
+    /**
+    * Determines the node's place in the workflow.
+    */
+    'priority'?: number;
+    '_public'?: boolean;
+    /**
+    * Object containing all SLA information.
+    */
+    'sla'?: ServiceLevelAgreement;
+    /**
+    * Node type.
+    */
+    'stepType'?: string;
+    'updated'?: Date;
+    /**
+    * Workflow that the node belongs to.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+    /**
+    * Vertical position of the node on the process screen.
+    */
+    'xpos'?: number;
+    /**
+    * Horizontal position of the node on the process screen.
+    */
+    'ypos'?: number;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "allowEntitlements",
+            "baseName": "allowEntitlements",
+            "type": "boolean"
+        },
+        {
+            "name": "chain",
+            "baseName": "chain",
+            "type": "boolean"
+        },
+        {
+            "name": "contains",
+            "baseName": "contains",
+            "type": "Workflow"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "end",
+            "baseName": "end",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "isPublic",
+            "baseName": "isPublic",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "origin",
+            "baseName": "origin",
+            "type": "boolean"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "_public",
+            "baseName": "public",
+            "type": "boolean"
+        },
+        {
+            "name": "sla",
+            "baseName": "sla",
+            "type": "ServiceLevelAgreement"
+        },
+        {
+            "name": "stepType",
+            "baseName": "stepType",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        },
+        {
+            "name": "xpos",
+            "baseName": "xpos",
+            "type": "number"
+        },
+        {
+            "name": "ypos",
+            "baseName": "ypos",
+            "type": "number"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Origin.attributeTypeMap);
+    }
+}
+
+export class PageOfCurrentValue {
+    'content'?: Array<CurrentValue>;
+    'empty'?: boolean;
+    'first'?: boolean;
+    'last'?: boolean;
+    'number'?: number;
+    'numberOfElements'?: number;
+    'size'?: number;
+    'sort'?: Sort;
+    'totalElements'?: number;
+    'totalPages'?: number;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "content",
+            "baseName": "content",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "first",
+            "baseName": "first",
+            "type": "boolean"
+        },
+        {
+            "name": "last",
+            "baseName": "last",
+            "type": "boolean"
+        },
+        {
+            "name": "number",
+            "baseName": "number",
+            "type": "number"
+        },
+        {
+            "name": "numberOfElements",
+            "baseName": "numberOfElements",
+            "type": "number"
+        },
+        {
+            "name": "size",
+            "baseName": "size",
+            "type": "number"
+        },
+        {
+            "name": "sort",
+            "baseName": "sort",
+            "type": "Sort"
+        },
+        {
+            "name": "totalElements",
+            "baseName": "totalElements",
+            "type": "number"
+        },
+        {
+            "name": "totalPages",
+            "baseName": "totalPages",
+            "type": "number"
+        }];
+
+    static getAttributeTypeMap() {
+        return PageOfCurrentValue.attributeTypeMap;
+    }
+}
+
+export class PageOfField {
+    'content'?: Array<Field>;
+    'empty'?: boolean;
+    'first'?: boolean;
+    'last'?: boolean;
+    'number'?: number;
+    'numberOfElements'?: number;
+    'size'?: number;
+    'sort'?: Sort;
+    'totalElements'?: number;
+    'totalPages'?: number;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "content",
+            "baseName": "content",
+            "type": "Array<Field>"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "first",
+            "baseName": "first",
+            "type": "boolean"
+        },
+        {
+            "name": "last",
+            "baseName": "last",
+            "type": "boolean"
+        },
+        {
+            "name": "number",
+            "baseName": "number",
+            "type": "number"
+        },
+        {
+            "name": "numberOfElements",
+            "baseName": "numberOfElements",
+            "type": "number"
+        },
+        {
+            "name": "size",
+            "baseName": "size",
+            "type": "number"
+        },
+        {
+            "name": "sort",
+            "baseName": "sort",
+            "type": "Sort"
+        },
+        {
+            "name": "totalElements",
+            "baseName": "totalElements",
+            "type": "number"
+        },
+        {
+            "name": "totalPages",
+            "baseName": "totalPages",
+            "type": "number"
+        }];
+
+    static getAttributeTypeMap() {
+        return PageOfField.attributeTypeMap;
+    }
+}
+
+export class PageOfWorkflowResult {
+    'content'?: Array<WorkflowResult>;
+    'empty'?: boolean;
+    'first'?: boolean;
+    'last'?: boolean;
+    'number'?: number;
+    'numberOfElements'?: number;
+    'size'?: number;
+    'sort'?: Sort;
+    'totalElements'?: number;
+    'totalPages'?: number;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "content",
+            "baseName": "content",
+            "type": "Array<WorkflowResult>"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "first",
+            "baseName": "first",
+            "type": "boolean"
+        },
+        {
+            "name": "last",
+            "baseName": "last",
+            "type": "boolean"
+        },
+        {
+            "name": "number",
+            "baseName": "number",
+            "type": "number"
+        },
+        {
+            "name": "numberOfElements",
+            "baseName": "numberOfElements",
+            "type": "number"
+        },
+        {
+            "name": "size",
+            "baseName": "size",
+            "type": "number"
+        },
+        {
+            "name": "sort",
+            "baseName": "sort",
+            "type": "Sort"
+        },
+        {
+            "name": "totalElements",
+            "baseName": "totalElements",
+            "type": "number"
+        },
+        {
+            "name": "totalPages",
+            "baseName": "totalPages",
+            "type": "number"
+        }];
+
+    static getAttributeTypeMap() {
+        return PageOfWorkflowResult.attributeTypeMap;
+    }
+}
+
+export class PendingAttachment extends CurrentValue {
+    'active'?: boolean;
+    'archived'?: boolean;
+    'attachmentStatus'?: PendingAttachment.AttachmentStatusEnum;
+    'awsS3Key'?: string;
+    'contentType'?: string;
+    'created'?: Date;
+    '_default'?: boolean;
+    'discriminator'?: string;
+    'empty'?: boolean;
+    'field'?: Field;
+    'fieldId'?: string;
+    'fileExtension'?: string;
+    'fileSize'?: number;
+    'hasValue'?: Field;
+    'id'?: string;
+    'isDefault'?: boolean;
+    'labels'?: Array<string>;
+    'numericValue'?: number;
+    'originalFileExtension'?: string;
+    'priority'?: number;
+    'textValue'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    'versionCount'?: number;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "archived",
+            "baseName": "archived",
+            "type": "boolean"
+        },
+        {
+            "name": "attachmentStatus",
+            "baseName": "attachmentStatus",
+            "type": "PendingAttachment.AttachmentStatusEnum"
+        },
+        {
+            "name": "awsS3Key",
+            "baseName": "awsS3Key",
+            "type": "string"
+        },
+        {
+            "name": "contentType",
+            "baseName": "contentType",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "_default",
+            "baseName": "default",
+            "type": "boolean"
+        },
+        {
+            "name": "discriminator",
+            "baseName": "discriminator",
+            "type": "string"
+        },
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "fieldId",
+            "baseName": "fieldId",
+            "type": "string"
+        },
+        {
+            "name": "fileExtension",
+            "baseName": "fileExtension",
+            "type": "string"
+        },
+        {
+            "name": "fileSize",
+            "baseName": "fileSize",
+            "type": "number"
+        },
+        {
+            "name": "hasValue",
+            "baseName": "hasValue",
+            "type": "Field"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "isDefault",
+            "baseName": "isDefault",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "numericValue",
+            "baseName": "numericValue",
+            "type": "number"
+        },
+        {
+            "name": "originalFileExtension",
+            "baseName": "originalFileExtension",
+            "type": "string"
+        },
+        {
+            "name": "priority",
+            "baseName": "priority",
+            "type": "number"
+        },
+        {
+            "name": "textValue",
+            "baseName": "textValue",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "versionCount",
+            "baseName": "versionCount",
+            "type": "number"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(PendingAttachment.attributeTypeMap);
+    }
+}
+
+export namespace PendingAttachment {
+    export enum AttachmentStatusEnum {
+        PENDING = <any>'PENDING',
+        CLEAN = <any>'CLEAN',
+        DIRTY = <any>'DIRTY'
+    }
+}
+/**
+* An entity for managing top-level process data. A process represents the highest level of organization for other entities within the application.
+*/
+export class Process {
+    'active'?: boolean;
+    /**
+    * Icon color of the process.
+    */
+    'color'?: string;
+    'copied'?: boolean;
+    'created'?: Date;
+    /**
+    * Icon type of the process.
+    */
+    'icon'?: Process.IconEnum;
+    'id'?: string;
+    'imported'?: boolean;
+    'labels'?: Array<string>;
+    /**
+    * Name of the process.
+    */
+    'name'?: string;
+    'updated'?: Date;
+    /**
+    * Workflows associated to the process.
+    */
+    'workflows'?: Array<Workflow>;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "color",
+            "baseName": "color",
+            "type": "string"
+        },
+        {
+            "name": "copied",
+            "baseName": "copied",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "icon",
+            "baseName": "icon",
+            "type": "Process.IconEnum"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "imported",
+            "baseName": "imported",
+            "type": "boolean"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflows",
+            "baseName": "workflows",
+            "type": "Array<Workflow>"
+        }];
+
+    static getAttributeTypeMap() {
+        return Process.attributeTypeMap;
+    }
+}
+
+export namespace Process {
+    export enum IconEnum {
+        Bookmark = <any>'fa-bookmark',
+        Bolt = <any>'fa-bolt',
+        Bullhorn = <any>'fa-bullhorn',
+        Certificate = <any>'fa-certificate',
+        CheckSquareO = <any>'fa-check-square-o',
+        Cloud = <any>'fa-cloud',
+        Comments = <any>'fa-comments',
+        Dollar = <any>'fa-dollar',
+        ExclamationTriangle = <any>'fa-exclamation-triangle',
+        FileTextO = <any>'fa-file-text-o',
+        Folder = <any>'fa-folder',
+        Gift = <any>'fa-gift',
+        Globe = <any>'fa-globe',
+        Heartbeat = <any>'fa-heartbeat',
+        Leaf = <any>'fa-leaf',
+        Legal = <any>'fa-legal',
+        LifeRing = <any>'fa-life-ring',
+        Medkit = <any>'fa-medkit',
+        Money = <any>'fa-money',
+        Percent = <any>'fa-percent',
+        Rocket = <any>'fa-rocket',
+        Signal = <any>'fa-signal',
+        University = <any>'fa-university',
+        UserCircle = <any>'fa-user-circle'
+    }
+}
+export class Radio extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'fieldType': Radio.FieldTypeEnum;
+    'global'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'operators'?: Array<Radio.OperatorsEnum>;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "Radio.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<Radio.OperatorsEnum>"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Radio.attributeTypeMap);
+    }
+}
+
+export namespace Radio {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class Record {
+    'active'?: boolean;
+    'activeDate'?: Date;
+    'assignee'?: User;
+    'assignments'?: Array<Record>;
+    'created'?: Date;
+    'creator'?: User;
+    'currentValueMaps'?: Array<ValueMap>;
+    'dueDate'?: Date;
+    'enteredNodeDate'?: Date;
+    'enteredStepDate'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'name'?: string;
+    'node'?: Step;
+    'nodeDueDate'?: Date;
+    'origin'?: Step;
+    '_public'?: boolean;
+    'records'?: Array<Record>;
+    'sequenceId'?: number;
+    'status'?: Record.StatusEnum;
+    'step'?: Step;
+    'stepDueDate'?: Date;
+    'updated'?: Date;
+    'user'?: User;
+    'userDate'?: Date;
+    'userGroups'?: Array<UserGroup>;
+    'workflow'?: Workflow;
+    'workflowDueDate'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "activeDate",
+            "baseName": "activeDate",
+            "type": "Date"
+        },
+        {
+            "name": "assignee",
+            "baseName": "assignee",
+            "type": "User"
+        },
+        {
+            "name": "assignments",
+            "baseName": "assignments",
+            "type": "Array<Record>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "creator",
+            "baseName": "creator",
+            "type": "User"
+        },
+        {
+            "name": "currentValueMaps",
+            "baseName": "currentValueMaps",
+            "type": "Array<ValueMap>"
+        },
+        {
+            "name": "dueDate",
+            "baseName": "dueDate",
+            "type": "Date"
+        },
+        {
+            "name": "enteredNodeDate",
+            "baseName": "enteredNodeDate",
+            "type": "Date"
+        },
+        {
+            "name": "enteredStepDate",
+            "baseName": "enteredStepDate",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "node",
+            "baseName": "node",
+            "type": "Step"
+        },
+        {
+            "name": "nodeDueDate",
+            "baseName": "nodeDueDate",
+            "type": "Date"
+        },
+        {
+            "name": "origin",
+            "baseName": "origin",
+            "type": "Step"
+        },
+        {
+            "name": "_public",
+            "baseName": "public",
+            "type": "boolean"
+        },
+        {
+            "name": "records",
+            "baseName": "records",
+            "type": "Array<Record>"
+        },
+        {
+            "name": "sequenceId",
+            "baseName": "sequenceId",
+            "type": "number"
+        },
+        {
+            "name": "status",
+            "baseName": "status",
+            "type": "Record.StatusEnum"
+        },
+        {
+            "name": "step",
+            "baseName": "step",
+            "type": "Step"
+        },
+        {
+            "name": "stepDueDate",
+            "baseName": "stepDueDate",
+            "type": "Date"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "user",
+            "baseName": "user",
+            "type": "User"
+        },
+        {
+            "name": "userDate",
+            "baseName": "userDate",
+            "type": "Date"
+        },
+        {
+            "name": "userGroups",
+            "baseName": "userGroups",
+            "type": "Array<UserGroup>"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowDueDate",
+            "baseName": "workflowDueDate",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return Record.attributeTypeMap;
+    }
+}
+
+export namespace Record {
+    export enum StatusEnum {
+        INACTIVE = <any>'INACTIVE',
+        NOTASSIGNED = <any>'NOT_ASSIGNED',
+        ASSIGNED = <any>'ASSIGNED',
+        INPROGRESS = <any>'IN_PROGRESS',
+        COMPLETE = <any>'COMPLETE'
+    }
+}
+export class RecordDetails {
+    'canEdit'?: boolean;
+    'canRead'?: boolean;
+    'depth'?: number;
+    'dueDate'?: Date;
+    'id'?: string;
+    'name'?: string;
+    'step'?: Step;
+    'stepEnd'?: boolean;
+    'stepId'?: string;
+    'user'?: boolean;
+    'workflow'?: Workflow;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "canEdit",
+            "baseName": "canEdit",
+            "type": "boolean"
+        },
+        {
+            "name": "canRead",
+            "baseName": "canRead",
+            "type": "boolean"
+        },
+        {
+            "name": "depth",
+            "baseName": "depth",
+            "type": "number"
+        },
+        {
+            "name": "dueDate",
+            "baseName": "dueDate",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "step",
+            "baseName": "step",
+            "type": "Step"
+        },
+        {
+            "name": "stepEnd",
+            "baseName": "stepEnd",
+            "type": "boolean"
+        },
+        {
+            "name": "stepId",
+            "baseName": "stepId",
+            "type": "string"
+        },
+        {
+            "name": "user",
+            "baseName": "user",
+            "type": "boolean"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        }];
+
+    static getAttributeTypeMap() {
+        return RecordDetails.attributeTypeMap;
+    }
+}
+
+export class RecordProperty {
+    'fieldType'?: RecordProperty.FieldTypeEnum;
+    'formattedValue'?: string;
+    'header'?: string;
+    'rawValue'?: any;
+    'systemField'?: RecordProperty.SystemFieldEnum;
+    'url'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "RecordProperty.FieldTypeEnum"
+        },
+        {
+            "name": "formattedValue",
+            "baseName": "formattedValue",
+            "type": "string"
+        },
+        {
+            "name": "header",
+            "baseName": "header",
+            "type": "string"
+        },
+        {
+            "name": "rawValue",
+            "baseName": "rawValue",
+            "type": "any"
+        },
+        {
+            "name": "systemField",
+            "baseName": "systemField",
+            "type": "RecordProperty.SystemFieldEnum"
+        },
+        {
+            "name": "url",
+            "baseName": "url",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return RecordProperty.attributeTypeMap;
+    }
+}
+
+export namespace RecordProperty {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum SystemFieldEnum {
+        NAME = <any>'NAME',
+        STATUS = <any>'STATUS',
+        CREATED = <any>'CREATED',
+        USERDATE = <any>'USER_DATE',
+        EFFECTIVEDUEDATE = <any>'EFFECTIVE_DUE_DATE',
+        DUEDATE = <any>'DUE_DATE',
+        ID = <any>'ID',
+        USERNAME = <any>'USER_NAME',
+        USERID = <any>'USER_ID',
+        CREATORNAME = <any>'CREATOR_NAME',
+        USERGROUP = <any>'USER_GROUP',
+        STEPNAME = <any>'STEP_NAME',
+        STEPID = <any>'STEP_ID',
+        ORIGINNAME = <any>'ORIGIN_NAME',
+        WORKFLOWNAME = <any>'WORKFLOW_NAME',
+        WORKFLOWRECORDPREFIX = <any>'WORKFLOW_RECORD_PREFIX',
+        WORKFLOWID = <any>'WORKFLOW_ID'
+    }
+}
+export class ReportFilter {
+    'active'?: boolean;
+    'created'?: Date;
+    'field'?: Field;
+    'filteredRelativeIds'?: Array<string>;
+    'filteredRelatives'?: Array<GraphEntity>;
+    'fixed'?: boolean;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'operator'?: ReportFilter.OperatorEnum;
+    'recordRelationship'?: ReportFilter.RecordRelationshipEnum;
+    'systemField'?: ReportFilter.SystemFieldEnum;
+    'updated'?: Date;
+    'valid'?: boolean;
+    'values'?: Array<CurrentValue>;
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "field",
+            "baseName": "field",
+            "type": "Field"
+        },
+        {
+            "name": "filteredRelativeIds",
+            "baseName": "filteredRelativeIds",
+            "type": "Array<string>"
+        },
+        {
+            "name": "filteredRelatives",
+            "baseName": "filteredRelatives",
+            "type": "Array<GraphEntity>"
+        },
+        {
+            "name": "fixed",
+            "baseName": "fixed",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "operator",
+            "baseName": "operator",
+            "type": "ReportFilter.OperatorEnum"
+        },
+        {
+            "name": "recordRelationship",
+            "baseName": "recordRelationship",
+            "type": "ReportFilter.RecordRelationshipEnum"
+        },
+        {
+            "name": "systemField",
+            "baseName": "systemField",
+            "type": "ReportFilter.SystemFieldEnum"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valid",
+            "baseName": "valid",
+            "type": "boolean"
+        },
+        {
+            "name": "values",
+            "baseName": "values",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return ReportFilter.attributeTypeMap;
+    }
+}
+
+export namespace ReportFilter {
+    export enum OperatorEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+    export enum RecordRelationshipEnum {
+        CURRENTSTEP = <any>'CURRENT_STEP',
+        ORIGINSTEP = <any>'ORIGIN_STEP'
+    }
+    export enum SystemFieldEnum {
+        NAME = <any>'NAME',
+        STATUS = <any>'STATUS',
+        CREATED = <any>'CREATED',
+        USERDATE = <any>'USER_DATE',
+        EFFECTIVEDUEDATE = <any>'EFFECTIVE_DUE_DATE',
+        DUEDATE = <any>'DUE_DATE',
+        ID = <any>'ID',
+        USERNAME = <any>'USER_NAME',
+        USERID = <any>'USER_ID',
+        CREATORNAME = <any>'CREATOR_NAME',
+        USERGROUP = <any>'USER_GROUP',
+        STEPNAME = <any>'STEP_NAME',
+        STEPID = <any>'STEP_ID',
+        ORIGINNAME = <any>'ORIGIN_NAME',
+        WORKFLOWNAME = <any>'WORKFLOW_NAME',
+        WORKFLOWRECORDPREFIX = <any>'WORKFLOW_RECORD_PREFIX',
+        WORKFLOWID = <any>'WORKFLOW_ID'
+    }
+}
+export class Repository extends Layout {
+    'active'?: boolean;
+    'created'?: Date;
+    'defaultLayout'?: boolean;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'layoutFields'?: Array<LayoutField>;
+    'title'?: string;
+    'updated'?: Date;
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "defaultLayout",
+            "baseName": "defaultLayout",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "layoutFields",
+            "baseName": "layoutFields",
+            "type": "Array<LayoutField>"
+        },
+        {
+            "name": "title",
+            "baseName": "title",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Repository.attributeTypeMap);
+    }
+}
+
+export class Resource {
+    'description'?: string;
+    'file'?: any;
+    'filename'?: string;
+    'inputStream'?: InputStream;
+    'open'?: boolean;
+    'readable'?: boolean;
+    'uri'?: URI;
+    'url'?: URL;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "description",
+            "baseName": "description",
+            "type": "string"
+        },
+        {
+            "name": "file",
+            "baseName": "file",
+            "type": "any"
+        },
+        {
+            "name": "filename",
+            "baseName": "filename",
+            "type": "string"
+        },
+        {
+            "name": "inputStream",
+            "baseName": "inputStream",
+            "type": "InputStream"
+        },
+        {
+            "name": "open",
+            "baseName": "open",
+            "type": "boolean"
+        },
+        {
+            "name": "readable",
+            "baseName": "readable",
+            "type": "boolean"
+        },
+        {
+            "name": "uri",
+            "baseName": "uri",
+            "type": "URI"
+        },
+        {
+            "name": "url",
+            "baseName": "url",
+            "type": "URL"
+        }];
+
+    static getAttributeTypeMap() {
+        return Resource.attributeTypeMap;
+    }
+}
+
+export class Role {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'locked'?: boolean;
+    'moduleCount'?: number;
+    'moduleEntitlements'?: Array<ModuleEntitlement>;
+    'name'?: string;
+    'nodeEntitlements'?: Array<StepEntitlement>;
+    'stepCount'?: number;
+    'stepEntitlements'?: Array<StepEntitlement>;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "locked",
+            "baseName": "locked",
+            "type": "boolean"
+        },
+        {
+            "name": "moduleCount",
+            "baseName": "moduleCount",
+            "type": "number"
+        },
+        {
+            "name": "moduleEntitlements",
+            "baseName": "moduleEntitlements",
+            "type": "Array<ModuleEntitlement>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "nodeEntitlements",
+            "baseName": "nodeEntitlements",
+            "type": "Array<StepEntitlement>"
+        },
+        {
+            "name": "stepCount",
+            "baseName": "stepCount",
+            "type": "number"
+        },
+        {
+            "name": "stepEntitlements",
+            "baseName": "stepEntitlements",
+            "type": "Array<StepEntitlement>"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return Role.attributeTypeMap;
+    }
+}
+
+export class Select extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'fieldType': Select.FieldTypeEnum;
+    'global'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'operators'?: Array<Select.OperatorsEnum>;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "Select.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<Select.OperatorsEnum>"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Select.attributeTypeMap);
+    }
+}
+
+export namespace Select {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class ServiceLevelAgreement {
+    'duration'?: number;
+    'enabled'?: boolean;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "duration",
+            "baseName": "duration",
+            "type": "number"
+        },
+        {
+            "name": "enabled",
+            "baseName": "enabled",
+            "type": "boolean"
+        }];
+
+    static getAttributeTypeMap() {
+        return ServiceLevelAgreement.attributeTypeMap;
+    }
+}
+
+export class Sort {
+    'empty'?: boolean;
+    'sorted'?: boolean;
+    'unsorted'?: boolean;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "empty",
+            "baseName": "empty",
+            "type": "boolean"
+        },
+        {
+            "name": "sorted",
+            "baseName": "sorted",
+            "type": "boolean"
+        },
+        {
+            "name": "unsorted",
+            "baseName": "unsorted",
+            "type": "boolean"
+        }];
+
+    static getAttributeTypeMap() {
+        return Sort.attributeTypeMap;
+    }
+}
+
+
+
+export class StepEntitlement {
+    'active'?: boolean;
+    'created'?: Date;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'node'?: Step;
+    'operationType'?: string;
+    'role'?: Role;
+    'step'?: Step;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "node",
+            "baseName": "node",
+            "type": "Step"
+        },
+        {
+            "name": "operationType",
+            "baseName": "operationType",
+            "type": "string"
+        },
+        {
+            "name": "role",
+            "baseName": "role",
+            "type": "Role"
+        },
+        {
+            "name": "step",
+            "baseName": "step",
+            "type": "Step"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return StepEntitlement.attributeTypeMap;
+    }
+}
+
+export class TableReport extends Layout {
+    'active'?: boolean;
+    'created'?: Date;
+    'defaultLayout'?: boolean;
+    'filterList'?: Array<ReportFilter>;
+    'id'?: string;
+    'labels'?: Array<string>;
+    'layoutFields'?: Array<LayoutField>;
+    'title'?: string;
+    'updated'?: Date;
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+    'workflowJoins'?: Array<TableReportJoin>;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "defaultLayout",
+            "baseName": "defaultLayout",
+            "type": "boolean"
+        },
+        {
+            "name": "filterList",
+            "baseName": "filterList",
+            "type": "Array<ReportFilter>"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "layoutFields",
+            "baseName": "layoutFields",
+            "type": "Array<LayoutField>"
+        },
+        {
+            "name": "title",
+            "baseName": "title",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        },
+        {
+            "name": "workflowJoins",
+            "baseName": "workflowJoins",
+            "type": "Array<TableReportJoin>"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(TableReport.attributeTypeMap);
+    }
+}
+
+export class TableReportJoin {
+    'active'?: boolean;
+    'childrenJoins'?: Array<TableReportJoin>;
+    'comesFrom'?: TableReportJoin;
+    'comesFromId'?: string;
+    'created'?: Date;
+    'distinct'?: boolean;
+    'id'?: string;
+    'isDistinct'?: boolean;
+    'joinedThrough'?: WorkflowMap;
+    'joinedWorkflow'?: Workflow;
+    'labels'?: Array<string>;
+    'updated'?: Date;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "childrenJoins",
+            "baseName": "childrenJoins",
+            "type": "Array<TableReportJoin>"
+        },
+        {
+            "name": "comesFrom",
+            "baseName": "comesFrom",
+            "type": "TableReportJoin"
+        },
+        {
+            "name": "comesFromId",
+            "baseName": "comesFromId",
+            "type": "string"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "distinct",
+            "baseName": "distinct",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "isDistinct",
+            "baseName": "isDistinct",
+            "type": "boolean"
+        },
+        {
+            "name": "joinedThrough",
+            "baseName": "joinedThrough",
+            "type": "WorkflowMap"
+        },
+        {
+            "name": "joinedWorkflow",
+            "baseName": "joinedWorkflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        }];
+
+    static getAttributeTypeMap() {
+        return TableReportJoin.attributeTypeMap;
+    }
+}
+
+export class Text extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'fieldType': Text.FieldTypeEnum;
+    'global'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    'message'?: string;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'operators'?: Array<Text.OperatorsEnum>;
+    'pattern'?: string;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "Text.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "message",
+            "baseName": "message",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<Text.OperatorsEnum>"
+        },
+        {
+            "name": "pattern",
+            "baseName": "pattern",
+            "type": "string"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(Text.attributeTypeMap);
+    }
+}
+
+export namespace Text {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class TextArea extends Field {
+    'active'?: boolean;
+    'convertibleTo'?: Array<string>;
+    'created'?: Date;
+    /**
+    * Relationship to current values that are associated to the field.
+    */
+    'currentValues'?: Array<CurrentValue>;
+    'discrete'?: boolean;
+    'fieldType': TextArea.FieldTypeEnum;
+    'global'?: boolean;
+    'hasHtml'?: boolean;
+    'id'?: string;
+    /**
+    * The label will appear as the label for the field when it appears on forms for user's to complete.
+    */
+    'label'?: string;
+    'labels'?: Array<string>;
+    'message'?: string;
+    /**
+    * The name of the field.
+    */
+    'name'?: string;
+    'operators'?: Array<TextArea.OperatorsEnum>;
+    'pattern'?: string;
+    /**
+    * A text value that will populate any tooltip information.
+    */
+    'tooltip'?: string;
+    'updated'?: Date;
+    'valueType'?: string;
+    /**
+    * Workflow object that is associated to the field.
+    */
+    'workflow'?: Workflow;
+    'workflowId'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "active",
+            "baseName": "active",
+            "type": "boolean"
+        },
+        {
+            "name": "convertibleTo",
+            "baseName": "convertibleTo",
+            "type": "Array<string>"
+        },
+        {
+            "name": "created",
+            "baseName": "created",
+            "type": "Date"
+        },
+        {
+            "name": "currentValues",
+            "baseName": "currentValues",
+            "type": "Array<CurrentValue>"
+        },
+        {
+            "name": "discrete",
+            "baseName": "discrete",
+            "type": "boolean"
+        },
+        {
+            "name": "fieldType",
+            "baseName": "fieldType",
+            "type": "TextArea.FieldTypeEnum"
+        },
+        {
+            "name": "global",
+            "baseName": "global",
+            "type": "boolean"
+        },
+        {
+            "name": "hasHtml",
+            "baseName": "hasHtml",
+            "type": "boolean"
+        },
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "baseName": "label",
+            "type": "string"
+        },
+        {
+            "name": "labels",
+            "baseName": "labels",
+            "type": "Array<string>"
+        },
+        {
+            "name": "message",
+            "baseName": "message",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "baseName": "name",
+            "type": "string"
+        },
+        {
+            "name": "operators",
+            "baseName": "operators",
+            "type": "Array<TextArea.OperatorsEnum>"
+        },
+        {
+            "name": "pattern",
+            "baseName": "pattern",
+            "type": "string"
+        },
+        {
+            "name": "tooltip",
+            "baseName": "tooltip",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "baseName": "updated",
+            "type": "Date"
+        },
+        {
+            "name": "valueType",
+            "baseName": "valueType",
+            "type": "string"
+        },
+        {
+            "name": "workflow",
+            "baseName": "workflow",
+            "type": "Workflow"
+        },
+        {
+            "name": "workflowId",
+            "baseName": "workflowId",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return super.getAttributeTypeMap().concat(TextArea.attributeTypeMap);
+    }
+}
+
+export namespace TextArea {
+    export enum FieldTypeEnum {
+        TEXT = <any>'TEXT',
+        TEXTAREA = <any>'TEXT_AREA',
+        DATEPICKER = <any>'DATE_PICKER',
+        NUMBER = <any>'NUMBER',
+        ESIGNATURE = <any>'E_SIGNATURE',
+        CHECKBOX = <any>'CHECKBOX',
+        MULTISELECT = <any>'MULTI_SELECT',
+        RADIO = <any>'RADIO',
+        SELECT = <any>'SELECT',
+        USER = <any>'USER',
+        ATTACHMENT = <any>'ATTACHMENT',
+        CALCULATION = <any>'CALCULATION',
+        DUEDATE = <any>'DUE_DATE'
+    }
+    export enum OperatorsEnum {
+        EQUALS = <any>'EQUALS',
+        NOTEQUALS = <any>'NOT_EQUALS',
+        GREATERTHAN = <any>'GREATER_THAN',
+        GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+        LESSTHAN = <any>'LESS_THAN',
+        LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+        CONTAINS = <any>'CONTAINS',
+        DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+        NULL = <any>'NULL',
+        NOTNULL = <any>'NOT_NULL',
+        MATCHES = <any>'MATCHES',
+        DATERANGE = <any>'DATE_RANGE'
+    }
+}
+export class URI {
+    'absolute'?: boolean;
+    'authority'?: string;
+    'fragment'?: string;
+    'host'?: string;
+    'opaque'?: boolean;
+    'path'?: string;
+    'port'?: number;
+    'query'?: string;
+    'rawAuthority'?: string;
+    'rawFragment'?: string;
+    'rawPath'?: string;
+    'rawQuery'?: string;
+    'rawSchemeSpecificPart'?: string;
+    'rawUserInfo'?: string;
+    'scheme'?: string;
+    'schemeSpecificPart'?: string;
+    'userInfo'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "absolute",
+            "baseName": "absolute",
+            "type": "boolean"
+        },
+        {
+            "name": "authority",
+            "baseName": "authority",
+            "type": "string"
+        },
+        {
+            "name": "fragment",
+            "baseName": "fragment",
+            "type": "string"
+        },
+        {
+            "name": "host",
+            "baseName": "host",
+            "type": "string"
+        },
+        {
+            "name": "opaque",
+            "baseName": "opaque",
+            "type": "boolean"
+        },
+        {
+            "name": "path",
+            "baseName": "path",
+            "type": "string"
+        },
+        {
+            "name": "port",
+            "baseName": "port",
+            "type": "number"
+        },
+        {
+            "name": "query",
+            "baseName": "query",
+            "type": "string"
+        },
+        {
+            "name": "rawAuthority",
+            "baseName": "rawAuthority",
+            "type": "string"
+        },
+        {
+            "name": "rawFragment",
+            "baseName": "rawFragment",
+            "type": "string"
+        },
+        {
+            "name": "rawPath",
+            "baseName": "rawPath",
+            "type": "string"
+        },
+        {
+            "name": "rawQuery",
+            "baseName": "rawQuery",
+            "type": "string"
+        },
+        {
+            "name": "rawSchemeSpecificPart",
+            "baseName": "rawSchemeSpecificPart",
+            "type": "string"
+        },
+        {
+            "name": "rawUserInfo",
+            "baseName": "rawUserInfo",
+            "type": "string"
+        },
+        {
+            "name": "scheme",
+            "baseName": "scheme",
+            "type": "string"
+        },
+        {
+            "name": "schemeSpecificPart",
+            "baseName": "schemeSpecificPart",
+            "type": "string"
+        },
+        {
+            "name": "userInfo",
+            "baseName": "userInfo",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return URI.attributeTypeMap;
+    }
+}
+
+export class URL {
+    'authority'?: string;
+    'content'?: any;
+    'defaultPort'?: number;
+    'deserializedFields'?: URLStreamHandler;
+    'file'?: string;
+    'host'?: string;
+    'path'?: string;
+    'port'?: number;
+    'protocol'?: string;
+    'query'?: string;
+    'ref'?: string;
+    'serializedHashCode'?: number;
+    'userInfo'?: string;
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+        {
+            "name": "authority",
+            "baseName": "authority",
+            "type": "string"
+        },
+        {
+            "name": "content",
+            "baseName": "content",
+            "type": "any"
+        },
+        {
+            "name": "defaultPort",
+            "baseName": "defaultPort",
+            "type": "number"
+        },
+        {
+            "name": "deserializedFields",
+            "baseName": "deserializedFields",
+            "type": "URLStreamHandler"
+        },
+        {
+            "name": "file",
+            "baseName": "file",
+            "type": "string"
+        },
+        {
+            "name": "host",
+            "baseName": "host",
+            "type": "string"
+        },
+        {
+            "name": "path",
+            "baseName": "path",
+            "type": "string"
+        },
+        {
+            "name": "port",
+            "baseName": "port",
+            "type": "number"
+        },
+        {
+            "name": "protocol",
+            "baseName": "protocol",
+            "type": "string"
+        },
+        {
+            "name": "query",
+            "baseName": "query",
+            "type": "string"
+        },
+        {
+            "name": "ref",
+            "baseName": "ref",
+            "type": "string"
+        },
+        {
+            "name": "serializedHashCode",
+            "baseName": "serializedHashCode",
+            "type": "number"
+        },
+        {
+            "name": "userInfo",
+            "baseName": "userInfo",
+            "type": "string"
+        }];
+
+    static getAttributeTypeMap() {
+        return URL.attributeTypeMap;
+    }
+}
+
+export class URLStreamHandler {
+
+    static discriminator: string | undefined = undefined;
+
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+    ];
+
+    static getAttributeTypeMap() {
+        return URLStreamHandler.attributeTypeMap;
+    }
+}
+
+
+
 export namespace User {
     export enum TierEnum {
-        PRIMARY = <any> 'PRIMARY',
-        SECONDARY = <any> 'SECONDARY',
-        LIMITED = <any> 'LIMITED'
+        PRIMARY = <any>'PRIMARY',
+        SECONDARY = <any>'SECONDARY',
+        LIMITED = <any>'LIMITED'
     }
 }
 export class UserGroup {
@@ -8468,7 +8573,7 @@ export class UserGroup {
 
     static discriminator: string | undefined = undefined;
 
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
         {
             "name": "active",
             "baseName": "active",
@@ -8513,7 +8618,7 @@ export class UserGroup {
             "name": "users",
             "baseName": "users",
             "type": "Array<User>"
-        }    ];
+        }];
 
     static getAttributeTypeMap() {
         return UserGroup.attributeTypeMap;
@@ -8537,7 +8642,7 @@ export class ValueMap {
 
     static discriminator: string | undefined = undefined;
 
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
         {
             "name": "active",
             "baseName": "active",
@@ -8602,7 +8707,7 @@ export class ValueMap {
             "name": "user",
             "baseName": "user",
             "type": "User"
-        }    ];
+        }];
 
     static getAttributeTypeMap() {
         return ValueMap.attributeTypeMap;
@@ -8673,7 +8778,7 @@ export class Workflow {
 
     static discriminator: string | undefined = undefined;
 
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
         {
             "name": "active",
             "baseName": "active",
@@ -8793,98 +8898,14 @@ export class Workflow {
             "name": "ypos",
             "baseName": "ypos",
             "type": "number"
-        }    ];
+        }];
 
     static getAttributeTypeMap() {
         return Workflow.attributeTypeMap;
     }
 }
 
-/**
-* A super-class that is used to manage the relationship type between two connected workflows.
-*/
-export class WorkflowMap {
-    'active'?: boolean;
-    'childId'?: string;
-    'created'?: Date;
-    'id'?: string;
-    'labels'?: Array<string>;
-    'parentId'?: string;
-    'parentResult'?: WorkflowResult;
-    /**
-    * Parent workflow.
-    */
-    'parentWorkflow'?: Workflow;
-    'updated'?: Date;
-    /**
-    * Child workflow to be connected.
-    */
-    'workflow'?: Workflow;
-    'workflowMapType'?: string;
 
-    static discriminator: string | undefined = "workflowMapType";
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
-        {
-            "name": "active",
-            "baseName": "active",
-            "type": "boolean"
-        },
-        {
-            "name": "childId",
-            "baseName": "childId",
-            "type": "string"
-        },
-        {
-            "name": "created",
-            "baseName": "created",
-            "type": "Date"
-        },
-        {
-            "name": "id",
-            "baseName": "id",
-            "type": "string"
-        },
-        {
-            "name": "labels",
-            "baseName": "labels",
-            "type": "Array<string>"
-        },
-        {
-            "name": "parentId",
-            "baseName": "parentId",
-            "type": "string"
-        },
-        {
-            "name": "parentResult",
-            "baseName": "parentResult",
-            "type": "WorkflowResult"
-        },
-        {
-            "name": "parentWorkflow",
-            "baseName": "parentWorkflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "updated",
-            "baseName": "updated",
-            "type": "Date"
-        },
-        {
-            "name": "workflow",
-            "baseName": "workflow",
-            "type": "Workflow"
-        },
-        {
-            "name": "workflowMapType",
-            "baseName": "workflowMapType",
-            "type": "string"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return WorkflowMap.attributeTypeMap;
-    }
-}
 
 export class WorkflowResult {
     'assignments'?: number;
@@ -8902,7 +8923,7 @@ export class WorkflowResult {
 
     static discriminator: string | undefined = undefined;
 
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
         {
             "name": "assignments",
             "baseName": "assignments",
@@ -8962,7 +8983,7 @@ export class WorkflowResult {
             "name": "steps",
             "baseName": "steps",
             "type": "number"
-        }    ];
+        }];
 
     static getAttributeTypeMap() {
         return WorkflowResult.attributeTypeMap;
@@ -8981,7 +9002,7 @@ export class WorkflowSequence {
 
     static discriminator: string | undefined = undefined;
 
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+    static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
         {
             "name": "active",
             "baseName": "active",
@@ -9021,7 +9042,7 @@ export class WorkflowSequence {
             "name": "value",
             "baseName": "value",
             "type": "number"
-        }    ];
+        }];
 
     static getAttributeTypeMap() {
         return WorkflowSequence.attributeTypeMap;
@@ -9029,59 +9050,59 @@ export class WorkflowSequence {
 }
 
 
-let enumsMap: {[index: string]: any} = {
-        "Active.TierEnum": Active.TierEnum,
-        "Attachment.FieldTypeEnum": Attachment.FieldTypeEnum,
-        "Attachment.OperatorsEnum": Attachment.OperatorsEnum,
-        "Calculation.FieldTypeEnum": Calculation.FieldTypeEnum,
-        "Calculation.LogicalHandlingEnum": Calculation.LogicalHandlingEnum,
-        "Calculation.NullStrategyEnum": Calculation.NullStrategyEnum,
-        "Calculation.OperatorsEnum": Calculation.OperatorsEnum,
-        "Checkbox.FieldTypeEnum": Checkbox.FieldTypeEnum,
-        "Checkbox.OperatorsEnum": Checkbox.OperatorsEnum,
-        "CleanAttachment.AttachmentStatusEnum": CleanAttachment.AttachmentStatusEnum,
-        "DatePicker.FieldTypeEnum": DatePicker.FieldTypeEnum,
-        "DatePicker.OperatorsEnum": DatePicker.OperatorsEnum,
-        "DirtyAttachment.AttachmentStatusEnum": DirtyAttachment.AttachmentStatusEnum,
-        "Disabled.TierEnum": Disabled.TierEnum,
-        "DueDate.FieldTypeEnum": DueDate.FieldTypeEnum,
-        "DueDate.OperatorsEnum": DueDate.OperatorsEnum,
-        "ESignature.FieldTypeEnum": ESignature.FieldTypeEnum,
-        "ESignature.OperatorsEnum": ESignature.OperatorsEnum,
-        "External.TierEnum": External.TierEnum,
-        "Field.FieldTypeEnum": Field.FieldTypeEnum,
-        "Field.OperatorsEnum": Field.OperatorsEnum,
-        "LayoutField.CategoryEnum": LayoutField.CategoryEnum,
-        "LayoutField.DirectionEnum": LayoutField.DirectionEnum,
-        "LayoutField.LabelDisplayTypeEnum": LayoutField.LabelDisplayTypeEnum,
-        "LayoutField.OperatorsEnum": LayoutField.OperatorsEnum,
-        "LayoutField.SystemFieldEnum": LayoutField.SystemFieldEnum,
-        "Locked.TierEnum": Locked.TierEnum,
-        "Module.ValueEnum": Module.ValueEnum,
-        "MultiSelect.FieldTypeEnum": MultiSelect.FieldTypeEnum,
-        "MultiSelect.OperatorsEnum": MultiSelect.OperatorsEnum,
-        "Number.FieldTypeEnum": Number.FieldTypeEnum,
-        "Number.OperatorsEnum": Number.OperatorsEnum,
-        "PendingAttachment.AttachmentStatusEnum": PendingAttachment.AttachmentStatusEnum,
-        "Process.IconEnum": Process.IconEnum,
-        "Radio.FieldTypeEnum": Radio.FieldTypeEnum,
-        "Radio.OperatorsEnum": Radio.OperatorsEnum,
-        "Record.StatusEnum": Record.StatusEnum,
-        "RecordProperty.FieldTypeEnum": RecordProperty.FieldTypeEnum,
-        "RecordProperty.SystemFieldEnum": RecordProperty.SystemFieldEnum,
-        "ReportFilter.OperatorEnum": ReportFilter.OperatorEnum,
-        "ReportFilter.RecordRelationshipEnum": ReportFilter.RecordRelationshipEnum,
-        "ReportFilter.SystemFieldEnum": ReportFilter.SystemFieldEnum,
-        "Select.FieldTypeEnum": Select.FieldTypeEnum,
-        "Select.OperatorsEnum": Select.OperatorsEnum,
-        "Text.FieldTypeEnum": Text.FieldTypeEnum,
-        "Text.OperatorsEnum": Text.OperatorsEnum,
-        "TextArea.FieldTypeEnum": TextArea.FieldTypeEnum,
-        "TextArea.OperatorsEnum": TextArea.OperatorsEnum,
-        "User.TierEnum": User.TierEnum,
+let enumsMap: { [index: string]: any } = {
+    "Active.TierEnum": Active.TierEnum,
+    "Attachment.FieldTypeEnum": Attachment.FieldTypeEnum,
+    "Attachment.OperatorsEnum": Attachment.OperatorsEnum,
+    "Calculation.FieldTypeEnum": Calculation.FieldTypeEnum,
+    "Calculation.LogicalHandlingEnum": Calculation.LogicalHandlingEnum,
+    "Calculation.NullStrategyEnum": Calculation.NullStrategyEnum,
+    "Calculation.OperatorsEnum": Calculation.OperatorsEnum,
+    "Checkbox.FieldTypeEnum": Checkbox.FieldTypeEnum,
+    "Checkbox.OperatorsEnum": Checkbox.OperatorsEnum,
+    "CleanAttachment.AttachmentStatusEnum": CleanAttachment.AttachmentStatusEnum,
+    "DatePicker.FieldTypeEnum": DatePicker.FieldTypeEnum,
+    "DatePicker.OperatorsEnum": DatePicker.OperatorsEnum,
+    "DirtyAttachment.AttachmentStatusEnum": DirtyAttachment.AttachmentStatusEnum,
+    "Disabled.TierEnum": Disabled.TierEnum,
+    "DueDate.FieldTypeEnum": DueDate.FieldTypeEnum,
+    "DueDate.OperatorsEnum": DueDate.OperatorsEnum,
+    "ESignature.FieldTypeEnum": ESignature.FieldTypeEnum,
+    "ESignature.OperatorsEnum": ESignature.OperatorsEnum,
+    "External.TierEnum": External.TierEnum,
+    "Field.FieldTypeEnum": Field.FieldTypeEnum,
+    "Field.OperatorsEnum": Field.OperatorsEnum,
+    "LayoutField.CategoryEnum": LayoutField.CategoryEnum,
+    "LayoutField.DirectionEnum": LayoutField.DirectionEnum,
+    "LayoutField.LabelDisplayTypeEnum": LayoutField.LabelDisplayTypeEnum,
+    "LayoutField.OperatorsEnum": LayoutField.OperatorsEnum,
+    "LayoutField.SystemFieldEnum": LayoutField.SystemFieldEnum,
+    "Locked.TierEnum": Locked.TierEnum,
+    "Module.ValueEnum": Module.ValueEnum,
+    "MultiSelect.FieldTypeEnum": MultiSelect.FieldTypeEnum,
+    "MultiSelect.OperatorsEnum": MultiSelect.OperatorsEnum,
+    "Number.FieldTypeEnum": Number.FieldTypeEnum,
+    "Number.OperatorsEnum": Number.OperatorsEnum,
+    "PendingAttachment.AttachmentStatusEnum": PendingAttachment.AttachmentStatusEnum,
+    "Process.IconEnum": Process.IconEnum,
+    "Radio.FieldTypeEnum": Radio.FieldTypeEnum,
+    "Radio.OperatorsEnum": Radio.OperatorsEnum,
+    "Record.StatusEnum": Record.StatusEnum,
+    "RecordProperty.FieldTypeEnum": RecordProperty.FieldTypeEnum,
+    "RecordProperty.SystemFieldEnum": RecordProperty.SystemFieldEnum,
+    "ReportFilter.OperatorEnum": ReportFilter.OperatorEnum,
+    "ReportFilter.RecordRelationshipEnum": ReportFilter.RecordRelationshipEnum,
+    "ReportFilter.SystemFieldEnum": ReportFilter.SystemFieldEnum,
+    "Select.FieldTypeEnum": Select.FieldTypeEnum,
+    "Select.OperatorsEnum": Select.OperatorsEnum,
+    "Text.FieldTypeEnum": Text.FieldTypeEnum,
+    "Text.OperatorsEnum": Text.OperatorsEnum,
+    "TextArea.FieldTypeEnum": TextArea.FieldTypeEnum,
+    "TextArea.OperatorsEnum": TextArea.OperatorsEnum,
+    "User.TierEnum": User.TierEnum,
 }
 
-let typeMap: {[index: string]: any} = {
+let typeMap: { [index: string]: any } = {
     "AccessAudit": AccessAudit,
     "Active": Active,
     "Attachment": Attachment,
@@ -9221,8 +9242,8 @@ export enum CurrentValuesApiApiKeys {
 
 export class CurrentValuesApi {
     protected _basePath = defaultBasePath;
-    protected defaultHeaders : any = {};
-    protected _useQuerystring : boolean = false;
+    protected defaultHeaders: any = {};
+    protected _useQuerystring: boolean = false;
 
     protected authentications = {
         'default': <Authentication>new VoidAuth(),
@@ -9255,7 +9276,7 @@ export class CurrentValuesApi {
     }
 
     public setDefaultAuthentication(auth: Authentication) {
-	this.authentications.default = auth;
+        this.authentications.default = auth;
     }
 
     public setApiKey(key: CurrentValuesApiApiKeys, value: string) {
@@ -9268,7 +9289,7 @@ export class CurrentValuesApi {
      * @param field field
      * @param {*} [options] Override http request options.
      */
-    public createUsingPOST (currentValues: Array<CurrentValue>, field: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<CurrentValue>;  }> {
+    public createUsingPOST(currentValues: Array<CurrentValue>, field: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<CurrentValue>; }> {
         const localVarPath = this.basePath + '/api/v1/currentValues';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -9292,7 +9313,7 @@ export class CurrentValuesApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -9311,14 +9332,14 @@ export class CurrentValuesApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<CurrentValue>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<CurrentValue>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<CurrentValue>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -9336,7 +9357,7 @@ export class CurrentValuesApi {
      * @param sort Sorting criteria in the format: object.property(,asc|desc)
      * @param {*} [options] Override http request options.
      */
-    public findCurrentValuesByFieldUsingGET (id: string, page: string, size: string, query?: string, sort?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: CurrentValue;  }> {
+    public findCurrentValuesByFieldUsingGET(id: string, page: string, size: string, query?: string, sort?: string, options: any = {}): Promise<{ response: ClientResponse; body: CurrentValue; }> {
         const localVarPath = this.basePath + '/api/v1/currentValues/field/{id}'
             .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
         let localVarQueryParameters: any = {};
@@ -9378,7 +9399,7 @@ export class CurrentValuesApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -9396,14 +9417,14 @@ export class CurrentValuesApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: CurrentValue;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: CurrentValue; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "CurrentValue");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -9417,7 +9438,7 @@ export class CurrentValuesApi {
      * @param workflow workflow
      * @param {*} [options] Override http request options.
      */
-    public findDefaultsByWorkflowUsingGET (workflow: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<CurrentValue>;  }> {
+    public findDefaultsByWorkflowUsingGET(workflow: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<CurrentValue>; }> {
         const localVarPath = this.basePath + '/api/v1/currentValues';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -9436,7 +9457,7 @@ export class CurrentValuesApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -9454,14 +9475,14 @@ export class CurrentValuesApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<CurrentValue>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<CurrentValue>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<CurrentValue>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -9479,7 +9500,7 @@ export class CurrentValuesApi {
      * @param sort Sorting criteria in the format: object.property(,asc|desc)
      * @param {*} [options] Override http request options.
      */
-    public findUsersByFieldUsingGET (field: string, page: string, query: string, size: string, sort?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: PageOfCurrentValue;  }> {
+    public findUsersByFieldUsingGET(field: string, page: string, query: string, size: string, sort?: string, options: any = {}): Promise<{ response: ClientResponse; body: PageOfCurrentValue; }> {
         const localVarPath = this.basePath + '/api/v1/currentValues/users';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -9529,7 +9550,7 @@ export class CurrentValuesApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -9547,14 +9568,14 @@ export class CurrentValuesApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: PageOfCurrentValue;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: PageOfCurrentValue; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "PageOfCurrentValue");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -9570,7 +9591,7 @@ export class CurrentValuesApi {
      * @param field field
      * @param {*} [options] Override http request options.
      */
-    public updateDefaultsUsingPATCH (currentValues: Array<CurrentValue>, _default: 'true', field: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<CurrentValue>;  }> {
+    public updateDefaultsUsingPATCH(currentValues: Array<CurrentValue>, _default: 'true', field: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<CurrentValue>; }> {
         const localVarPath = this.basePath + '/api/v1/currentValues';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -9603,7 +9624,7 @@ export class CurrentValuesApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'PATCH',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -9622,14 +9643,14 @@ export class CurrentValuesApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<CurrentValue>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<CurrentValue>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<CurrentValue>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -9644,8 +9665,8 @@ export enum ExternalUsersApiApiKeys {
 
 export class ExternalUsersApi {
     protected _basePath = defaultBasePath;
-    protected defaultHeaders : any = {};
-    protected _useQuerystring : boolean = false;
+    protected defaultHeaders: any = {};
+    protected _useQuerystring: boolean = false;
 
     protected authentications = {
         'default': <Authentication>new VoidAuth(),
@@ -9678,7 +9699,7 @@ export class ExternalUsersApi {
     }
 
     public setDefaultAuthentication(auth: Authentication) {
-	this.authentications.default = auth;
+        this.authentications.default = auth;
     }
 
     public setApiKey(key: ExternalUsersApiApiKeys, value: string) {
@@ -9690,7 +9711,7 @@ export class ExternalUsersApi {
      * @param user user
      * @param {*} [options] Override http request options.
      */
-    public createUsingPOST1 (user: User, options: any = {}) : Promise<{ response: http.ClientResponse; body: User;  }> {
+    public createUsingPOST1(user: User, options: any = {}): Promise<{ response: ClientResponse; body: User; }> {
         const localVarPath = this.basePath + '/api/v1/users/external';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -9705,7 +9726,7 @@ export class ExternalUsersApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -9724,14 +9745,14 @@ export class ExternalUsersApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: User;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: User; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "User");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -9746,8 +9767,8 @@ export enum FieldsApiApiKeys {
 
 export class FieldsApi {
     protected _basePath = defaultBasePath;
-    protected defaultHeaders : any = {};
-    protected _useQuerystring : boolean = false;
+    protected defaultHeaders: any = {};
+    protected _useQuerystring: boolean = false;
 
     protected authentications = {
         'default': <Authentication>new VoidAuth(),
@@ -9780,7 +9801,7 @@ export class FieldsApi {
     }
 
     public setDefaultAuthentication(auth: Authentication) {
-	this.authentications.default = auth;
+        this.authentications.default = auth;
     }
 
     public setApiKey(key: FieldsApiApiKeys, value: string) {
@@ -9792,7 +9813,7 @@ export class FieldsApi {
      * @param field field
      * @param {*} [options] Override http request options.
      */
-    public createUsingPOST2 (field: Field, options: any = {}) : Promise<{ response: http.ClientResponse; body: Field;  }> {
+    public createUsingPOST2(field: Field, options: any = {}): Promise<{ response: ClientResponse; body: Field; }> {
         const localVarPath = this.basePath + '/api/v1/fields';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -9807,7 +9828,7 @@ export class FieldsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -9826,14 +9847,14 @@ export class FieldsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Field;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Field; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Field");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -9847,7 +9868,7 @@ export class FieldsApi {
      * @param id id
      * @param {*} [options] Override http request options.
      */
-    public deleteUsingDELETE (id: string, options: any = {}) : Promise<{ response: http.ClientResponse; body?: any;  }> {
+    public deleteUsingDELETE(id: string, options: any = {}): Promise<{ response: ClientResponse; body?: any; }> {
         const localVarPath = this.basePath + '/api/v1/fields/{id}'
             .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
         let localVarQueryParameters: any = {};
@@ -9863,7 +9884,7 @@ export class FieldsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'DELETE',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -9881,13 +9902,13 @@ export class FieldsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body?: any;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body?: any; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -9901,7 +9922,7 @@ export class FieldsApi {
      * @param fieldId fieldId
      * @param {*} [options] Override http request options.
      */
-    public fieldIsInputUsingGET (fieldId: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: boolean;  }> {
+    public fieldIsInputUsingGET(fieldId: string, options: any = {}): Promise<{ response: ClientResponse; body: boolean; }> {
         const localVarPath = this.basePath + '/api/v1/fields/isInput/{fieldId}'
             .replace('{' + 'fieldId' + '}', encodeURIComponent(String(fieldId)));
         let localVarQueryParameters: any = {};
@@ -9917,7 +9938,7 @@ export class FieldsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -9935,14 +9956,14 @@ export class FieldsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: boolean;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: boolean; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "boolean");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -9972,7 +9993,7 @@ export class FieldsApi {
      * @param workflowId 
      * @param {*} [options] Override http request options.
      */
-    public findByDiscreteWithValuesUsingGET (page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: PageOfField;  }> {
+    public findByDiscreteWithValuesUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options: any = {}): Promise<{ response: ClientResponse; body: PageOfField; }> {
         const localVarPath = this.basePath + '/api/v1/fields/discrete/values';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -10060,7 +10081,7 @@ export class FieldsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -10078,14 +10099,14 @@ export class FieldsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: PageOfField;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: PageOfField; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "PageOfField");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -10115,7 +10136,7 @@ export class FieldsApi {
      * @param workflowId 
      * @param {*} [options] Override http request options.
      */
-    public findByGlobalUsingGET (page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: PageOfField;  }> {
+    public findByGlobalUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options: any = {}): Promise<{ response: ClientResponse; body: PageOfField; }> {
         const localVarPath = this.basePath + '/api/v1/fields/global';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -10203,7 +10224,7 @@ export class FieldsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -10221,14 +10242,14 @@ export class FieldsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: PageOfField;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: PageOfField; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "PageOfField");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -10243,7 +10264,7 @@ export class FieldsApi {
      * @param archived Retrieve archived values
      * @param {*} [options] Override http request options.
      */
-    public findByIdUsingGET (id: string, archived?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: Field;  }> {
+    public findByIdUsingGET(id: string, archived?: boolean, options: any = {}): Promise<{ response: ClientResponse; body: Field; }> {
         const localVarPath = this.basePath + '/api/v1/fields/{id}'
             .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
         let localVarQueryParameters: any = {};
@@ -10263,7 +10284,7 @@ export class FieldsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -10281,14 +10302,14 @@ export class FieldsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Field;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Field; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Field");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -10315,7 +10336,7 @@ export class FieldsApi {
      * @param withValues 
      * @param {*} [options] Override http request options.
      */
-    public findByWorkflowUsingGET (workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Field>;  }> {
+    public findByWorkflowUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options: any = {}): Promise<{ response: ClientResponse; body: Array<Field>; }> {
         const localVarPath = this.basePath + '/api/v1/fields/workflow/{workflowId}/values'
             .replace('{' + 'workflowId' + '}', encodeURIComponent(String(workflowId)));
         let localVarQueryParameters: any = {};
@@ -10383,7 +10404,7 @@ export class FieldsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -10401,14 +10422,14 @@ export class FieldsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<Field>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<Field>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<Field>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -10436,7 +10457,7 @@ export class FieldsApi {
      * @param withValues 
      * @param {*} [options] Override http request options.
      */
-    public findByWorkflowUsingGET1 (page: string, workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: PageOfField;  }> {
+    public findByWorkflowUsingGET1(page: string, workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options: any = {}): Promise<{ response: ClientResponse; body: PageOfField; }> {
         const localVarPath = this.basePath + '/api/v1/fields/workflow/{workflowId}'
             .replace('{' + 'workflowId' + '}', encodeURIComponent(String(workflowId)));
         let localVarQueryParameters: any = {};
@@ -10513,7 +10534,7 @@ export class FieldsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -10531,14 +10552,14 @@ export class FieldsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: PageOfField;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: PageOfField; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "PageOfField");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -10565,7 +10586,7 @@ export class FieldsApi {
      * @param workflowId 
      * @param {*} [options] Override http request options.
      */
-    public findInputFieldsByRequestUsingGET (archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Field>;  }> {
+    public findInputFieldsByRequestUsingGET(archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<Field>; }> {
         const localVarPath = this.basePath + '/api/v1/fields/nested';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -10631,7 +10652,7 @@ export class FieldsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -10649,14 +10670,14 @@ export class FieldsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<Field>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<Field>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<Field>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -10683,7 +10704,7 @@ export class FieldsApi {
      * @param withValues 
      * @param {*} [options] Override http request options.
      */
-    public findUserFieldsByWorkflowOrGlobalUsingGET (workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: PageOfField;  }> {
+    public findUserFieldsByWorkflowOrGlobalUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options: any = {}): Promise<{ response: ClientResponse; body: PageOfField; }> {
         const localVarPath = this.basePath + '/api/v1/fields/workflow/{workflowId}/users'
             .replace('{' + 'workflowId' + '}', encodeURIComponent(String(workflowId)));
         let localVarQueryParameters: any = {};
@@ -10751,7 +10772,7 @@ export class FieldsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -10769,14 +10790,14 @@ export class FieldsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: PageOfField;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: PageOfField; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "PageOfField");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -10789,7 +10810,7 @@ export class FieldsApi {
      * @summary Return a list of all field types.
      * @param {*} [options] Override http request options.
      */
-    public listFieldTypesUsingGET (options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<string>;  }> {
+    public listFieldTypesUsingGET(options: any = {}): Promise<{ response: ClientResponse; body: Array<string>; }> {
         const localVarPath = this.basePath + '/api/v1/fields/types';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -10799,7 +10820,7 @@ export class FieldsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -10817,14 +10838,14 @@ export class FieldsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<string>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<string>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<string>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -10839,8 +10860,8 @@ export enum RecordsApiApiKeys {
 
 export class RecordsApi {
     protected _basePath = defaultBasePath;
-    protected defaultHeaders : any = {};
-    protected _useQuerystring : boolean = false;
+    protected defaultHeaders: any = {};
+    protected _useQuerystring: boolean = false;
 
     protected authentications = {
         'default': <Authentication>new VoidAuth(),
@@ -10873,7 +10894,7 @@ export class RecordsApi {
     }
 
     public setDefaultAuthentication(auth: Authentication) {
-	this.authentications.default = auth;
+        this.authentications.default = auth;
     }
 
     public setApiKey(key: RecordsApiApiKeys, value: string) {
@@ -10887,7 +10908,7 @@ export class RecordsApi {
      * @param layout Layout ID
      * @param {*} [options] Override http request options.
      */
-    public createChildUsingPOST (child: Record, record: string, layout?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: FilteredRecord;  }> {
+    public createChildUsingPOST(child: Record, record: string, layout?: string, options: any = {}): Promise<{ response: ClientResponse; body: FilteredRecord; }> {
         const localVarPath = this.basePath + '/api/v1/assignments/{record}/child'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -10912,7 +10933,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -10931,14 +10952,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: FilteredRecord;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: FilteredRecord; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "FilteredRecord");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -10954,7 +10975,7 @@ export class RecordsApi {
      * @param layout Layout ID
      * @param {*} [options] Override http request options.
      */
-    public createChildUsingPOST1 (child: Record, record: string, layout?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: FilteredRecord;  }> {
+    public createChildUsingPOST1(child: Record, record: string, layout?: string, options: any = {}): Promise<{ response: ClientResponse; body: FilteredRecord; }> {
         const localVarPath = this.basePath + '/api/v1/records/{record}/child'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -10979,7 +11000,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -10998,14 +11019,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: FilteredRecord;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: FilteredRecord; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "FilteredRecord");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11021,7 +11042,7 @@ export class RecordsApi {
      * @param layout Layout ID
      * @param {*} [options] Override http request options.
      */
-    public createParentUsingPOST (parent: Record, record: string, layout?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: FilteredRecord;  }> {
+    public createParentUsingPOST(parent: Record, record: string, layout?: string, options: any = {}): Promise<{ response: ClientResponse; body: FilteredRecord; }> {
         const localVarPath = this.basePath + '/api/v1/assignments/{record}/parent'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -11046,7 +11067,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11065,14 +11086,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: FilteredRecord;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: FilteredRecord; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "FilteredRecord");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11088,7 +11109,7 @@ export class RecordsApi {
      * @param layout Layout ID
      * @param {*} [options] Override http request options.
      */
-    public createParentUsingPOST1 (parent: Record, record: string, layout?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: FilteredRecord;  }> {
+    public createParentUsingPOST1(parent: Record, record: string, layout?: string, options: any = {}): Promise<{ response: ClientResponse; body: FilteredRecord; }> {
         const localVarPath = this.basePath + '/api/v1/records/{record}/parent'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -11113,7 +11134,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11132,14 +11153,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: FilteredRecord;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: FilteredRecord; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "FilteredRecord");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11153,7 +11174,7 @@ export class RecordsApi {
      * @param record record
      * @param {*} [options] Override http request options.
      */
-    public createPublicUsingPOST (record: Record, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public createPublicUsingPOST(record: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/assignments/public';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -11168,7 +11189,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11187,14 +11208,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11208,7 +11229,7 @@ export class RecordsApi {
      * @param record record
      * @param {*} [options] Override http request options.
      */
-    public createPublicUsingPOST1 (record: Record, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public createPublicUsingPOST1(record: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/records/public';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -11223,7 +11244,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11242,14 +11263,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11263,7 +11284,7 @@ export class RecordsApi {
      * @param record record
      * @param {*} [options] Override http request options.
      */
-    public createRecordUsingPOST (record: Record, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public createRecordUsingPOST(record: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/assignments';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -11278,7 +11299,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11297,14 +11318,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11318,7 +11339,7 @@ export class RecordsApi {
      * @param record record
      * @param {*} [options] Override http request options.
      */
-    public createRecordUsingPOST1 (record: Record, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public createRecordUsingPOST1(record: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/records';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -11333,7 +11354,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11352,14 +11373,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11374,7 +11395,7 @@ export class RecordsApi {
      * @param map Assignment ID to delete mapping with
      * @param {*} [options] Override http request options.
      */
-    public deleteMappingUsingDELETE (record: string, map?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body?: any;  }> {
+    public deleteMappingUsingDELETE(record: string, map?: string, options: any = {}): Promise<{ response: ClientResponse; body?: any; }> {
         const localVarPath = this.basePath + '/api/v1/assignments/{record}'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -11394,7 +11415,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'DELETE',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11412,13 +11433,13 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body?: any;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body?: any; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11432,7 +11453,7 @@ export class RecordsApi {
      * @param record record
      * @param {*} [options] Override http request options.
      */
-    public deleteUsingDELETE2 (record: string, options: any = {}) : Promise<{ response: http.ClientResponse; body?: any;  }> {
+    public deleteUsingDELETE2(record: string, options: any = {}): Promise<{ response: ClientResponse; body?: any; }> {
         const localVarPath = this.basePath + '/api/v1/records/{record}'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -11448,7 +11469,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'DELETE',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11466,13 +11487,13 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body?: any;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body?: any; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11486,7 +11507,7 @@ export class RecordsApi {
      * @param minUpdated Minimum updated time value. The value is a unix timestamp.
      * @param {*} [options] Override http request options.
      */
-    public getRecordByMinUpdatedUsingGET (minUpdated?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Record>;  }> {
+    public getRecordByMinUpdatedUsingGET(minUpdated?: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<Record>; }> {
         const localVarPath = this.basePath + '/api/v1/assignments';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -11500,7 +11521,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11518,14 +11539,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<Record>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<Record>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<Record>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11540,7 +11561,7 @@ export class RecordsApi {
      * @param minUpdated Minimum updated time value. The value is a unix timestamp.
      * @param {*} [options] Override http request options.
      */
-    public getRecordChildrenByLastUpdatedUsingGET1 (hasChild: 'true', minUpdated?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Record>;  }> {
+    public getRecordChildrenByLastUpdatedUsingGET1(hasChild: 'true', minUpdated?: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<Record>; }> {
         const localVarPath = this.basePath + '/api/v1/records';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -11563,7 +11584,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11581,14 +11602,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<Record>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<Record>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<Record>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11602,7 +11623,7 @@ export class RecordsApi {
      * @param record record
      * @param {*} [options] Override http request options.
      */
-    public getRecordUsingGET (record: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public getRecordUsingGET(record: string, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/assignments/{record}'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -11618,7 +11639,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11636,14 +11657,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11657,7 +11678,7 @@ export class RecordsApi {
      * @param record record
      * @param {*} [options] Override http request options.
      */
-    public getRecordUsingGET1 (record: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public getRecordUsingGET1(record: string, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/records/{record}'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -11673,7 +11694,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11691,14 +11712,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11714,7 +11735,7 @@ export class RecordsApi {
      * @param redirect redirect
      * @param {*} [options] Override http request options.
      */
-    public redirectRecordUsingPUT (record: string, record2: Record, redirect: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public redirectRecordUsingPUT(record: string, record2: Record, redirect: string, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/assignments/{record}/redirect/{redirect}'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)))
             .replace('{' + 'redirect' + '}', encodeURIComponent(String(redirect)));
@@ -11741,7 +11762,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'PUT',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11760,14 +11781,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11783,7 +11804,7 @@ export class RecordsApi {
      * @param redirect redirect
      * @param {*} [options] Override http request options.
      */
-    public redirectRecordUsingPUT1 (record: string, record2: Record, redirect: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public redirectRecordUsingPUT1(record: string, record2: Record, redirect: string, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/records/{record}/redirect/{redirect}'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)))
             .replace('{' + 'redirect' + '}', encodeURIComponent(String(redirect)));
@@ -11810,7 +11831,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'PUT',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11829,14 +11850,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11851,7 +11872,7 @@ export class RecordsApi {
      * @param record2 record
      * @param {*} [options] Override http request options.
      */
-    public submitRecordUsingPUT (record: string, record2: Record, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public submitRecordUsingPUT(record: string, record2: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/assignments/{record}/progress'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -11872,7 +11893,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'PUT',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11891,14 +11912,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11913,7 +11934,7 @@ export class RecordsApi {
      * @param record2 record
      * @param {*} [options] Override http request options.
      */
-    public submitRecordUsingPUT1 (record: string, record2: Record, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public submitRecordUsingPUT1(record: string, record2: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/records/{record}/progress'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -11934,7 +11955,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'PUT',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -11953,14 +11974,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -11975,7 +11996,7 @@ export class RecordsApi {
      * @param record2 record
      * @param {*} [options] Override http request options.
      */
-    public updateRecordUsingPUT (record: string, record2: Record, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public updateRecordUsingPUT(record: string, record2: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/assignments/{record}'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -11996,7 +12017,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'PUT',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12015,14 +12036,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12037,7 +12058,7 @@ export class RecordsApi {
      * @param record2 record
      * @param {*} [options] Override http request options.
      */
-    public updateRecordUsingPUT1 (record: string, record2: Record, options: any = {}) : Promise<{ response: http.ClientResponse; body: Record;  }> {
+    public updateRecordUsingPUT1(record: string, record2: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
         const localVarPath = this.basePath + '/api/v1/records/{record}'
             .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
         let localVarQueryParameters: any = {};
@@ -12058,7 +12079,7 @@ export class RecordsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'PUT',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12077,14 +12098,14 @@ export class RecordsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Record;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Record");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12099,8 +12120,8 @@ export enum RolesApiApiKeys {
 
 export class RolesApi {
     protected _basePath = defaultBasePath;
-    protected defaultHeaders : any = {};
-    protected _useQuerystring : boolean = false;
+    protected defaultHeaders: any = {};
+    protected _useQuerystring: boolean = false;
 
     protected authentications = {
         'default': <Authentication>new VoidAuth(),
@@ -12133,7 +12154,7 @@ export class RolesApi {
     }
 
     public setDefaultAuthentication(auth: Authentication) {
-	this.authentications.default = auth;
+        this.authentications.default = auth;
     }
 
     public setApiKey(key: RolesApiApiKeys, value: string) {
@@ -12145,7 +12166,7 @@ export class RolesApi {
      * @param role role
      * @param {*} [options] Override http request options.
      */
-    public createUsingPOST3 (role: Role, options: any = {}) : Promise<{ response: http.ClientResponse; body: Role;  }> {
+    public createUsingPOST3(role: Role, options: any = {}): Promise<{ response: ClientResponse; body: Role; }> {
         const localVarPath = this.basePath + '/api/v1/roles';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -12160,7 +12181,7 @@ export class RolesApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12179,14 +12200,14 @@ export class RolesApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Role;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Role; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Role");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12199,7 +12220,7 @@ export class RolesApi {
      * @summary Return all roles that are active and unlocked.
      * @param {*} [options] Override http request options.
      */
-    public findAllUsingGET (options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Role>;  }> {
+    public findAllUsingGET(options: any = {}): Promise<{ response: ClientResponse; body: Array<Role>; }> {
         const localVarPath = this.basePath + '/api/v1/roles';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -12209,7 +12230,7 @@ export class RolesApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12227,14 +12248,14 @@ export class RolesApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<Role>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<Role>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<Role>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12247,7 +12268,7 @@ export class RolesApi {
      * @summary Return a list of roles that are active and associated to the logged in principal user.
      * @param {*} [options] Override http request options.
      */
-    public findByUserUsingGET (options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Role>;  }> {
+    public findByUserUsingGET(options: any = {}): Promise<{ response: ClientResponse; body: Array<Role>; }> {
         const localVarPath = this.basePath + '/api/v1/roles/user';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -12257,7 +12278,7 @@ export class RolesApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12275,14 +12296,14 @@ export class RolesApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<Role>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<Role>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<Role>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12297,8 +12318,8 @@ export enum StepsApiApiKeys {
 
 export class StepsApi {
     protected _basePath = defaultBasePath;
-    protected defaultHeaders : any = {};
-    protected _useQuerystring : boolean = false;
+    protected defaultHeaders: any = {};
+    protected _useQuerystring: boolean = false;
 
     protected authentications = {
         'default': <Authentication>new VoidAuth(),
@@ -12331,7 +12352,7 @@ export class StepsApi {
     }
 
     public setDefaultAuthentication(auth: Authentication) {
-	this.authentications.default = auth;
+        this.authentications.default = auth;
     }
 
     public setApiKey(key: StepsApiApiKeys, value: string) {
@@ -12342,7 +12363,7 @@ export class StepsApi {
      * @summary Return a list of all nodes that are active and attached to a workflow.
      * @param {*} [options] Override http request options.
      */
-    public findAllUsingGET1 (options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Step>;  }> {
+    public findAllUsingGET1(options: any = {}): Promise<{ response: ClientResponse; body: Array<Step>; }> {
         const localVarPath = this.basePath + '/api/v1/nodes';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -12352,7 +12373,7 @@ export class StepsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12370,14 +12391,14 @@ export class StepsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<Step>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<Step>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<Step>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12390,7 +12411,7 @@ export class StepsApi {
      * @summary Return a list of all nodes that are active and attached to a workflow.
      * @param {*} [options] Override http request options.
      */
-    public findAllUsingGET2 (options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Step>;  }> {
+    public findAllUsingGET2(options: any = {}): Promise<{ response: ClientResponse; body: Array<Step>; }> {
         const localVarPath = this.basePath + '/api/v1/steps';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -12400,7 +12421,7 @@ export class StepsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12418,14 +12439,14 @@ export class StepsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<Step>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<Step>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<Step>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12439,7 +12460,7 @@ export class StepsApi {
      * @param id id
      * @param {*} [options] Override http request options.
      */
-    public findByIdUsingGET1 (id: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Step;  }> {
+    public findByIdUsingGET1(id: string, options: any = {}): Promise<{ response: ClientResponse; body: Step; }> {
         const localVarPath = this.basePath + '/api/v1/nodes/{id}'
             .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
         let localVarQueryParameters: any = {};
@@ -12455,7 +12476,7 @@ export class StepsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12473,14 +12494,14 @@ export class StepsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Step;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Step; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Step");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12494,7 +12515,7 @@ export class StepsApi {
      * @param id id
      * @param {*} [options] Override http request options.
      */
-    public findByIdUsingGET2 (id: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Step;  }> {
+    public findByIdUsingGET2(id: string, options: any = {}): Promise<{ response: ClientResponse; body: Step; }> {
         const localVarPath = this.basePath + '/api/v1/steps/{id}'
             .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
         let localVarQueryParameters: any = {};
@@ -12510,7 +12531,7 @@ export class StepsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12528,14 +12549,14 @@ export class StepsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Step;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Step; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Step");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12550,8 +12571,8 @@ export enum UsersApiApiKeys {
 
 export class UsersApi {
     protected _basePath = defaultBasePath;
-    protected defaultHeaders : any = {};
-    protected _useQuerystring : boolean = false;
+    protected defaultHeaders: any = {};
+    protected _useQuerystring: boolean = false;
 
     protected authentications = {
         'default': <Authentication>new VoidAuth(),
@@ -12584,7 +12605,7 @@ export class UsersApi {
     }
 
     public setDefaultAuthentication(auth: Authentication) {
-	this.authentications.default = auth;
+        this.authentications.default = auth;
     }
 
     public setApiKey(key: UsersApiApiKeys, value: string) {
@@ -12596,7 +12617,7 @@ export class UsersApi {
      * @param user user
      * @param {*} [options] Override http request options.
      */
-    public createUsingPOST4 (user: User, options: any = {}) : Promise<{ response: http.ClientResponse; body: User;  }> {
+    public createUsingPOST4(user: User, options: any = {}): Promise<{ response: ClientResponse; body: User; }> {
         const localVarPath = this.basePath + '/api/v1/users';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -12611,7 +12632,7 @@ export class UsersApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12630,14 +12651,14 @@ export class UsersApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: User;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: User; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "User");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12651,7 +12672,7 @@ export class UsersApi {
      * @param id id
      * @param {*} [options] Override http request options.
      */
-    public disableUserUsingPUT (id: string, options: any = {}) : Promise<{ response: http.ClientResponse; body?: any;  }> {
+    public disableUserUsingPUT(id: string, options: any = {}): Promise<{ response: ClientResponse; body?: any; }> {
         const localVarPath = this.basePath + '/api/v1/users/disable/{id}'
             .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
         let localVarQueryParameters: any = {};
@@ -12667,7 +12688,7 @@ export class UsersApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'PUT',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12685,13 +12706,13 @@ export class UsersApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body?: any;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body?: any; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12706,7 +12727,7 @@ export class UsersApi {
      * @param sendEmail sendEmail
      * @param {*} [options] Override http request options.
      */
-    public enableUserUsingPUT (id: string, sendEmail?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body?: any;  }> {
+    public enableUserUsingPUT(id: string, sendEmail?: string, options: any = {}): Promise<{ response: ClientResponse; body?: any; }> {
         const localVarPath = this.basePath + '/api/v1/users/enable/{id}'
             .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
         let localVarQueryParameters: any = {};
@@ -12726,7 +12747,7 @@ export class UsersApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'PUT',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12744,13 +12765,13 @@ export class UsersApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body?: any;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body?: any; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12763,7 +12784,7 @@ export class UsersApi {
      * @summary Find all users regardless of status.
      * @param {*} [options] Override http request options.
      */
-    public findAllUsingGET3 (options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<User>;  }> {
+    public findAllUsingGET3(options: any = {}): Promise<{ response: ClientResponse; body: Array<User>; }> {
         const localVarPath = this.basePath + '/api/v1/users';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -12773,7 +12794,7 @@ export class UsersApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12791,14 +12812,14 @@ export class UsersApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<User>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<User>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<User>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12812,7 +12833,7 @@ export class UsersApi {
      * @param file file
      * @param {*} [options] Override http request options.
      */
-    public importUsersUsingPOST (file: Buffer, options: any = {}) : Promise<{ response: http.ClientResponse; body: ImportRequest;  }> {
+    public importUsersUsingPOST(file: Buffer, options: any = {}): Promise<{ response: ClientResponse; body: ImportRequest; }> {
         const localVarPath = this.basePath + '/api/v1/users/import';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -12832,7 +12853,7 @@ export class UsersApi {
         }
         localVarUseFormData = true;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12850,14 +12871,14 @@ export class UsersApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: ImportRequest;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: ImportRequest; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "ImportRequest");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12872,8 +12893,8 @@ export enum ValueMapsApiApiKeys {
 
 export class ValueMapsApi {
     protected _basePath = defaultBasePath;
-    protected defaultHeaders : any = {};
-    protected _useQuerystring : boolean = false;
+    protected defaultHeaders: any = {};
+    protected _useQuerystring: boolean = false;
 
     protected authentications = {
         'default': <Authentication>new VoidAuth(),
@@ -12906,7 +12927,7 @@ export class ValueMapsApi {
     }
 
     public setDefaultAuthentication(auth: Authentication) {
-	this.authentications.default = auth;
+        this.authentications.default = auth;
     }
 
     public setApiKey(key: ValueMapsApiApiKeys, value: string) {
@@ -12920,7 +12941,7 @@ export class ValueMapsApi {
      * @param record Assignment ID
      * @param {*} [options] Override http request options.
      */
-    public createValueMapUsingPOST (currentValueMap: ValueMap, assignment?: string, record?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: ValueMap;  }> {
+    public createValueMapUsingPOST(currentValueMap: ValueMap, assignment?: string, record?: string, options: any = {}): Promise<{ response: ClientResponse; body: ValueMap; }> {
         const localVarPath = this.basePath + '/api/v1/valueMaps';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -12943,7 +12964,7 @@ export class ValueMapsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'POST',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -12962,14 +12983,14 @@ export class ValueMapsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: ValueMap;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: ValueMap; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "ValueMap");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -12983,7 +13004,7 @@ export class ValueMapsApi {
      * @param minUpdated Minimum updated time value. The value is a unix timestamp.
      * @param {*} [options] Override http request options.
      */
-    public getValueMapsByMinUpdatedUsingGET (minUpdated?: number, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<ValueMap>;  }> {
+    public getValueMapsByMinUpdatedUsingGET(minUpdated?: number, options: any = {}): Promise<{ response: ClientResponse; body: Array<ValueMap>; }> {
         const localVarPath = this.basePath + '/api/v1/valueMaps';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -12997,7 +13018,7 @@ export class ValueMapsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -13015,14 +13036,14 @@ export class ValueMapsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<ValueMap>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<ValueMap>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<ValueMap>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -13037,8 +13058,8 @@ export enum WorkflowsApiApiKeys {
 
 export class WorkflowsApi {
     protected _basePath = defaultBasePath;
-    protected defaultHeaders : any = {};
-    protected _useQuerystring : boolean = false;
+    protected defaultHeaders: any = {};
+    protected _useQuerystring: boolean = false;
 
     protected authentications = {
         'default': <Authentication>new VoidAuth(),
@@ -13071,7 +13092,7 @@ export class WorkflowsApi {
     }
 
     public setDefaultAuthentication(auth: Authentication) {
-	this.authentications.default = auth;
+        this.authentications.default = auth;
     }
 
     public setApiKey(key: WorkflowsApiApiKeys, value: string) {
@@ -13084,7 +13105,7 @@ export class WorkflowsApi {
      * @param distinct distinct
      * @param {*} [options] Override http request options.
      */
-    public findAllRelativesUsingGET (workflow: string, distinct?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<WorkflowResult>;  }> {
+    public findAllRelativesUsingGET(workflow: string, distinct?: boolean, options: any = {}): Promise<{ response: ClientResponse; body: Array<WorkflowResult>; }> {
         const localVarPath = this.basePath + '/api/v1/workflows/relatives';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -13107,7 +13128,7 @@ export class WorkflowsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -13125,14 +13146,14 @@ export class WorkflowsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<WorkflowResult>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<WorkflowResult>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<WorkflowResult>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -13145,7 +13166,7 @@ export class WorkflowsApi {
      * @summary Return a list of all workflows that are active throughout all processes.
      * @param {*} [options] Override http request options.
      */
-    public findAllUsingGET4 (options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Workflow>;  }> {
+    public findAllUsingGET4(options: any = {}): Promise<{ response: ClientResponse; body: Array<Workflow>; }> {
         const localVarPath = this.basePath + '/api/v1/workflows';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -13155,7 +13176,7 @@ export class WorkflowsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -13173,14 +13194,14 @@ export class WorkflowsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<Workflow>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<Workflow>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<Workflow>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -13194,7 +13215,7 @@ export class WorkflowsApi {
      * @param id id
      * @param {*} [options] Override http request options.
      */
-    public findByIdUsingGET3 (id: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Workflow;  }> {
+    public findByIdUsingGET3(id: string, options: any = {}): Promise<{ response: ClientResponse; body: Workflow; }> {
         const localVarPath = this.basePath + '/api/v1/workflows/{id}'
             .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
         let localVarQueryParameters: any = {};
@@ -13210,7 +13231,7 @@ export class WorkflowsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -13228,14 +13249,14 @@ export class WorkflowsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Workflow;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Workflow; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Workflow");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -13249,7 +13270,7 @@ export class WorkflowsApi {
      * @param nodeId nodeId
      * @param {*} [options] Override http request options.
      */
-    public findByNodeUsingGET (nodeId: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Workflow;  }> {
+    public findByNodeUsingGET(nodeId: string, options: any = {}): Promise<{ response: ClientResponse; body: Workflow; }> {
         const localVarPath = this.basePath + '/api/v1/workflows/node/{nodeId}'
             .replace('{' + 'nodeId' + '}', encodeURIComponent(String(nodeId)));
         let localVarQueryParameters: any = {};
@@ -13265,7 +13286,7 @@ export class WorkflowsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -13283,14 +13304,14 @@ export class WorkflowsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Workflow;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Workflow; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Workflow");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -13307,7 +13328,7 @@ export class WorkflowsApi {
      * @param sort Sorting criteria in the format: object.property(,asc|desc)
      * @param {*} [options] Override http request options.
      */
-    public findByQueryWithProcessUsingGET (page: string, size: string, query?: string, sort?: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Workflow>;  }> {
+    public findByQueryWithProcessUsingGET(page: string, size: string, query?: string, sort?: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<Workflow>; }> {
         const localVarPath = this.basePath + '/api/v1/workflows/process';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -13343,7 +13364,7 @@ export class WorkflowsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -13361,14 +13382,14 @@ export class WorkflowsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Array<Workflow>;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Array<Workflow>; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Array<Workflow>");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }
@@ -13382,7 +13403,7 @@ export class WorkflowsApi {
      * @param stepId stepId
      * @param {*} [options] Override http request options.
      */
-    public findByStepUsingGET (stepId: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Workflow;  }> {
+    public findByStepUsingGET(stepId: string, options: any = {}): Promise<{ response: ClientResponse; body: Workflow; }> {
         const localVarPath = this.basePath + '/api/v1/workflows/step/{stepId}'
             .replace('{' + 'stepId' + '}', encodeURIComponent(String(stepId)));
         let localVarQueryParameters: any = {};
@@ -13398,7 +13419,7 @@ export class WorkflowsApi {
 
         let localVarUseFormData = false;
 
-        let localVarRequestOptions: localVarRequest.Options = {
+        let localVarRequestOptions: Options = {
             method: 'GET',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -13416,14 +13437,14 @@ export class WorkflowsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: Workflow;  }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
+        return new Promise<{ response: ClientResponse; body: Workflow; }>((resolve, reject) => {
+            request(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
                     body = ObjectSerializer.deserialize(body, "Workflow");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        resolve({ response: response, body: body } as { response: any, body: any });
                     } else {
                         reject({ response: response, body: body });
                     }

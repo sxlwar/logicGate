@@ -1,11 +1,11 @@
-import http from 'http';
-import {Authentication, VoidAuth} from './Authentication';
-import {defaultBasePath} from './defaultBasePath';
-import {WorkflowResult} from './WorkflowResult';
-import {ObjectSerializer} from './ObjectSerializer';
-import {Workflow} from './Workflow';
-import localVarRequest = require('request');
-
+import { Authentication, VoidAuth } from './Authentication';
+import { defaultBasePath } from './defaultBasePath';
+import { WorkflowResult } from './WorkflowResult';
+import { ObjectSerializer } from './ObjectSerializer';
+import { Workflow } from './Workflow';
+import { ClientResponse } from 'http';
+import { Options } from 'request'
+import * as request from 'request';
 export enum WorkflowsApiApiKeys {
 }
 
@@ -15,7 +15,7 @@ export class WorkflowsApi {
   protected _useQuerystring: boolean = false;
 
   protected authentications = {
-    'default': <Authentication>new VoidAuth(),
+    default: <Authentication>new VoidAuth(),
   };
 
   constructor(basePath?: string);
@@ -58,7 +58,7 @@ export class WorkflowsApi {
    * @param distinct distinct
    * @param {*} [options] Override http request options.
    */
-  public findAllRelativesUsingGET(workflow: string, distinct?: boolean, options: any = {}): Promise<{ response: http.ClientResponse; body: Array<WorkflowResult>; }> {
+  public findAllRelativesUsingGET(workflow: string, distinct?: boolean, options: any = {}): Promise<{ response: ClientResponse; body: Array<WorkflowResult>; }> {
     const localVarPath = this.basePath + '/api/v1/workflows/relatives';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -81,7 +81,7 @@ export class WorkflowsApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'GET',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -99,16 +99,16 @@ export class WorkflowsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: Array<WorkflowResult>; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: Array<WorkflowResult>; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<WorkflowResult>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body } as { response: any, body: any });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -120,7 +120,7 @@ export class WorkflowsApi {
    * @summary Return a list of all workflows that are active throughout all processes.
    * @param {*} [options] Override http request options.
    */
-  public findAllUsingGET4(options: any = {}): Promise<{ response: http.ClientResponse; body: Array<Workflow>; }> {
+  public findAllUsingGET4(options: any = {}): Promise<{ response: ClientResponse; body: Array<Workflow>; }> {
     const localVarPath = this.basePath + '/api/v1/workflows';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -130,7 +130,7 @@ export class WorkflowsApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'GET',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -148,16 +148,16 @@ export class WorkflowsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: Array<Workflow>; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: Array<Workflow>; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<Workflow>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body } as { response: any, body: any });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -170,7 +170,7 @@ export class WorkflowsApi {
    * @param id id
    * @param {*} [options] Override http request options.
    */
-  public findByIdUsingGET3(id: string, options: any = {}): Promise<{ response: http.ClientResponse; body: Workflow; }> {
+  public findByIdUsingGET3(id: string, options: any = {}): Promise<{ response: ClientResponse; body: Workflow; }> {
     const localVarPath = this.basePath + '/api/v1/workflows/{id}'
       .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
     const localVarQueryParameters: any = {};
@@ -186,7 +186,7 @@ export class WorkflowsApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'GET',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -204,16 +204,16 @@ export class WorkflowsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: Workflow; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: Workflow; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Workflow');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body } as { response: any, body: any });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -226,7 +226,7 @@ export class WorkflowsApi {
    * @param nodeId nodeId
    * @param {*} [options] Override http request options.
    */
-  public findByNodeUsingGET(nodeId: string, options: any = {}): Promise<{ response: http.ClientResponse; body: Workflow; }> {
+  public findByNodeUsingGET(nodeId: string, options: any = {}): Promise<{ response: ClientResponse; body: Workflow; }> {
     const localVarPath = this.basePath + '/api/v1/workflows/node/{nodeId}'
       .replace('{' + 'nodeId' + '}', encodeURIComponent(String(nodeId)));
     const localVarQueryParameters: any = {};
@@ -242,7 +242,7 @@ export class WorkflowsApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'GET',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -260,16 +260,16 @@ export class WorkflowsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: Workflow; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: Workflow; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Workflow');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body } as { response: any, body: any });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -285,7 +285,7 @@ export class WorkflowsApi {
    * @param sort Sorting criteria in the format: object.property(,asc|desc)
    * @param {*} [options] Override http request options.
    */
-  public findByQueryWithProcessUsingGET(page: string, size: string, query?: string, sort?: string, options: any = {}): Promise<{ response: http.ClientResponse; body: Array<Workflow>; }> {
+  public findByQueryWithProcessUsingGET(page: string, size: string, query?: string, sort?: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<Workflow>; }> {
     const localVarPath = this.basePath + '/api/v1/workflows/process';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -321,7 +321,7 @@ export class WorkflowsApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'GET',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -339,16 +339,16 @@ export class WorkflowsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: Array<Workflow>; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: Array<Workflow>; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<Workflow>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body } as { response: any, body: any });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -361,7 +361,7 @@ export class WorkflowsApi {
    * @param stepId stepId
    * @param {*} [options] Override http request options.
    */
-  public findByStepUsingGET(stepId: string, options: any = {}): Promise<{ response: http.ClientResponse; body: Workflow; }> {
+  public findByStepUsingGET(stepId: string, options: any = {}): Promise<{ response: ClientResponse; body: Workflow; }> {
     const localVarPath = this.basePath + '/api/v1/workflows/step/{stepId}'
       .replace('{' + 'stepId' + '}', encodeURIComponent(String(stepId)));
     const localVarQueryParameters: any = {};
@@ -377,7 +377,7 @@ export class WorkflowsApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'GET',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -395,16 +395,16 @@ export class WorkflowsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: Workflow; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: Workflow; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Workflow');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body } as { response: any, body: any });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });

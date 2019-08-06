@@ -1,6 +1,5 @@
 import axios from "axios";
 import { AUTH, BASE_URL } from "../config/logicgate";
-
 function base64(text: string): string {
   return Buffer.from(text).toString("base64");
 }

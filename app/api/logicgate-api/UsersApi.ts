@@ -1,11 +1,11 @@
-import http from 'http';
-import localVarRequest from 'request';
-import {ImportRequest} from './ImportRequest';
-import {Authentication, VoidAuth} from './Authentication';
-import {defaultBasePath} from './defaultBasePath';
-import {User} from './User';
-import {ObjectSerializer} from './ObjectSerializer';
-
+import { ImportRequest } from './ImportRequest';
+import { Authentication, VoidAuth } from './Authentication';
+import { defaultBasePath } from './defaultBasePath';
+import { User } from './User';
+import { ObjectSerializer } from './ObjectSerializer';
+import { ClientResponse } from 'http';
+import { Options } from 'request'
+import * as request from 'request';
 export enum UsersApiApiKeys {
 }
 
@@ -58,7 +58,7 @@ export class UsersApi {
    * @param user user
    * @param {*} [options] Override http request options.
    */
-  public createUsingPOST4(user: User, options: any = {}): Promise<{ response: http.ClientResponse; body: User; }> {
+  public createUsingPOST4(user: User, options: any = {}): Promise<{ response: ClientResponse; body: User; }> {
     const localVarPath = this.basePath + '/api/v1/users';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -73,7 +73,7 @@ export class UsersApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'POST',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -92,16 +92,16 @@ export class UsersApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: User; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: User; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'User');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body } as { response: any, body: any });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -114,7 +114,7 @@ export class UsersApi {
    * @param id id
    * @param {*} [options] Override http request options.
    */
-  public disableUserUsingPUT(id: string, options: any = {}): Promise<{ response: http.ClientResponse; body?: any; }> {
+  public disableUserUsingPUT(id: string, options: any = {}): Promise<{ response: ClientResponse; body?: any; }> {
     const localVarPath = this.basePath + '/api/v1/users/disable/{id}'
       .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
     const localVarQueryParameters: any = {};
@@ -130,7 +130,7 @@ export class UsersApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'PUT',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -148,15 +148,15 @@ export class UsersApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body?: any; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body?: any; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body } as { response: any, body: any });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -170,7 +170,7 @@ export class UsersApi {
    * @param sendEmail sendEmail
    * @param {*} [options] Override http request options.
    */
-  public enableUserUsingPUT(id: string, sendEmail?: string, options: any = {}): Promise<{ response: http.ClientResponse; body?: any; }> {
+  public enableUserUsingPUT(id: string, sendEmail?: string, options: any = {}): Promise<{ response: ClientResponse; body?: any; }> {
     const localVarPath = this.basePath + '/api/v1/users/enable/{id}'
       .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
     const localVarQueryParameters: any = {};
@@ -190,7 +190,7 @@ export class UsersApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'PUT',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -208,15 +208,15 @@ export class UsersApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body?: any; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body?: any; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body } as { response: any, body: any });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -228,7 +228,7 @@ export class UsersApi {
    * @summary Find all users regardless of status.
    * @param {*} [options] Override http request options.
    */
-  public findAllUsingGET3(options: any = {}): Promise<{ response: http.ClientResponse; body: Array<User>; }> {
+  public findAllUsingGET3(options: any = {}): Promise<{ response: ClientResponse; body: Array<User>; }> {
     const localVarPath = this.basePath + '/api/v1/users';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -238,7 +238,7 @@ export class UsersApi {
 
     const localVarUseFormData = false;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'GET',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -256,16 +256,16 @@ export class UsersApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: Array<User>; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: Array<User>; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<User>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body } as { response: any, body: any });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -278,7 +278,7 @@ export class UsersApi {
    * @param file file
    * @param {*} [options] Override http request options.
    */
-  public importUsersUsingPOST(file: Buffer, options: any = {}): Promise<{ response: http.ClientResponse; body: ImportRequest; }> {
+  public importUsersUsingPOST(file: Buffer, options: any = {}): Promise<{ response: ClientResponse; body: ImportRequest; }> {
     const localVarPath = this.basePath + '/api/v1/users/import';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -298,7 +298,7 @@ export class UsersApi {
     }
     localVarUseFormData = true;
 
-    const localVarRequestOptions: localVarRequest.Options = {
+    const localVarRequestOptions: Options = {
       method: 'POST',
       qs: localVarQueryParameters,
       headers: localVarHeaderParams,
@@ -316,16 +316,16 @@ export class UsersApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: http.ClientResponse; body: ImportRequest; }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
+    return new Promise<{ response: ClientResponse; body: ImportRequest; }>((resolve, reject) => {
+      request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'ImportRequest');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body } as { response: any, body: any });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });

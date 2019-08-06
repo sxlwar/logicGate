@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, Theme } from "@material-ui/core/styles";
 
 import { ifError } from "assert";
 import { createClient, SearchCallbackResponse, SearchEntry } from "ldapjs";
@@ -43,9 +43,9 @@ const searchOptions = {
   ]
 };
 
-const themes: any = (theme: any) => ({
+const themes: any = (theme: Theme) => ({
   button: {
-    margin: theme.spacing.unit
+    margin: theme.spacing(),
   }
 });
 
