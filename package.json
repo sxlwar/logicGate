@@ -23,6 +23,11 @@
     "package-all": "npm run build && build -mwl",
     "cleanup": "mop -v"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "jest": {
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/internals/mocks/fileMock.js",
@@ -142,10 +147,13 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.24.1",
+    "husky": "3.0.2",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^22.0.4",
     "json-loader": "^0.5.4",
     "node-sass": "^4.6.0",
+    "prettier": "1.18.0",
+    "pretty-quick": "1.11.1",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-test-renderer": "^16.0.0",
     "redux-logger": "^3.0.6",
