@@ -1,8 +1,5 @@
 .container {
-  position: absolute;
-  top: 30%;
-  left: 10px;
-  text-align: center;
+  width: 100%;
 }
 
 .container h2 {
@@ -13,18 +10,9 @@
   font-size: 1.4rem;
 }
 
-.wrapper {
-  width: 600px;
-  padding: 0;
-  height: 100%;
-  position: relative;
+.flexRow {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.item {
-  height: 20px;
-  line-height: 20px;
-  text-align: left;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 }

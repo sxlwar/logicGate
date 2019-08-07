@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import Entry from '../../components/entry/Entry';
-import Record from '../../components/record/Record';
+import EntryButton from '../../components/entry/Entry';
+import RecordButton from '../../components/record/Record';
 import Table from '../../components/table/table';
 const styles = require('./HomePage.scss');
 
@@ -10,11 +10,13 @@ export class HomePage extends React.Component<RouteComponentProps<any>, void> {
     return (
       <div>
         <div className={styles.container} data-tid="container">
+          <div className={styles.flexRow}>
+            <EntryButton />
+            <RecordButton />
+          </div>
           <div>
-            <Entry />
             <Table />
           </div>
-          <Record />
         </div>
       </div>
     );

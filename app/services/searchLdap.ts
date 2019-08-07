@@ -65,15 +65,15 @@ function searchUsers(client: Client): Promise<SearchEntry[]> {
 export default class LdapClient {
   private client: Client;
 
-  async connect() {
+  public async connect() {
     this.client = await getClient();
   }
 
-  async searchUsers(): Promise<SearchEntry[]> {
+  public async searchUsers(): Promise<SearchEntry[]> {
     return await searchUsers(this.client);
   }
 
-  async disconnect() {
+  public async disconnect() {
     if (this.client) {
       await unbindClient(this.client);
     }

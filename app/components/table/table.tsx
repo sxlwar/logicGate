@@ -1,4 +1,4 @@
-import { Table, makeStyles, Theme, createStyles } from '@material-ui/core';
+import { Table } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,33 +8,12 @@ import { SearchEntry } from 'ldapjs';
 import { connect } from 'react-redux';
 import { IState } from '../../reducers';
 import React from 'react';
-interface TableProps {
-  classes: any;
-  token: string;
-  entries: SearchEntry[];
-}
 
 interface TableProps {
   classes: any;
   token: string;
   entries: SearchEntry[];
 }
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%'
-    },
-    paper: {
-      marginTop: theme.spacing(3),
-      width: '100%',
-      overflowX: 'auto',
-      marginBottom: theme.spacing(2)
-    },
-    table: {
-      minWidth: 650
-    }
-  })
-);
 
 function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
   return { name, calories, fat, carbs, protein };
@@ -48,44 +27,48 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9)
 ];
 
-const classes = useStyles();
-
 class TableComponent extends React.Component {
-  private logger() {
-    const { entries } = this.props as TableProps;
-    console.log(`entries is => `, entries);
-  }
+  public state = {
+    array: []
+  };
+  // private logger() {
+  //   const { entries } = this.props as TableProps;
+  //   this.setState({ array: entries });
+  // }
   public render() {
-    this.logger();
+    // this.logger();
+    const { entries } = this.props as TableProps;
     return (
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
-          <Table className={classes.table} size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Dessert (100g serving)</TableCell>
-                <TableCell align="right">Calories</TableCell>
-                <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                <TableCell align="right">Protein&nbsp;(g)</TableCell>
+      <Paper>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                {entries.map((s, i) => (
+                  <li key={i}>{s}</li>
+                ))}
+              </TableCell>
+              <TableCell align="right">Calories</TableCell>
+              <TableCell align="right">Fat&nbsp;(g)</TableCell>
+              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+              <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map(row => (
+              <TableRow key={row.name}>
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell align="right">{row.calories}</TableCell>
+                <TableCell align="right">{row.fat}</TableCell>
+                <TableCell align="right">{row.carbs}</TableCell>
+                <TableCell align="right">{row.protein}</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map(row => (
-                <TableRow key={row.name}>
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="right">{row.calories}</TableCell>
-                  <TableCell align="right">{row.fat}</TableCell>
-                  <TableCell align="right">{row.carbs}</TableCell>
-                  <TableCell align="right">{row.protein}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
-      </div>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
     );
   }
 }
