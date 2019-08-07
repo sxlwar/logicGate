@@ -5,7 +5,7 @@ import { ObjectSerializer } from './ObjectSerializer';
 import { Workflow } from './Workflow';
 import { ClientResponse } from 'http';
 import { Options } from 'request';
-import * as request from 'request';
+import request from 'request';
 export enum WorkflowsApiApiKeys {}
 
 export class WorkflowsApi {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import Entry from '../../components/user/User';
 import Record from '../../components/record/Record';

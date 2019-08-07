@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import { Theme, withStyles } from '@material-ui/core/styles';
 
 import { SearchEntry } from 'ldapjs';
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { createOAuth } from '../../api/createOAuth';
@@ -129,7 +129,9 @@ class RecordComponent extends React.Component<RecordProps> {
   }
 }
 
+// @ts-ignore FIXME
 export default connect((state: IState) => ({
   token: state.account,
   entry: state.entries![0]
+  // @ts-ignore FIXME
 }))(withStyles(themes)(RecordComponent));

@@ -1,5 +1,5 @@
-import * as electronPath from 'electron';
-import * as path from 'path';
+import electronPath from 'electron';
+import path from 'path';
 
 const { Application } = require('spectron');
 

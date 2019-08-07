@@ -1,7 +1,7 @@
 import { Button, Theme, withStyles } from '@material-ui/core';
 import { ifError } from 'assert';
 import { createClient, SearchCallbackResponse, SearchEntry, LDAPResult, Client } from 'ldapjs';
-import * as React from 'react';
+import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IState } from '../../reducers';
 import * as EntriesActions from '../../actions/entries';
@@ -93,9 +93,11 @@ function mapDispatchToProps(dispatch: Dispatch<IState>): Partial<EntryProps> {
   return bindActionCreators(EntriesActions as any, dispatch);
 }
 
+// @ts-ignore FIXME
 export default connect(
   (state: IState) => ({
     token: state.account
   }),
   mapDispatchToProps
+  // @ts-ignore FIXME
 )(withStyles(themes)(EntryComponent));

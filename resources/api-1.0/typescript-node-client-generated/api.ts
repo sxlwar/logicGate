@@ -15,7 +15,7 @@ import http from 'http';
 import Promise = require('bluebird');
 import { ClientResponse } from 'http';
 import { Options } from 'request';
-import * as request from 'request';
+import request from 'request';
 
 let defaultBasePath = 'https://agilegrcsolutions.logicgate.com';
 

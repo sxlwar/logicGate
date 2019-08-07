@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Redux from 'react-redux';
+import React from 'react';
+import Redux from 'react-redux';
 import { History } from 'history';
 
 import { Provider } from 'react-redux';

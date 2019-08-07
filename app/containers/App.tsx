@@ -1,5 +1,5 @@
 import { fetchToken } from '../api/fetchToken';
-import * as React from 'react';
+import React from 'react';
 import { connect, Dispatch, DispatchProp } from 'react-redux';
 import { bindActionCreators } from 'redux';
 

@@ -5,7 +5,7 @@ import { defaultBasePath } from './defaultBasePath';
 import { ObjectSerializer } from './ObjectSerializer';
 import { ClientResponse } from 'http';
 import { Options } from 'request';
-import * as request from 'request';
+import request from 'request';
 export enum CurrentValuesApiApiKeys {}
 
 export class CurrentValuesApi {

@@ -3,7 +3,7 @@ import { defaultBasePath } from './defaultBasePath';
 import { ValueMap } from './ValueMap';
 import { ObjectSerializer } from './ObjectSerializer';
 import { Options } from 'request';
-import * as request from 'request';
+import request from 'request';
 export enum ValueMapsApiApiKeys {}
 
 export class ValueMapsApi {

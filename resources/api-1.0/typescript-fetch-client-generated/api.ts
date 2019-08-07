@@ -12,8 +12,8 @@
  * Do not edit the class manually.
  */
 
-import * as url from 'url';
-import * as portableFetch from 'portable-fetch';
+import url from 'url';
+import portableFetch from 'portable-fetch';
 import { Configuration } from './configuration';
 
 const BASE_PATH = 'https://agilegrcsolutions.logicgate.com'.replace(/\/+$/, '');
