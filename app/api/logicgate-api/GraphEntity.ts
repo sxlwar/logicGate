@@ -7,32 +7,33 @@ export class GraphEntity {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'active',
-      'baseName': 'active',
-      'type': 'boolean',
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      'name': 'created',
-      'baseName': 'created',
-      'type': 'Date',
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      'name': 'id',
-      'baseName': 'id',
-      'type': 'string',
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      'name': 'labels',
-      'baseName': 'labels',
-      'type': 'Array<string>',
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      'name': 'updated',
-      'baseName': 'updated',
-      'type': 'Date',
-    }];
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return GraphEntity.attributeTypeMap;

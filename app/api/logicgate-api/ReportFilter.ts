@@ -1,7 +1,7 @@
-import {Field} from './Field';
-import {GraphEntity} from './GraphEntity';
-import {CurrentValue} from './CurrentValue';
-import {Workflow} from './Workflow';
+import { Field } from './Field';
+import { GraphEntity } from './GraphEntity';
+import { CurrentValue } from './CurrentValue';
+import { Workflow } from './Workflow';
 
 export class ReportFilter {
   'active'?: boolean;
@@ -23,87 +23,88 @@ export class ReportFilter {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'active',
-      'baseName': 'active',
-      'type': 'boolean',
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      'name': 'created',
-      'baseName': 'created',
-      'type': 'Date',
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      'name': 'field',
-      'baseName': 'field',
-      'type': 'Field',
+      name: 'field',
+      baseName: 'field',
+      type: 'Field'
     },
     {
-      'name': 'filteredRelativeIds',
-      'baseName': 'filteredRelativeIds',
-      'type': 'Array<string>',
+      name: 'filteredRelativeIds',
+      baseName: 'filteredRelativeIds',
+      type: 'Array<string>'
     },
     {
-      'name': 'filteredRelatives',
-      'baseName': 'filteredRelatives',
-      'type': 'Array<GraphEntity>',
+      name: 'filteredRelatives',
+      baseName: 'filteredRelatives',
+      type: 'Array<GraphEntity>'
     },
     {
-      'name': 'fixed',
-      'baseName': 'fixed',
-      'type': 'boolean',
+      name: 'fixed',
+      baseName: 'fixed',
+      type: 'boolean'
     },
     {
-      'name': 'id',
-      'baseName': 'id',
-      'type': 'string',
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      'name': 'labels',
-      'baseName': 'labels',
-      'type': 'Array<string>',
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      'name': 'operator',
-      'baseName': 'operator',
-      'type': 'ReportFilter.OperatorEnum',
+      name: 'operator',
+      baseName: 'operator',
+      type: 'ReportFilter.OperatorEnum'
     },
     {
-      'name': 'recordRelationship',
-      'baseName': 'recordRelationship',
-      'type': 'ReportFilter.RecordRelationshipEnum',
+      name: 'recordRelationship',
+      baseName: 'recordRelationship',
+      type: 'ReportFilter.RecordRelationshipEnum'
     },
     {
-      'name': 'systemField',
-      'baseName': 'systemField',
-      'type': 'ReportFilter.SystemFieldEnum',
+      name: 'systemField',
+      baseName: 'systemField',
+      type: 'ReportFilter.SystemFieldEnum'
     },
     {
-      'name': 'updated',
-      'baseName': 'updated',
-      'type': 'Date',
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
     },
     {
-      'name': 'valid',
-      'baseName': 'valid',
-      'type': 'boolean',
+      name: 'valid',
+      baseName: 'valid',
+      type: 'boolean'
     },
     {
-      'name': 'values',
-      'baseName': 'values',
-      'type': 'Array<CurrentValue>',
+      name: 'values',
+      baseName: 'values',
+      type: 'Array<CurrentValue>'
     },
     {
-      'name': 'workflow',
-      'baseName': 'workflow',
-      'type': 'Workflow',
+      name: 'workflow',
+      baseName: 'workflow',
+      type: 'Workflow'
     },
     {
-      'name': 'workflowId',
-      'baseName': 'workflowId',
-      'type': 'string',
-    }];
+      name: 'workflowId',
+      baseName: 'workflowId',
+      type: 'string'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return ReportFilter.attributeTypeMap;

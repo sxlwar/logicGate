@@ -5,22 +5,23 @@ export class Sort {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'empty',
-      'baseName': 'empty',
-      'type': 'boolean',
+      name: 'empty',
+      baseName: 'empty',
+      type: 'boolean'
     },
     {
-      'name': 'sorted',
-      'baseName': 'sorted',
-      'type': 'boolean',
+      name: 'sorted',
+      baseName: 'sorted',
+      type: 'boolean'
     },
     {
-      'name': 'unsorted',
-      'baseName': 'unsorted',
-      'type': 'boolean',
-    }];
+      name: 'unsorted',
+      baseName: 'unsorted',
+      type: 'boolean'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return Sort.attributeTypeMap;

@@ -2,10 +2,10 @@
  * 本地调用服务，直接
  * ```javascript
  * 1. $ node app/api/local-server-demo.js
- * 
+ *
  * 2. [翻墙连接](https://sourceforge.net/projects/openldapwindows/files/openldap-2.4.32/)
  * 下载命令行工具，张大眼睛仔细寻找 2.4.32-x86.zip，别下载错了！
- * 
+ *
  * 3. $ ldapsearch -H ldap://localhost:1389 -x -b o=example objectclass=*
  * ```
  */
@@ -23,8 +23,7 @@ server.search('o=example', function(req, res, next) {
     }
   };
 
-  if (req.filter.matches(obj.attributes))
-    res.send(obj);
+  if (req.filter.matches(obj.attributes)) res.send(obj);
 
   res.end();
 });

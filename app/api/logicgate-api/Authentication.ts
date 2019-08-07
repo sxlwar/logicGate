@@ -13,7 +13,8 @@ export class HttpBasicAuth implements Authentication {
 
   applyToRequest(requestOptions: localVarRequest.Options): void {
     requestOptions.auth = {
-      username: this.username, password: this.password,
+      username: this.username,
+      password: this.password
     };
   }
 }
@@ -21,8 +22,7 @@ export class HttpBasicAuth implements Authentication {
 export class ApiKeyAuth implements Authentication {
   public apiKey: string = '';
 
-  constructor(private location: string, private paramName: string) {
-  }
+  constructor(private location: string, private paramName: string) {}
 
   applyToRequest(requestOptions: localVarRequest.Options): void {
     if (this.location == 'query') {

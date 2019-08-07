@@ -70,127 +70,128 @@ export class Workflow {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      "name": "active",
-      "baseName": "active",
-      "type": "boolean"
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      "name": "allowGroups",
-      "baseName": "allowGroups",
-      "type": "boolean"
+      name: 'allowGroups',
+      baseName: 'allowGroups',
+      type: 'boolean'
     },
     {
-      "name": "canSelect",
-      "baseName": "canSelect",
-      "type": "Field"
+      name: 'canSelect',
+      baseName: 'canSelect',
+      type: 'Field'
     },
     {
-      "name": "contains",
-      "baseName": "contains",
-      "type": "Step"
+      name: 'contains',
+      baseName: 'contains',
+      type: 'Step'
     },
     {
-      "name": "created",
-      "baseName": "created",
-      "type": "Date"
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      "name": "fields",
-      "baseName": "fields",
-      "type": "Array<Field>"
+      name: 'fields',
+      baseName: 'fields',
+      type: 'Array<Field>'
     },
     {
-      "name": "id",
-      "baseName": "id",
-      "type": "string"
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      "name": "labels",
-      "baseName": "labels",
-      "type": "Array<string>"
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      "name": "name",
-      "baseName": "name",
-      "type": "string"
+      name: 'name',
+      baseName: 'name',
+      type: 'string'
     },
     {
-      "name": "nodes",
-      "baseName": "nodes",
-      "type": "Array<Step>"
+      name: 'nodes',
+      baseName: 'nodes',
+      type: 'Array<Step>'
     },
     {
-      "name": "objectName",
-      "baseName": "objectName",
-      "type": "string"
+      name: 'objectName',
+      baseName: 'objectName',
+      type: 'string'
     },
     {
-      "name": "priority",
-      "baseName": "priority",
-      "type": "number"
+      name: 'priority',
+      baseName: 'priority',
+      type: 'number'
     },
     {
-      "name": "process",
-      "baseName": "process",
-      "type": "Process"
+      name: 'process',
+      baseName: 'process',
+      type: 'Process'
     },
     {
-      "name": "processId",
-      "baseName": "processId",
-      "type": "string"
+      name: 'processId',
+      baseName: 'processId',
+      type: 'string'
     },
     {
-      "name": "recordPrefix",
-      "baseName": "recordPrefix",
-      "type": "string"
+      name: 'recordPrefix',
+      baseName: 'recordPrefix',
+      type: 'string'
     },
     {
-      "name": "requireGroups",
-      "baseName": "requireGroups",
-      "type": "boolean"
+      name: 'requireGroups',
+      baseName: 'requireGroups',
+      type: 'boolean'
     },
     {
-      "name": "sequence",
-      "baseName": "sequence",
-      "type": "WorkflowSequence"
+      name: 'sequence',
+      baseName: 'sequence',
+      type: 'WorkflowSequence'
     },
     {
-      "name": "sla",
-      "baseName": "sla",
-      "type": "ServiceLevelAgreement"
+      name: 'sla',
+      baseName: 'sla',
+      type: 'ServiceLevelAgreement'
     },
     {
-      "name": "steps",
-      "baseName": "steps",
-      "type": "Array<Step>"
+      name: 'steps',
+      baseName: 'steps',
+      type: 'Array<Step>'
     },
     {
-      "name": "updated",
-      "baseName": "updated",
-      "type": "Date"
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
     },
     {
-      "name": "userGroups",
-      "baseName": "userGroups",
-      "type": "Array<UserGroup>"
+      name: 'userGroups',
+      baseName: 'userGroups',
+      type: 'Array<UserGroup>'
     },
     {
-      "name": "workflowMaps",
-      "baseName": "workflowMaps",
-      "type": "Array<WorkflowMap>"
+      name: 'workflowMaps',
+      baseName: 'workflowMaps',
+      type: 'Array<WorkflowMap>'
     },
     {
-      "name": "xpos",
-      "baseName": "xpos",
-      "type": "number"
+      name: 'xpos',
+      baseName: 'xpos',
+      type: 'number'
     },
     {
-      "name": "ypos",
-      "baseName": "ypos",
-      "type": "number"
-    }];
+      name: 'ypos',
+      baseName: 'ypos',
+      type: 'number'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return Workflow.attributeTypeMap;

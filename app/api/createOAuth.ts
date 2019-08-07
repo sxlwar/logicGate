@@ -1,8 +1,6 @@
-import { fetchToken } from "./fetchToken";
-import { OAuth } from "./logicgate-api/Authentication";
+import { OAuth } from './logicgate-api/Authentication';
 
-export async function createOAuth(t?: string): Promise<OAuth> {
-  const token = !!t ? t : await fetchToken();
+export async function createOAuth(token: string): Promise<OAuth> {
   const oauth = new OAuth();
   oauth.accessToken = token;
   return oauth;

@@ -12,10 +12,7 @@ export async function fetchWorkflowId(stepId: string, oauth: OAuth): Promise<str
   return res.body.id!;
 }
 
-export async function fetchWorkflowFields(
-  workflowId: string,
-  oauth: OAuth
-): Promise<Field[]> {
+export async function fetchWorkflowFields(workflowId: string, oauth: OAuth): Promise<Field[]> {
   const fieldsApi = new FieldsApi(baseUrl);
   fieldsApi.setDefaultAuthentication(oauth);
   const res2 = await fieldsApi.findByWorkflowWithValuesUsingGET(workflowId);

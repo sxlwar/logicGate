@@ -1,6 +1,6 @@
-import {Field} from './Field';
-import {CurrentValue} from './CurrentValue';
-import {Workflow} from './Workflow';
+import { Field } from './Field';
+import { CurrentValue } from './CurrentValue';
+import { Workflow } from './Workflow';
 
 export class DatePicker extends Field {
   'active'?: boolean;
@@ -41,107 +41,108 @@ export class DatePicker extends Field {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      "name": "active",
-      "baseName": "active",
-      "type": "boolean"
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      "name": "convertibleTo",
-      "baseName": "convertibleTo",
-      "type": "Array<string>"
+      name: 'convertibleTo',
+      baseName: 'convertibleTo',
+      type: 'Array<string>'
     },
     {
-      "name": "created",
-      "baseName": "created",
-      "type": "Date"
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      "name": "currentValues",
-      "baseName": "currentValues",
-      "type": "Array<CurrentValue>"
+      name: 'currentValues',
+      baseName: 'currentValues',
+      type: 'Array<CurrentValue>'
     },
     {
-      "name": "discrete",
-      "baseName": "discrete",
-      "type": "boolean"
+      name: 'discrete',
+      baseName: 'discrete',
+      type: 'boolean'
     },
     {
-      "name": "fieldType",
-      "baseName": "fieldType",
-      "type": "DatePicker.FieldTypeEnum"
+      name: 'fieldType',
+      baseName: 'fieldType',
+      type: 'DatePicker.FieldTypeEnum'
     },
     {
-      "name": "global",
-      "baseName": "global",
-      "type": "boolean"
+      name: 'global',
+      baseName: 'global',
+      type: 'boolean'
     },
     {
-      "name": "hasTime",
-      "baseName": "hasTime",
-      "type": "boolean"
+      name: 'hasTime',
+      baseName: 'hasTime',
+      type: 'boolean'
     },
     {
-      "name": "id",
-      "baseName": "id",
-      "type": "string"
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      "name": "label",
-      "baseName": "label",
-      "type": "string"
+      name: 'label',
+      baseName: 'label',
+      type: 'string'
     },
     {
-      "name": "labels",
-      "baseName": "labels",
-      "type": "Array<string>"
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      "name": "name",
-      "baseName": "name",
-      "type": "string"
+      name: 'name',
+      baseName: 'name',
+      type: 'string'
     },
     {
-      "name": "operators",
-      "baseName": "operators",
-      "type": "Array<DatePicker.OperatorsEnum>"
+      name: 'operators',
+      baseName: 'operators',
+      type: 'Array<DatePicker.OperatorsEnum>'
     },
     {
-      "name": "presentOrFuture",
-      "baseName": "presentOrFuture",
-      "type": "boolean"
+      name: 'presentOrFuture',
+      baseName: 'presentOrFuture',
+      type: 'boolean'
     },
     {
-      "name": "presentOrPast",
-      "baseName": "presentOrPast",
-      "type": "boolean"
+      name: 'presentOrPast',
+      baseName: 'presentOrPast',
+      type: 'boolean'
     },
     {
-      "name": "tooltip",
-      "baseName": "tooltip",
-      "type": "string"
+      name: 'tooltip',
+      baseName: 'tooltip',
+      type: 'string'
     },
     {
-      "name": "updated",
-      "baseName": "updated",
-      "type": "Date"
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
     },
     {
-      "name": "valueType",
-      "baseName": "valueType",
-      "type": "string"
+      name: 'valueType',
+      baseName: 'valueType',
+      type: 'string'
     },
     {
-      "name": "workflow",
-      "baseName": "workflow",
-      "type": "Workflow"
+      name: 'workflow',
+      baseName: 'workflow',
+      type: 'Workflow'
     },
     {
-      "name": "workflowId",
-      "baseName": "workflowId",
-      "type": "string"
-    }    ];
+      name: 'workflowId',
+      baseName: 'workflowId',
+      type: 'string'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return super.getAttributeTypeMap().concat(DatePicker.attributeTypeMap);
@@ -150,32 +151,32 @@ export class DatePicker extends Field {
 
 export namespace DatePicker {
   export enum FieldTypeEnum {
-    TEXT = <any> 'TEXT',
-    TEXTAREA = <any> 'TEXT_AREA',
-    DATEPICKER = <any> 'DATE_PICKER',
-    NUMBER = <any> 'NUMBER',
-    ESIGNATURE = <any> 'E_SIGNATURE',
-    CHECKBOX = <any> 'CHECKBOX',
-    MULTISELECT = <any> 'MULTI_SELECT',
-    RADIO = <any> 'RADIO',
-    SELECT = <any> 'SELECT',
-    USER = <any> 'USER',
-    ATTACHMENT = <any> 'ATTACHMENT',
-    CALCULATION = <any> 'CALCULATION',
-    DUEDATE = <any> 'DUE_DATE'
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
   }
   export enum OperatorsEnum {
-    EQUALS = <any> 'EQUALS',
-    NOTEQUALS = <any> 'NOT_EQUALS',
-    GREATERTHAN = <any> 'GREATER_THAN',
-    GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-    LESSTHAN = <any> 'LESS_THAN',
-    LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-    CONTAINS = <any> 'CONTAINS',
-    DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-    NULL = <any> 'NULL',
-    NOTNULL = <any> 'NOT_NULL',
-    MATCHES = <any> 'MATCHES',
-    DATERANGE = <any> 'DATE_RANGE'
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
   }
 }

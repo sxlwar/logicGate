@@ -1,8 +1,8 @@
-import {Record} from './Record';
-import {Field} from './Field';
-import {AccessAudit} from './AccessAudit';
-import {Role} from './Role';
-import {User} from './User';
+import { Record } from './Record';
+import { Field } from './Field';
+import { AccessAudit } from './AccessAudit';
+import { Role } from './Role';
+import { User } from './User';
 
 export class Locked extends User {
   'active'?: boolean;
@@ -47,202 +47,203 @@ export class Locked extends User {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'active',
-      'baseName': 'active',
-      'type': 'boolean',
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      'name': 'archived',
-      'baseName': 'archived',
-      'type': 'boolean',
+      name: 'archived',
+      baseName: 'archived',
+      type: 'boolean'
     },
     {
-      'name': 'assignments',
-      'baseName': 'assignments',
-      'type': 'Array<Record>',
+      name: 'assignments',
+      baseName: 'assignments',
+      type: 'Array<Record>'
     },
     {
-      'name': 'company',
-      'baseName': 'company',
-      'type': 'string',
+      name: 'company',
+      baseName: 'company',
+      type: 'string'
     },
     {
-      'name': 'created',
-      'baseName': 'created',
-      'type': 'Date',
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      'name': '_default',
-      'baseName': 'default',
-      'type': 'boolean',
+      name: '_default',
+      baseName: 'default',
+      type: 'boolean'
     },
     {
-      'name': 'disabled',
-      'baseName': 'disabled',
-      'type': 'boolean',
+      name: 'disabled',
+      baseName: 'disabled',
+      type: 'boolean'
     },
     {
-      'name': 'discriminator',
-      'baseName': 'discriminator',
-      'type': 'string',
+      name: 'discriminator',
+      baseName: 'discriminator',
+      type: 'string'
     },
     {
-      'name': 'email',
-      'baseName': 'email',
-      'type': 'string',
+      name: 'email',
+      baseName: 'email',
+      type: 'string'
     },
     {
-      'name': 'empty',
-      'baseName': 'empty',
-      'type': 'boolean',
+      name: 'empty',
+      baseName: 'empty',
+      type: 'boolean'
     },
     {
-      'name': 'field',
-      'baseName': 'field',
-      'type': 'Field',
+      name: 'field',
+      baseName: 'field',
+      type: 'Field'
     },
     {
-      'name': 'fieldId',
-      'baseName': 'fieldId',
-      'type': 'string',
+      name: 'fieldId',
+      baseName: 'fieldId',
+      type: 'string'
     },
     {
-      'name': 'first',
-      'baseName': 'first',
-      'type': 'string',
+      name: 'first',
+      baseName: 'first',
+      type: 'string'
     },
     {
-      'name': 'hasValue',
-      'baseName': 'hasValue',
-      'type': 'Field',
+      name: 'hasValue',
+      baseName: 'hasValue',
+      type: 'Field'
     },
     {
-      'name': 'id',
-      'baseName': 'id',
-      'type': 'string',
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      'name': 'imageUrl',
-      'baseName': 'imageUrl',
-      'type': 'string',
+      name: 'imageUrl',
+      baseName: 'imageUrl',
+      type: 'string'
     },
     {
-      'name': 'intercomHash',
-      'baseName': 'intercomHash',
-      'type': 'string',
+      name: 'intercomHash',
+      baseName: 'intercomHash',
+      type: 'string'
     },
     {
-      'name': 'isDefault',
-      'baseName': 'isDefault',
-      'type': 'boolean',
+      name: 'isDefault',
+      baseName: 'isDefault',
+      type: 'boolean'
     },
     {
-      'name': 'labels',
-      'baseName': 'labels',
-      'type': 'Array<string>',
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      'name': 'languageTag',
-      'baseName': 'languageTag',
-      'type': 'string',
+      name: 'languageTag',
+      baseName: 'languageTag',
+      type: 'string'
     },
     {
-      'name': 'last',
-      'baseName': 'last',
-      'type': 'string',
+      name: 'last',
+      baseName: 'last',
+      type: 'string'
     },
     {
-      'name': 'lastLogin',
-      'baseName': 'lastLogin',
-      'type': 'AccessAudit',
+      name: 'lastLogin',
+      baseName: 'lastLogin',
+      type: 'AccessAudit'
     },
     {
-      'name': 'locked',
-      'baseName': 'locked',
-      'type': 'boolean',
+      name: 'locked',
+      baseName: 'locked',
+      type: 'boolean'
     },
     {
-      'name': 'loginAttempts',
-      'baseName': 'loginAttempts',
-      'type': 'number',
+      name: 'loginAttempts',
+      baseName: 'loginAttempts',
+      type: 'number'
     },
     {
-      'name': 'name',
-      'baseName': 'name',
-      'type': 'string',
+      name: 'name',
+      baseName: 'name',
+      type: 'string'
     },
     {
-      'name': 'numericValue',
-      'baseName': 'numericValue',
-      'type': 'number',
+      name: 'numericValue',
+      baseName: 'numericValue',
+      type: 'number'
     },
     {
-      'name': 'password',
-      'baseName': 'password',
-      'type': 'string',
+      name: 'password',
+      baseName: 'password',
+      type: 'string'
     },
     {
-      'name': 'priority',
-      'baseName': 'priority',
-      'type': 'number',
+      name: 'priority',
+      baseName: 'priority',
+      type: 'number'
     },
     {
-      'name': 'records',
-      'baseName': 'records',
-      'type': 'Array<Record>',
+      name: 'records',
+      baseName: 'records',
+      type: 'Array<Record>'
     },
     {
-      'name': 'resetPasswordToken',
-      'baseName': 'resetPasswordToken',
-      'type': 'string',
+      name: 'resetPasswordToken',
+      baseName: 'resetPasswordToken',
+      type: 'string'
     },
     {
-      'name': 'roles',
-      'baseName': 'roles',
-      'type': 'Array<Role>',
+      name: 'roles',
+      baseName: 'roles',
+      type: 'Array<Role>'
     },
     {
-      'name': 'sendEmail',
-      'baseName': 'sendEmail',
-      'type': 'boolean',
+      name: 'sendEmail',
+      baseName: 'sendEmail',
+      type: 'boolean'
     },
     {
-      'name': 'status',
-      'baseName': 'status',
-      'type': 'string',
+      name: 'status',
+      baseName: 'status',
+      type: 'string'
     },
     {
-      'name': 'superUser',
-      'baseName': 'superUser',
-      'type': 'boolean',
+      name: 'superUser',
+      baseName: 'superUser',
+      type: 'boolean'
     },
     {
-      'name': 'textValue',
-      'baseName': 'textValue',
-      'type': 'string',
+      name: 'textValue',
+      baseName: 'textValue',
+      type: 'string'
     },
     {
-      'name': 'tier',
-      'baseName': 'tier',
-      'type': 'Locked.TierEnum',
+      name: 'tier',
+      baseName: 'tier',
+      type: 'Locked.TierEnum'
     },
     {
-      'name': 'timeZone',
-      'baseName': 'timeZone',
-      'type': 'string',
+      name: 'timeZone',
+      baseName: 'timeZone',
+      type: 'string'
     },
     {
-      'name': 'updated',
-      'baseName': 'updated',
-      'type': 'Date',
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
     },
     {
-      'name': 'valueType',
-      'baseName': 'valueType',
-      'type': 'string',
-    }];
+      name: 'valueType',
+      baseName: 'valueType',
+      type: 'string'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return super.getAttributeTypeMap().concat(Locked.attributeTypeMap);

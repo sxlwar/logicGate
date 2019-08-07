@@ -3,10 +3,9 @@ import { Authentication, VoidAuth } from './Authentication';
 import { defaultBasePath } from './defaultBasePath';
 import { ObjectSerializer } from './ObjectSerializer';
 import { ClientResponse } from 'http';
-import { Options } from 'request'
-import * as request from 'request';
-export enum RolesApiApiKeys {
-}
+import { Options } from 'request';
+import request from 'request';
+export enum RolesApiApiKeys {}
 
 export class RolesApi {
   protected _basePath = defaultBasePath;
@@ -14,7 +13,7 @@ export class RolesApi {
   protected _useQuerystring: boolean = false;
 
   protected authentications = {
-    'default': <Authentication>new VoidAuth(),
+    default: <Authentication>new VoidAuth()
   };
 
   constructor(basePath?: string);
@@ -56,7 +55,7 @@ export class RolesApi {
    * @param role role
    * @param {*} [options] Override http request options.
    */
-  public createUsingPOST3(role: Role, options: any = {}): Promise<{ response: ClientResponse; body: Role; }> {
+  public createUsingPOST3(role: Role, options: any = {}): Promise<{ response: ClientResponse; body: Role }> {
     const localVarPath = this.basePath + '/api/v1/roles';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -78,7 +77,7 @@ export class RolesApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(role, 'Role'),
+      body: ObjectSerializer.serialize(role, 'Role')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -90,14 +89,14 @@ export class RolesApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Role; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Role }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Role');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({ response: response, body: body } as {response: any, body: any });
+            resolve({ response: response, body: body } as { response: any; body: any });
           } else {
             reject({ response: response, body: body });
           }
@@ -111,7 +110,7 @@ export class RolesApi {
    * @summary Return all roles that are active and unlocked.
    * @param {*} [options] Override http request options.
    */
-  public findAllUsingGET(options: any = {}): Promise<{ response: ClientResponse; body: Array<Role>; }> {
+  public findAllUsingGET(options: any = {}): Promise<{ response: ClientResponse; body: Array<Role> }> {
     const localVarPath = this.basePath + '/api/v1/roles';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -127,7 +126,7 @@ export class RolesApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -139,14 +138,14 @@ export class RolesApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Array<Role>; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Array<Role> }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<Role>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({ response: response, body: body } as {response: any, body: any });
+            resolve({ response: response, body: body } as { response: any; body: any });
           } else {
             reject({ response: response, body: body });
           }
@@ -160,7 +159,7 @@ export class RolesApi {
    * @summary Return a list of roles that are active and associated to the logged in principal user.
    * @param {*} [options] Override http request options.
    */
-  public findByUserUsingGET(options: any = {}): Promise<{ response: ClientResponse; body: Array<Role>; }> {
+  public findByUserUsingGET(options: any = {}): Promise<{ response: ClientResponse; body: Array<Role> }> {
     const localVarPath = this.basePath + '/api/v1/roles/user';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -176,7 +175,7 @@ export class RolesApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -188,14 +187,14 @@ export class RolesApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Array<Role>; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Array<Role> }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<Role>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({ response: response, body: body } as {response: any, body: any });
+            resolve({ response: response, body: body } as { response: any; body: any });
           } else {
             reject({ response: response, body: body });
           }

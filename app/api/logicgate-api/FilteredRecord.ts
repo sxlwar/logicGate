@@ -1,5 +1,5 @@
-import {RecordProperty} from './RecordProperty';
-import {RecordDetails} from './RecordDetails';
+import { RecordProperty } from './RecordProperty';
+import { RecordDetails } from './RecordDetails';
 
 export class FilteredRecord {
   'assignment'?: RecordDetails;
@@ -8,22 +8,23 @@ export class FilteredRecord {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'assignment',
-      'baseName': 'assignment',
-      'type': 'RecordDetails',
+      name: 'assignment',
+      baseName: 'assignment',
+      type: 'RecordDetails'
     },
     {
-      'name': 'properties',
-      'baseName': 'properties',
-      'type': 'Array<RecordProperty>',
+      name: 'properties',
+      baseName: 'properties',
+      type: 'Array<RecordProperty>'
     },
     {
-      'name': 'record',
-      'baseName': 'record',
-      'type': 'RecordDetails',
-    }];
+      name: 'record',
+      baseName: 'record',
+      type: 'RecordDetails'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return FilteredRecord.attributeTypeMap;

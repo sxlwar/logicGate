@@ -8,37 +8,38 @@ export class RecordProperty {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'fieldType',
-      'baseName': 'fieldType',
-      'type': 'RecordProperty.FieldTypeEnum',
+      name: 'fieldType',
+      baseName: 'fieldType',
+      type: 'RecordProperty.FieldTypeEnum'
     },
     {
-      'name': 'formattedValue',
-      'baseName': 'formattedValue',
-      'type': 'string',
+      name: 'formattedValue',
+      baseName: 'formattedValue',
+      type: 'string'
     },
     {
-      'name': 'header',
-      'baseName': 'header',
-      'type': 'string',
+      name: 'header',
+      baseName: 'header',
+      type: 'string'
     },
     {
-      'name': 'rawValue',
-      'baseName': 'rawValue',
-      'type': 'any',
+      name: 'rawValue',
+      baseName: 'rawValue',
+      type: 'any'
     },
     {
-      'name': 'systemField',
-      'baseName': 'systemField',
-      'type': 'RecordProperty.SystemFieldEnum',
+      name: 'systemField',
+      baseName: 'systemField',
+      type: 'RecordProperty.SystemFieldEnum'
     },
     {
-      'name': 'url',
-      'baseName': 'url',
-      'type': 'string',
-    }];
+      name: 'url',
+      baseName: 'url',
+      type: 'string'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return RecordProperty.attributeTypeMap;

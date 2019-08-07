@@ -2,10 +2,9 @@ import { Authentication, VoidAuth } from './Authentication';
 import { defaultBasePath } from './defaultBasePath';
 import { ValueMap } from './ValueMap';
 import { ObjectSerializer } from './ObjectSerializer';
-import { Options } from 'request'
-import * as request from 'request';
-export enum ValueMapsApiApiKeys {
-}
+import { Options } from 'request';
+import request from 'request';
+export enum ValueMapsApiApiKeys {}
 
 export class ValueMapsApi {
   protected _basePath = defaultBasePath;
@@ -13,7 +12,7 @@ export class ValueMapsApi {
   protected _useQuerystring: boolean = false;
 
   protected authentications = {
-    'default': <Authentication>new VoidAuth(),
+    default: <Authentication>new VoidAuth()
   };
 
   constructor(basePath?: string);
@@ -57,7 +56,12 @@ export class ValueMapsApi {
    * @param record Assignment ID
    * @param {*} [options] Override http request options.
    */
-  public createValueMapUsingPOST(currentValueMap: ValueMap, assignment?: string, record?: string, options: any = {}): Promise<{ response: Options; body: ValueMap; }> {
+  public createValueMapUsingPOST(
+    currentValueMap: ValueMap,
+    assignment?: string,
+    record?: string,
+    options: any = {}
+  ): Promise<{ response: Options; body: ValueMap }> {
     const localVarPath = this.basePath + '/api/v1/valueMaps';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -87,7 +91,7 @@ export class ValueMapsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(currentValueMap, 'ValueMap'),
+      body: ObjectSerializer.serialize(currentValueMap, 'ValueMap')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -99,14 +103,14 @@ export class ValueMapsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: Options; body: ValueMap; }>((resolve, reject) => {
+    return new Promise<{ response: Options; body: ValueMap }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'ValueMap');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({ response: response, body: body } as { response: any, body: any });
+            resolve({ response: response, body: body } as { response: any; body: any });
           } else {
             reject({ response: response, body: body });
           }
@@ -121,7 +125,10 @@ export class ValueMapsApi {
    * @param minUpdated Minimum updated time value. The value is a unix timestamp.
    * @param {*} [options] Override http request options.
    */
-  public getValueMapsByMinUpdatedUsingGET(minUpdated?: number, options: any = {}): Promise<{ response: Options; body: Array<ValueMap>; }> {
+  public getValueMapsByMinUpdatedUsingGET(
+    minUpdated?: number,
+    options: any = {}
+  ): Promise<{ response: Options; body: Array<ValueMap> }> {
     const localVarPath = this.basePath + '/api/v1/valueMaps';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -141,7 +148,7 @@ export class ValueMapsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -153,14 +160,14 @@ export class ValueMapsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: Options; body: Array<ValueMap>; }>((resolve, reject) => {
+    return new Promise<{ response: Options; body: Array<ValueMap> }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<ValueMap>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({ response: response, body: body } as { response: any, body: any });
+            resolve({ response: response, body: body } as { response: any; body: any });
           } else {
             reject({ response: response, body: body });
           }

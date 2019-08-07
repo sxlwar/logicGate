@@ -1,5 +1,5 @@
-import {Field} from './Field';
-import {FieldInputResult} from './FieldInputResult';
+import { Field } from './Field';
+import { FieldInputResult } from './FieldInputResult';
 
 /**
  * A relationship object managing how to use fields and their associated current value maps in an expression.
@@ -27,57 +27,58 @@ export class FieldInput {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'active',
-      'baseName': 'active',
-      'type': 'boolean',
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      'name': 'created',
-      'baseName': 'created',
-      'type': 'Date',
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      'name': 'fieldResult',
-      'baseName': 'fieldResult',
-      'type': 'FieldInputResult',
+      name: 'fieldResult',
+      baseName: 'fieldResult',
+      type: 'FieldInputResult'
     },
     {
-      'name': 'id',
-      'baseName': 'id',
-      'type': 'string',
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      'name': 'input',
-      'baseName': 'input',
-      'type': 'Field',
+      name: 'input',
+      baseName: 'input',
+      type: 'Field'
     },
     {
-      'name': 'inputId',
-      'baseName': 'inputId',
-      'type': 'string',
+      name: 'inputId',
+      baseName: 'inputId',
+      type: 'string'
     },
     {
-      'name': 'labels',
-      'baseName': 'labels',
-      'type': 'Array<string>',
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      'name': 'parent',
-      'baseName': 'parent',
-      'type': 'Field',
+      name: 'parent',
+      baseName: 'parent',
+      type: 'Field'
     },
     {
-      'name': 'priority',
-      'baseName': 'priority',
-      'type': 'number',
+      name: 'priority',
+      baseName: 'priority',
+      type: 'number'
     },
     {
-      'name': 'updated',
-      'baseName': 'updated',
-      'type': 'Date',
-    }];
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return FieldInput.attributeTypeMap;

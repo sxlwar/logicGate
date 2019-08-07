@@ -1,7 +1,7 @@
 /**
  * An entity for managing top-level process data. A process represents the highest level of organization for other entities within the application.
  */
-import {Workflow} from './Workflow';
+import { Workflow } from './Workflow';
 
 export class Process {
   'active'?: boolean;
@@ -30,62 +30,63 @@ export class Process {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'active',
-      'baseName': 'active',
-      'type': 'boolean',
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      'name': 'color',
-      'baseName': 'color',
-      'type': 'string',
+      name: 'color',
+      baseName: 'color',
+      type: 'string'
     },
     {
-      'name': 'copied',
-      'baseName': 'copied',
-      'type': 'boolean',
+      name: 'copied',
+      baseName: 'copied',
+      type: 'boolean'
     },
     {
-      'name': 'created',
-      'baseName': 'created',
-      'type': 'Date',
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      'name': 'icon',
-      'baseName': 'icon',
-      'type': 'Process.IconEnum',
+      name: 'icon',
+      baseName: 'icon',
+      type: 'Process.IconEnum'
     },
     {
-      'name': 'id',
-      'baseName': 'id',
-      'type': 'string',
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      'name': 'imported',
-      'baseName': 'imported',
-      'type': 'boolean',
+      name: 'imported',
+      baseName: 'imported',
+      type: 'boolean'
     },
     {
-      'name': 'labels',
-      'baseName': 'labels',
-      'type': 'Array<string>',
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      'name': 'name',
-      'baseName': 'name',
-      'type': 'string',
+      name: 'name',
+      baseName: 'name',
+      type: 'string'
     },
     {
-      'name': 'updated',
-      'baseName': 'updated',
-      'type': 'Date',
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
     },
     {
-      'name': 'workflows',
-      'baseName': 'workflows',
-      'type': 'Array<Workflow>',
-    }];
+      name: 'workflows',
+      baseName: 'workflows',
+      type: 'Array<Workflow>'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return Process.attributeTypeMap;

@@ -1,13 +1,13 @@
-通过 ldap 从 active directory上取回用户的信息
+通过 ldap 从 active directory 上取回用户的信息
 
 LDAP => 暴露事件 => 前端 onXXX 监听
 
 ```javascript
 /**
  * 本实例演示了如何从 ldap 协议获取数据
- * 
+ *
  * 以及监听 ldap 的事件钩子
- * 
+ *
  */
 
 const ldap = require('ldapjs');
@@ -23,7 +23,7 @@ const client = ldap.createClient({
   url: 'ldap://ldap.forumsys.com'
 });
 
-client.bind(dn, pw,err => {
+client.bind(dn, pw, err => {
   assert.ifError(err);
 });
 
@@ -34,7 +34,7 @@ const searchOptions = {
   attributes: ['dn', 'cn', 'givenName', 'sn', 'telephoneNumber', 'mail', 'manager', 'objectClass']
 };
 
-client.search(adSuffix,searchOptions,(err,res) => {
+client.search(adSuffix, searchOptions, (err, res) => {
   assert.ifError(err);
 
   res.on('searchEntry', entry => {
@@ -53,8 +53,7 @@ client.search(adSuffix,searchOptions,(err,res) => {
 });
 
 // Wrap up
-client.unbind( err => {
+client.unbind(err => {
   assert.ifError(err);
 });
-
 ```

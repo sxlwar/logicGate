@@ -4,17 +4,18 @@ export class ServiceLevelAgreement {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'duration',
-      'baseName': 'duration',
-      'type': 'number',
+      name: 'duration',
+      baseName: 'duration',
+      type: 'number'
     },
     {
-      'name': 'enabled',
-      'baseName': 'enabled',
-      'type': 'boolean',
-    }];
+      name: 'enabled',
+      baseName: 'enabled',
+      type: 'boolean'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return ServiceLevelAgreement.attributeTypeMap;

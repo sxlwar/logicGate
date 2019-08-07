@@ -1,9 +1,8 @@
-import {primitives} from './primitives';
-import {enumsMap} from './enumsMap';
-import {typeMap} from './typeMap';
+import { primitives } from './primitives';
+import { enumsMap } from './enumsMap';
+import { typeMap } from './typeMap';
 
 export class ObjectSerializer {
-
   public static findCorrectType(data: any, expectedType: string) {
     if (data == undefined) {
       return expectedType;
@@ -39,7 +38,8 @@ export class ObjectSerializer {
       return data;
     } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
       return data;
-    } else if (type.lastIndexOf('Array<', 0) === 0) { // string.startsWith pre es6
+    } else if (type.lastIndexOf('Array<', 0) === 0) {
+      // string.startsWith pre es6
       let subType: string = type.replace('Array<', ''); // Array<Type> => Type>
       subType = subType.substring(0, subType.length - 1); // Type> => Type
       let transformedData: any[] = [];
@@ -54,7 +54,8 @@ export class ObjectSerializer {
       if (enumsMap[type]) {
         return data;
       }
-      if (!typeMap[type]) { // in case we dont know the type
+      if (!typeMap[type]) {
+        // in case we dont know the type
         return data;
       }
 
@@ -76,7 +77,8 @@ export class ObjectSerializer {
       return data;
     } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
       return data;
-    } else if (type.lastIndexOf('Array<', 0) === 0) { // string.startsWith pre es6
+    } else if (type.lastIndexOf('Array<', 0) === 0) {
+      // string.startsWith pre es6
       let subType: string = type.replace('Array<', ''); // Array<Type> => Type>
       subType = subType.substring(0, subType.length - 1); // Type> => Type
       let transformedData: any[] = [];
@@ -88,11 +90,13 @@ export class ObjectSerializer {
     } else if (type === 'Date') {
       return new Date(data);
     } else {
-      if (enumsMap[type]) {// is Enum
+      if (enumsMap[type]) {
+        // is Enum
         return data;
       }
 
-      if (!typeMap[type]) { // dont know the type
+      if (!typeMap[type]) {
+        // dont know the type
         return data;
       }
       let instance = new typeMap[type]();

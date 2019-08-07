@@ -1,4 +1,4 @@
-import {Process} from './Process';
+import { Process } from './Process';
 
 export class WorkflowResult {
   'assignments'?: number;
@@ -16,67 +16,68 @@ export class WorkflowResult {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      "name": "assignments",
-      "baseName": "assignments",
-      "type": "number"
+      name: 'assignments',
+      baseName: 'assignments',
+      type: 'number'
     },
     {
-      "name": "assignmentsComplete",
-      "baseName": "assignmentsComplete",
-      "type": "number"
+      name: 'assignmentsComplete',
+      baseName: 'assignmentsComplete',
+      type: 'number'
     },
     {
-      "name": "assignmentsOverdue",
-      "baseName": "assignmentsOverdue",
-      "type": "number"
+      name: 'assignmentsOverdue',
+      baseName: 'assignmentsOverdue',
+      type: 'number'
     },
     {
-      "name": "depth",
-      "baseName": "depth",
-      "type": "number"
+      name: 'depth',
+      baseName: 'depth',
+      type: 'number'
     },
     {
-      "name": "id",
-      "baseName": "id",
-      "type": "string"
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      "name": "name",
-      "baseName": "name",
-      "type": "string"
+      name: 'name',
+      baseName: 'name',
+      type: 'string'
     },
     {
-      "name": "process",
-      "baseName": "process",
-      "type": "Process"
+      name: 'process',
+      baseName: 'process',
+      type: 'Process'
     },
     {
-      "name": "recordPrefix",
-      "baseName": "recordPrefix",
-      "type": "string"
+      name: 'recordPrefix',
+      baseName: 'recordPrefix',
+      type: 'string'
     },
     {
-      "name": "records",
-      "baseName": "records",
-      "type": "number"
+      name: 'records',
+      baseName: 'records',
+      type: 'number'
     },
     {
-      "name": "recordsComplete",
-      "baseName": "recordsComplete",
-      "type": "number"
+      name: 'recordsComplete',
+      baseName: 'recordsComplete',
+      type: 'number'
     },
     {
-      "name": "recordsOverdue",
-      "baseName": "recordsOverdue",
-      "type": "number"
+      name: 'recordsOverdue',
+      baseName: 'recordsOverdue',
+      type: 'number'
     },
     {
-      "name": "steps",
-      "baseName": "steps",
-      "type": "number"
-    }    ];
+      name: 'steps',
+      baseName: 'steps',
+      type: 'number'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return WorkflowResult.attributeTypeMap;
