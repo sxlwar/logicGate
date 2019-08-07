@@ -1,8 +1,8 @@
 /**
  * 本实例演示了如何从 ldap 协议获取数据
- * 
+ *
  * 以及监听 ldap 的事件钩子
- * 
+ *
  */
 import { createClient } from 'ldapjs';
 import { ifError } from 'assert';
@@ -15,19 +15,18 @@ const pw = 'password';
 // createServer()
 // Create client and bind to AD
 export const client = createClient({
-    url: 'ldap://ldap.forumsys.com',
+  url: 'ldap://ldap.forumsys.com'
 });
 
 client.bind(dn, pw, err => {
-    ifError(err);
+  ifError(err);
 });
-
 
 // Search AD for user
 export const searchOptions = {
-    filter: `(mail=*@ldap.forumsys.com)`,
-    scope: 'sub',
-    attributes: ['dn', 'cn', 'givenName', 'sn', 'telephoneNumber', 'mail', 'manager', 'objectClass']
+  filter: `(mail=*@ldap.forumsys.com)`,
+  scope: 'sub',
+  attributes: ['dn', 'cn', 'givenName', 'sn', 'telephoneNumber', 'mail', 'manager', 'objectClass']
 };
 
 // client.search(adSuffix, searchOptions, (err, res: SearchCallbackResponse) => {

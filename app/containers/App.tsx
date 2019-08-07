@@ -1,10 +1,10 @@
-import { fetchToken } from "../api/fetchToken";
-import * as React from "react";
-import { connect, Dispatch, DispatchProp } from "react-redux";
-import { bindActionCreators } from "redux";
+import { fetchToken } from '../api/fetchToken';
+import * as React from 'react';
+import { connect, Dispatch, DispatchProp } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import * as AccountActions from "../actions/account";
-import { IState } from "../reducers";
+import * as AccountActions from '../actions/account';
+import { IState } from '../reducers';
 
 interface AppProps extends DispatchProp<string> {
   account: string;

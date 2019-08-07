@@ -1,6 +1,6 @@
-import {WorkflowMap} from './WorkflowMap';
-import {WorkflowResult} from './WorkflowResult';
-import {Workflow} from './Workflow';
+import { WorkflowMap } from './WorkflowMap';
+import { WorkflowResult } from './WorkflowResult';
+import { Workflow } from './Workflow';
 
 export class ManyToMany extends WorkflowMap {
   'active'?: boolean;
@@ -23,62 +23,63 @@ export class ManyToMany extends WorkflowMap {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'active',
-      'baseName': 'active',
-      'type': 'boolean',
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      'name': 'childId',
-      'baseName': 'childId',
-      'type': 'string',
+      name: 'childId',
+      baseName: 'childId',
+      type: 'string'
     },
     {
-      'name': 'created',
-      'baseName': 'created',
-      'type': 'Date',
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      'name': 'id',
-      'baseName': 'id',
-      'type': 'string',
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      'name': 'labels',
-      'baseName': 'labels',
-      'type': 'Array<string>',
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      'name': 'parentId',
-      'baseName': 'parentId',
-      'type': 'string',
+      name: 'parentId',
+      baseName: 'parentId',
+      type: 'string'
     },
     {
-      'name': 'parentResult',
-      'baseName': 'parentResult',
-      'type': 'WorkflowResult',
+      name: 'parentResult',
+      baseName: 'parentResult',
+      type: 'WorkflowResult'
     },
     {
-      'name': 'parentWorkflow',
-      'baseName': 'parentWorkflow',
-      'type': 'Workflow',
+      name: 'parentWorkflow',
+      baseName: 'parentWorkflow',
+      type: 'Workflow'
     },
     {
-      'name': 'updated',
-      'baseName': 'updated',
-      'type': 'Date',
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
     },
     {
-      'name': 'workflow',
-      'baseName': 'workflow',
-      'type': 'Workflow',
+      name: 'workflow',
+      baseName: 'workflow',
+      type: 'Workflow'
     },
     {
-      'name': 'workflowMapType',
-      'baseName': 'workflowMapType',
-      'type': 'string',
-    }];
+      name: 'workflowMapType',
+      baseName: 'workflowMapType',
+      type: 'string'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return super.getAttributeTypeMap().concat(ManyToMany.attributeTypeMap);

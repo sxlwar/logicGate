@@ -6,8 +6,7 @@ import { defaultBasePath } from './defaultBasePath';
 import { ObjectSerializer } from './ObjectSerializer';
 import { User } from './User';
 
-export enum ExternalUsersApiApiKeys {
-}
+export enum ExternalUsersApiApiKeys {}
 
 export class ExternalUsersApi {
   protected _basePath = defaultBasePath;
@@ -15,7 +14,7 @@ export class ExternalUsersApi {
   protected _useQuerystring: boolean = false;
 
   protected authentications = {
-    'default': <Authentication>new VoidAuth(),
+    default: <Authentication>new VoidAuth()
   };
 
   constructor(basePath?: string);
@@ -57,7 +56,7 @@ export class ExternalUsersApi {
    * @param user user
    * @param {*} [options] Override http request options.
    */
-  public createUsingPOST1(user: User, options: any = {}): Promise<{ response: ClientResponse; body: User; }> {
+  public createUsingPOST1(user: User, options: any = {}): Promise<{ response: ClientResponse; body: User }> {
     const localVarPath = this.basePath + '/api/v1/users/external';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -79,7 +78,7 @@ export class ExternalUsersApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(user, 'User'),
+      body: ObjectSerializer.serialize(user, 'User')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -91,7 +90,7 @@ export class ExternalUsersApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: User; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: User }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);

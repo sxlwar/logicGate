@@ -3,10 +3,9 @@ import { Authentication, VoidAuth } from './Authentication';
 import { defaultBasePath } from './defaultBasePath';
 import { ObjectSerializer } from './ObjectSerializer';
 import { ClientResponse } from 'http';
-import { Options } from 'request'
+import { Options } from 'request';
 import * as request from 'request';
-export enum StepsApiApiKeys {
-}
+export enum StepsApiApiKeys {}
 
 export class StepsApi {
   protected _basePath = defaultBasePath;
@@ -14,7 +13,7 @@ export class StepsApi {
   protected _useQuerystring: boolean = false;
 
   protected authentications = {
-    'default': <Authentication>new VoidAuth(),
+    default: <Authentication>new VoidAuth()
   };
 
   constructor(basePath?: string);
@@ -55,7 +54,7 @@ export class StepsApi {
    * @summary Return a list of all nodes that are active and attached to a workflow.
    * @param {*} [options] Override http request options.
    */
-  public findAllUsingGET1(options: any = {}): Promise<{ response: ClientResponse; body: Array<Step>; }> {
+  public findAllUsingGET1(options: any = {}): Promise<{ response: ClientResponse; body: Array<Step> }> {
     const localVarPath = this.basePath + '/api/v1/nodes';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -71,7 +70,7 @@ export class StepsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -83,14 +82,14 @@ export class StepsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Array<Step>; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Array<Step> }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<Step>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({ response: response, body: body } as { response: any, body: any });
+            resolve({ response: response, body: body } as { response: any; body: any });
           } else {
             reject({ response: response, body: body });
           }
@@ -104,7 +103,7 @@ export class StepsApi {
    * @summary Return a list of all nodes that are active and attached to a workflow.
    * @param {*} [options] Override http request options.
    */
-  public findAllUsingGET2(options: any = {}): Promise<{ response: ClientResponse; body: Array<Step>; }> {
+  public findAllUsingGET2(options: any = {}): Promise<{ response: ClientResponse; body: Array<Step> }> {
     const localVarPath = this.basePath + '/api/v1/steps';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -120,7 +119,7 @@ export class StepsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -132,14 +131,14 @@ export class StepsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Array<Step>; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Array<Step> }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<Step>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({ response: response, body: body } as { response: any, body: any });
+            resolve({ response: response, body: body } as { response: any; body: any });
           } else {
             reject({ response: response, body: body });
           }
@@ -154,9 +153,8 @@ export class StepsApi {
    * @param id id
    * @param {*} [options] Override http request options.
    */
-  public findByIdUsingGET1(id: string, options: any = {}): Promise<{ response: ClientResponse; body: Step; }> {
-    const localVarPath = this.basePath + '/api/v1/nodes/{id}'
-      .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
+  public findByIdUsingGET1(id: string, options: any = {}): Promise<{ response: ClientResponse; body: Step }> {
+    const localVarPath = this.basePath + '/api/v1/nodes/{id}'.replace('{' + 'id' + '}', encodeURIComponent(String(id)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -176,7 +174,7 @@ export class StepsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -188,14 +186,14 @@ export class StepsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Step; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Step }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Step');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({ response: response, body: body } as { response: any, body: any });
+            resolve({ response: response, body: body } as { response: any; body: any });
           } else {
             reject({ response: response, body: body });
           }
@@ -210,9 +208,8 @@ export class StepsApi {
    * @param id id
    * @param {*} [options] Override http request options.
    */
-  public findByIdUsingGET2(id: string, options: any = {}): Promise<{ response: ClientResponse; body: Step; }> {
-    const localVarPath = this.basePath + '/api/v1/steps/{id}'
-      .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
+  public findByIdUsingGET2(id: string, options: any = {}): Promise<{ response: ClientResponse; body: Step }> {
+    const localVarPath = this.basePath + '/api/v1/steps/{id}'.replace('{' + 'id' + '}', encodeURIComponent(String(id)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -232,7 +229,7 @@ export class StepsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -244,14 +241,14 @@ export class StepsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Step; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Step }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Step');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({ response: response, body: body } as { response: any, body: any });
+            resolve({ response: response, body: body } as { response: any; body: any });
           } else {
             reject({ response: response, body: body });
           }

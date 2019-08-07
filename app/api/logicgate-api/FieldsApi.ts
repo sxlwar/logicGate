@@ -7,8 +7,7 @@ import { Field } from './Field';
 import { ObjectSerializer } from './ObjectSerializer';
 import { PageOfField } from './PageOfField';
 
-export enum FieldsApiApiKeys {
-}
+export enum FieldsApiApiKeys {}
 
 export class FieldsApi {
   protected _basePath = defaultBasePath;
@@ -16,7 +15,7 @@ export class FieldsApi {
   protected _useQuerystring: boolean = false;
 
   protected authentications = {
-    'default': <Authentication>new VoidAuth(),
+    default: <Authentication>new VoidAuth()
   };
 
   constructor(basePath?: string);
@@ -58,7 +57,7 @@ export class FieldsApi {
    * @param field field
    * @param {*} [options] Override http request options.
    */
-  public createUsingPOST2(field: Field, options: any = {}): Promise<{ response: ClientResponse; body: Field; }> {
+  public createUsingPOST2(field: Field, options: any = {}): Promise<{ response: ClientResponse; body: Field }> {
     const localVarPath = this.basePath + '/api/v1/fields';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -80,7 +79,7 @@ export class FieldsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(field, 'Field'),
+      body: ObjectSerializer.serialize(field, 'Field')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -92,7 +91,7 @@ export class FieldsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Field; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Field }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
@@ -114,9 +113,9 @@ export class FieldsApi {
    * @param id id
    * @param {*} [options] Override http request options.
    */
-  public deleteUsingDELETE(id: string, options: any = {}): Promise<{ response: ClientResponse; body?: any; }> {
-    const localVarPath = this.basePath + '/api/v1/fields/{id}'
-      .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
+  public deleteUsingDELETE(id: string, options: any = {}): Promise<{ response: ClientResponse; body?: any }> {
+    const localVarPath =
+      this.basePath + '/api/v1/fields/{id}'.replace('{' + 'id' + '}', encodeURIComponent(String(id)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -136,7 +135,7 @@ export class FieldsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -148,7 +147,7 @@ export class FieldsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body?: any; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body?: any }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
@@ -169,9 +168,13 @@ export class FieldsApi {
    * @param fieldId fieldId
    * @param {*} [options] Override http request options.
    */
-  public fieldIsInputUsingGET(fieldId: string, options: any = {}): Promise<{ response: ClientResponse; body: boolean; }> {
-    const localVarPath = this.basePath + '/api/v1/fields/isInput/{fieldId}'
-      .replace('{' + 'fieldId' + '}', encodeURIComponent(String(fieldId)));
+  public fieldIsInputUsingGET(
+    fieldId: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: boolean }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/fields/isInput/{fieldId}'.replace('{' + 'fieldId' + '}', encodeURIComponent(String(fieldId)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -191,7 +194,7 @@ export class FieldsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -203,7 +206,7 @@ export class FieldsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: boolean; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: boolean }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
@@ -242,7 +245,41 @@ export class FieldsApi {
    * @param workflowId
    * @param {*} [options] Override http request options.
    */
-  public findByDiscreteWithValuesUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withLabels?: boolean, withValues?: boolean, workflowId?: string, options: any = {}): Promise<{ response: ClientResponse; body: PageOfField; }> {
+  public findByDiscreteWithValuesUsingGET(
+    page: string,
+    size: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    sort?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withLabels?: boolean,
+    withValues?: boolean,
+    workflowId?: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: PageOfField }> {
     const localVarPath = this.basePath + '/api/v1/fields/discrete/values';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -311,7 +348,10 @@ export class FieldsApi {
     }
 
     if (types !== undefined) {
-      localVarQueryParameters['types'] = ObjectSerializer.serialize(types, 'Array<\'TEXT\' | \'TEXT_AREA\' | \'DATE_PICKER\' | \'NUMBER\' | \'E_SIGNATURE\' | \'CHECKBOX\' | \'MULTI_SELECT\' | \'RADIO\' | \'SELECT\' | \'USER\' | \'ATTACHMENT\' | \'CALCULATION\' | \'DUE_DATE\'>');
+      localVarQueryParameters['types'] = ObjectSerializer.serialize(
+        types,
+        "Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>"
+      );
     }
 
     if (withInputs !== undefined) {
@@ -340,7 +380,7 @@ export class FieldsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -352,7 +392,7 @@ export class FieldsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: PageOfField; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: PageOfField }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
@@ -391,7 +431,41 @@ export class FieldsApi {
    * @param workflowId
    * @param {*} [options] Override http request options.
    */
-  public findByGlobalUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withLabels?: boolean, withValues?: boolean, workflowId?: string, options: any = {}): Promise<{ response: ClientResponse; body: PageOfField; }> {
+  public findByGlobalUsingGET(
+    page: string,
+    size: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    sort?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withLabels?: boolean,
+    withValues?: boolean,
+    workflowId?: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: PageOfField }> {
     const localVarPath = this.basePath + '/api/v1/fields/global';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -460,7 +534,10 @@ export class FieldsApi {
     }
 
     if (types !== undefined) {
-      localVarQueryParameters['types'] = ObjectSerializer.serialize(types, 'Array<\'TEXT\' | \'TEXT_AREA\' | \'DATE_PICKER\' | \'NUMBER\' | \'E_SIGNATURE\' | \'CHECKBOX\' | \'MULTI_SELECT\' | \'RADIO\' | \'SELECT\' | \'USER\' | \'ATTACHMENT\' | \'CALCULATION\' | \'DUE_DATE\'>');
+      localVarQueryParameters['types'] = ObjectSerializer.serialize(
+        types,
+        "Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>"
+      );
     }
 
     if (withInputs !== undefined) {
@@ -489,7 +566,7 @@ export class FieldsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -501,7 +578,7 @@ export class FieldsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: PageOfField; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: PageOfField }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
@@ -524,9 +601,13 @@ export class FieldsApi {
    * @param archived Retrieve archived values
    * @param {*} [options] Override http request options.
    */
-  public findByIdUsingGET(id: string, archived?: boolean, options: any = {}): Promise<{ response: ClientResponse; body: Field; }> {
-    const localVarPath = this.basePath + '/api/v1/fields/{id}'
-      .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
+  public findByIdUsingGET(
+    id: string,
+    archived?: boolean,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Field }> {
+    const localVarPath =
+      this.basePath + '/api/v1/fields/{id}'.replace('{' + 'id' + '}', encodeURIComponent(String(id)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -550,7 +631,7 @@ export class FieldsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -562,7 +643,7 @@ export class FieldsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Field; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Field }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
@@ -599,9 +680,42 @@ export class FieldsApi {
    * @param withValues
    * @param {*} [options] Override http request options.
    */
-  public findByWorkflowUsingGET(page: string, workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withLabels?: boolean, withValues?: boolean, options: any = {}): Promise<{ response: ClientResponse; body: PageOfField; }> {
-    const localVarPath = this.basePath + '/api/v1/fields/workflow/{workflowId}'
-      .replace('{' + 'workflowId' + '}', encodeURIComponent(String(workflowId)));
+  public findByWorkflowUsingGET(
+    page: string,
+    workflowId: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withLabels?: boolean,
+    withValues?: boolean,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: PageOfField }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/fields/workflow/{workflowId}'.replace('{' + 'workflowId' + '}', encodeURIComponent(String(workflowId)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -661,7 +775,10 @@ export class FieldsApi {
     }
 
     if (types !== undefined) {
-      localVarQueryParameters['types'] = ObjectSerializer.serialize(types, 'Array<\'TEXT\' | \'TEXT_AREA\' | \'DATE_PICKER\' | \'NUMBER\' | \'E_SIGNATURE\' | \'CHECKBOX\' | \'MULTI_SELECT\' | \'RADIO\' | \'SELECT\' | \'USER\' | \'ATTACHMENT\' | \'CALCULATION\' | \'DUE_DATE\'>');
+      localVarQueryParameters['types'] = ObjectSerializer.serialize(
+        types,
+        "Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>"
+      );
     }
 
     if (withInputs !== undefined) {
@@ -686,7 +803,7 @@ export class FieldsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -698,7 +815,7 @@ export class FieldsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: PageOfField; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: PageOfField }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
@@ -734,16 +851,53 @@ export class FieldsApi {
    * @param withValues
    * @param {*} [options] Override http request options.
    */
-  public findByWorkflowWithValuesUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withLabels?: boolean, withValues?: boolean, options: any = {}): Promise<{ response: ClientResponse; body: Array<Field>; }> {
-    const localVarPath = this.basePath + '/api/v1/fields/workflow/{workflowId}/values'
-      .replace('{' + 'workflowId' + '}', encodeURIComponent(String(workflowId)));
+  public findByWorkflowWithValuesUsingGET(
+    workflowId: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withLabels?: boolean,
+    withValues?: boolean,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Array<Field> }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/fields/workflow/{workflowId}/values'.replace(
+        '{' + 'workflowId' + '}',
+        encodeURIComponent(String(workflowId))
+      );
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
 
     // verify required parameter 'workflowId' is not null or undefined
     if (workflowId === null || workflowId === undefined) {
-      throw new Error('Required parameter workflowId was null or undefined when calling findByWorkflowWithValuesUsingGET.');
+      throw new Error(
+        'Required parameter workflowId was null or undefined when calling findByWorkflowWithValuesUsingGET.'
+      );
     }
 
     if (archived !== undefined) {
@@ -787,7 +941,10 @@ export class FieldsApi {
     }
 
     if (types !== undefined) {
-      localVarQueryParameters['types'] = ObjectSerializer.serialize(types, 'Array<\'TEXT\' | \'TEXT_AREA\' | \'DATE_PICKER\' | \'NUMBER\' | \'E_SIGNATURE\' | \'CHECKBOX\' | \'MULTI_SELECT\' | \'RADIO\' | \'SELECT\' | \'USER\' | \'ATTACHMENT\' | \'CALCULATION\' | \'DUE_DATE\'>');
+      localVarQueryParameters['types'] = ObjectSerializer.serialize(
+        types,
+        "Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>"
+      );
     }
 
     if (withInputs !== undefined) {
@@ -812,7 +969,7 @@ export class FieldsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -824,7 +981,7 @@ export class FieldsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Array<Field>; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Array<Field> }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
@@ -860,7 +1017,38 @@ export class FieldsApi {
    * @param workflowId
    * @param {*} [options] Override http request options.
    */
-  public findInputFieldsByRequestUsingGET(archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withLabels?: boolean, withValues?: boolean, workflowId?: string, options: any = {}): Promise<{ response: ClientResponse; body: Field; }> {
+  public findInputFieldsByRequestUsingGET(
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withLabels?: boolean,
+    withValues?: boolean,
+    workflowId?: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Field }> {
     const localVarPath = this.basePath + '/api/v1/fields/nested';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -907,7 +1095,10 @@ export class FieldsApi {
     }
 
     if (types !== undefined) {
-      localVarQueryParameters['types'] = ObjectSerializer.serialize(types, 'Array<\'TEXT\' | \'TEXT_AREA\' | \'DATE_PICKER\' | \'NUMBER\' | \'E_SIGNATURE\' | \'CHECKBOX\' | \'MULTI_SELECT\' | \'RADIO\' | \'SELECT\' | \'USER\' | \'ATTACHMENT\' | \'CALCULATION\' | \'DUE_DATE\'>');
+      localVarQueryParameters['types'] = ObjectSerializer.serialize(
+        types,
+        "Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>"
+      );
     }
 
     if (withInputs !== undefined) {
@@ -936,7 +1127,7 @@ export class FieldsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -948,7 +1139,7 @@ export class FieldsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Field; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Field }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
@@ -984,16 +1175,53 @@ export class FieldsApi {
    * @param withValues
    * @param {*} [options] Override http request options.
    */
-  public findUserFieldsByWorkflowOrGlobalUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withLabels?: boolean, withValues?: boolean, options: any = {}): Promise<{ response: ClientResponse; body: PageOfField; }> {
-    const localVarPath = this.basePath + '/api/v1/fields/workflow/{workflowId}/users'
-      .replace('{' + 'workflowId' + '}', encodeURIComponent(String(workflowId)));
+  public findUserFieldsByWorkflowOrGlobalUsingGET(
+    workflowId: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withLabels?: boolean,
+    withValues?: boolean,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: PageOfField }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/fields/workflow/{workflowId}/users'.replace(
+        '{' + 'workflowId' + '}',
+        encodeURIComponent(String(workflowId))
+      );
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
 
     // verify required parameter 'workflowId' is not null or undefined
     if (workflowId === null || workflowId === undefined) {
-      throw new Error('Required parameter workflowId was null or undefined when calling findUserFieldsByWorkflowOrGlobalUsingGET.');
+      throw new Error(
+        'Required parameter workflowId was null or undefined when calling findUserFieldsByWorkflowOrGlobalUsingGET.'
+      );
     }
 
     if (archived !== undefined) {
@@ -1037,7 +1265,10 @@ export class FieldsApi {
     }
 
     if (types !== undefined) {
-      localVarQueryParameters['types'] = ObjectSerializer.serialize(types, 'Array<\'TEXT\' | \'TEXT_AREA\' | \'DATE_PICKER\' | \'NUMBER\' | \'E_SIGNATURE\' | \'CHECKBOX\' | \'MULTI_SELECT\' | \'RADIO\' | \'SELECT\' | \'USER\' | \'ATTACHMENT\' | \'CALCULATION\' | \'DUE_DATE\'>');
+      localVarQueryParameters['types'] = ObjectSerializer.serialize(
+        types,
+        "Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>"
+      );
     }
 
     if (withInputs !== undefined) {
@@ -1062,7 +1293,7 @@ export class FieldsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -1074,7 +1305,7 @@ export class FieldsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: PageOfField; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: PageOfField }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
@@ -1095,7 +1326,7 @@ export class FieldsApi {
    * @summary Return a list of all field types.
    * @param {*} [options] Override http request options.
    */
-  public listFieldTypesUsingGET(options: any = {}): Promise<{ response: ClientResponse; body: Array<string>; }> {
+  public listFieldTypesUsingGET(options: any = {}): Promise<{ response: ClientResponse; body: Array<string> }> {
     const localVarPath = this.basePath + '/api/v1/fields/types';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -1111,7 +1342,7 @@ export class FieldsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -1123,7 +1354,7 @@ export class FieldsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Array<string>; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Array<string> }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);

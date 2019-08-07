@@ -28,8 +28,8 @@ interface RecordProps {
 class RecordComponent extends React.Component<RecordProps> {
   public getValues(): { name: string; email: string } {
     const { attributes } = this.props.entry.json;
-    const name = attributes.find(item => item.type === "sn")!.vals[0];
-    const email = attributes.find(item => item.type === "mail")!.vals[0];
+    const name = attributes.find(item => item.type === 'sn')!.vals[0];
+    const email = attributes.find(item => item.type === 'mail')!.vals[0];
 
     return { name, email };
   }
@@ -42,27 +42,21 @@ class RecordComponent extends React.Component<RecordProps> {
     recordsApi.setDefaultAuthentication(oauth);
 
     // create record first;
-    const { body: initialRecord } = await recordsApi.createRecordUsingPOST1(
-      contactRecord
-    );
+    const { body: initialRecord } = await recordsApi.createRecordUsingPOST1(contactRecord);
     const { id: initialRecordId } = initialRecord;
 
     // updated record
-    const { body: updatedRecord } = await recordsApi.getRecordUsingGET1(
-      initialRecordId as string
-    );
+    const { body: updatedRecord } = await recordsApi.getRecordUsingGET1(initialRecordId as string);
     const workflowId = updatedRecord.workflow!.id as string;
     const fields = await fetchWorkflowFields(workflowId, oauth);
 
     /**
      * map fields then send to logic gate;
      */
-    const nameCtrl = fields.find(it => it.name === "Name (Full):")!;
-    const phoneCtrl = fields.find(
-      it => it.name === "Phone (Business Direct):"
-    )!;
-    const reportToCtrl = fields.find(it => it.name === "Reports To:")!;
-    const emailCtrl = fields.find(it => it.name === "Email (Personal):")!;
+    const nameCtrl = fields.find(it => it.name === 'Name (Full):')!;
+    const phoneCtrl = fields.find(it => it.name === 'Phone (Business Direct):')!;
+    const reportToCtrl = fields.find(it => it.name === 'Reports To:')!;
+    const emailCtrl = fields.find(it => it.name === 'Email (Personal):')!;
 
     const { name, email } = this.getValues();
     const record: Record = {
@@ -74,7 +68,7 @@ class RecordComponent extends React.Component<RecordProps> {
           currentValues: [
             {
               textValue: name,
-              discriminator: "Common"
+              discriminator: 'Common'
             }
           ],
           field: {
@@ -85,8 +79,8 @@ class RecordComponent extends React.Component<RecordProps> {
         {
           currentValues: [
             {
-              textValue: "13999999999",
-              discriminator: "Common"
+              textValue: '13999999999',
+              discriminator: 'Common'
             }
           ],
           field: {
@@ -97,8 +91,8 @@ class RecordComponent extends React.Component<RecordProps> {
         {
           currentValues: [
             {
-              textValue: "John SS Smith",
-              discriminator: "Common"
+              textValue: 'John SS Smith',
+              discriminator: 'Common'
             }
           ],
           field: {
@@ -110,7 +104,7 @@ class RecordComponent extends React.Component<RecordProps> {
           currentValues: [
             {
               textValue: email,
-              discriminator: "Common"
+              discriminator: 'Common'
             }
           ],
           field: {
@@ -128,12 +122,7 @@ class RecordComponent extends React.Component<RecordProps> {
     const { classes } = this.props;
 
     return (
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => this.addRecord()}
-        className={classes.button}
-      >
+      <Button variant="contained" color="secondary" onClick={() => this.addRecord()} className={classes.button}>
         Add Record
       </Button>
     );

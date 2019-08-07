@@ -1,6 +1,6 @@
-import {Field} from './Field';
-import {Workflow} from './Workflow';
-import {WorkflowMap} from './WorkflowMap';
+import { Field } from './Field';
+import { Workflow } from './Workflow';
+import { WorkflowMap } from './WorkflowMap';
 
 export class LayoutField {
   'active'?: boolean;
@@ -30,127 +30,128 @@ export class LayoutField {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'active',
-      'baseName': 'active',
-      'type': 'boolean',
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      'name': 'category',
-      'baseName': 'category',
-      'type': 'LayoutField.CategoryEnum',
+      name: 'category',
+      baseName: 'category',
+      type: 'LayoutField.CategoryEnum'
     },
     {
-      'name': 'created',
-      'baseName': 'created',
-      'type': 'Date',
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      'name': 'direction',
-      'baseName': 'direction',
-      'type': 'LayoutField.DirectionEnum',
+      name: 'direction',
+      baseName: 'direction',
+      type: 'LayoutField.DirectionEnum'
     },
     {
-      'name': 'field',
-      'baseName': 'field',
-      'type': 'Field',
+      name: 'field',
+      baseName: 'field',
+      type: 'Field'
     },
     {
-      'name': 'fieldId',
-      'baseName': 'fieldId',
-      'type': 'string',
+      name: 'fieldId',
+      baseName: 'fieldId',
+      type: 'string'
     },
     {
-      'name': 'header',
-      'baseName': 'header',
-      'type': 'string',
+      name: 'header',
+      baseName: 'header',
+      type: 'string'
     },
     {
-      'name': 'headerOrFieldName',
-      'baseName': 'headerOrFieldName',
-      'type': 'string',
+      name: 'headerOrFieldName',
+      baseName: 'headerOrFieldName',
+      type: 'string'
     },
     {
-      'name': 'id',
-      'baseName': 'id',
-      'type': 'string',
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      'name': 'labelDisplayType',
-      'baseName': 'labelDisplayType',
-      'type': 'LayoutField.LabelDisplayTypeEnum',
+      name: 'labelDisplayType',
+      baseName: 'labelDisplayType',
+      type: 'LayoutField.LabelDisplayTypeEnum'
     },
     {
-      'name': 'labels',
-      'baseName': 'labels',
-      'type': 'Array<string>',
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      'name': 'layoutId',
-      'baseName': 'layoutId',
-      'type': 'string',
+      name: 'layoutId',
+      baseName: 'layoutId',
+      type: 'string'
     },
     {
-      'name': 'link',
-      'baseName': 'link',
-      'type': 'boolean',
+      name: 'link',
+      baseName: 'link',
+      type: 'boolean'
     },
     {
-      'name': 'operators',
-      'baseName': 'operators',
-      'type': 'Array<LayoutField.OperatorsEnum>',
+      name: 'operators',
+      baseName: 'operators',
+      type: 'Array<LayoutField.OperatorsEnum>'
     },
     {
-      'name': 'priority',
-      'baseName': 'priority',
-      'type': 'number',
+      name: 'priority',
+      baseName: 'priority',
+      type: 'number'
     },
     {
-      'name': 'sortProperty',
-      'baseName': 'sortProperty',
-      'type': 'string',
+      name: 'sortProperty',
+      baseName: 'sortProperty',
+      type: 'string'
     },
     {
-      'name': 'sortable',
-      'baseName': 'sortable',
-      'type': 'boolean',
+      name: 'sortable',
+      baseName: 'sortable',
+      type: 'boolean'
     },
     {
-      'name': 'systemField',
-      'baseName': 'systemField',
-      'type': 'LayoutField.SystemFieldEnum',
+      name: 'systemField',
+      baseName: 'systemField',
+      type: 'LayoutField.SystemFieldEnum'
     },
     {
-      'name': 'toDelete',
-      'baseName': 'toDelete',
-      'type': 'boolean',
+      name: 'toDelete',
+      baseName: 'toDelete',
+      type: 'boolean'
     },
     {
-      'name': 'updated',
-      'baseName': 'updated',
-      'type': 'Date',
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
     },
     {
-      'name': 'workflow',
-      'baseName': 'workflow',
-      'type': 'Workflow',
+      name: 'workflow',
+      baseName: 'workflow',
+      type: 'Workflow'
     },
     {
-      'name': 'workflowId',
-      'baseName': 'workflowId',
-      'type': 'string',
+      name: 'workflowId',
+      baseName: 'workflowId',
+      type: 'string'
     },
     {
-      'name': 'workflowMap',
-      'baseName': 'workflowMap',
-      'type': 'WorkflowMap',
+      name: 'workflowMap',
+      baseName: 'workflowMap',
+      type: 'WorkflowMap'
     },
     {
-      'name': 'workflowMapId',
-      'baseName': 'workflowMapId',
-      'type': 'string',
-    }];
+      name: 'workflowMapId',
+      baseName: 'workflowMapId',
+      type: 'string'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return LayoutField.attributeTypeMap;

@@ -1,6 +1,6 @@
-import {Field} from './Field';
-import {CurrentValue} from './CurrentValue';
-import {Workflow} from './Workflow';
+import { Field } from './Field';
+import { CurrentValue } from './CurrentValue';
+import { Workflow } from './Workflow';
 
 export class TextArea extends Field {
   'active'?: boolean;
@@ -41,107 +41,108 @@ export class TextArea extends Field {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'active',
-      'baseName': 'active',
-      'type': 'boolean',
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      'name': 'convertibleTo',
-      'baseName': 'convertibleTo',
-      'type': 'Array<string>',
+      name: 'convertibleTo',
+      baseName: 'convertibleTo',
+      type: 'Array<string>'
     },
     {
-      'name': 'created',
-      'baseName': 'created',
-      'type': 'Date',
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      'name': 'currentValues',
-      'baseName': 'currentValues',
-      'type': 'Array<CurrentValue>',
+      name: 'currentValues',
+      baseName: 'currentValues',
+      type: 'Array<CurrentValue>'
     },
     {
-      'name': 'discrete',
-      'baseName': 'discrete',
-      'type': 'boolean',
+      name: 'discrete',
+      baseName: 'discrete',
+      type: 'boolean'
     },
     {
-      'name': 'fieldType',
-      'baseName': 'fieldType',
-      'type': 'TextArea.FieldTypeEnum',
+      name: 'fieldType',
+      baseName: 'fieldType',
+      type: 'TextArea.FieldTypeEnum'
     },
     {
-      'name': 'global',
-      'baseName': 'global',
-      'type': 'boolean',
+      name: 'global',
+      baseName: 'global',
+      type: 'boolean'
     },
     {
-      'name': 'hasHtml',
-      'baseName': 'hasHtml',
-      'type': 'boolean',
+      name: 'hasHtml',
+      baseName: 'hasHtml',
+      type: 'boolean'
     },
     {
-      'name': 'id',
-      'baseName': 'id',
-      'type': 'string',
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      'name': 'label',
-      'baseName': 'label',
-      'type': 'string',
+      name: 'label',
+      baseName: 'label',
+      type: 'string'
     },
     {
-      'name': 'labels',
-      'baseName': 'labels',
-      'type': 'Array<string>',
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      'name': 'message',
-      'baseName': 'message',
-      'type': 'string',
+      name: 'message',
+      baseName: 'message',
+      type: 'string'
     },
     {
-      'name': 'name',
-      'baseName': 'name',
-      'type': 'string',
+      name: 'name',
+      baseName: 'name',
+      type: 'string'
     },
     {
-      'name': 'operators',
-      'baseName': 'operators',
-      'type': 'Array<TextArea.OperatorsEnum>',
+      name: 'operators',
+      baseName: 'operators',
+      type: 'Array<TextArea.OperatorsEnum>'
     },
     {
-      'name': 'pattern',
-      'baseName': 'pattern',
-      'type': 'string',
+      name: 'pattern',
+      baseName: 'pattern',
+      type: 'string'
     },
     {
-      'name': 'tooltip',
-      'baseName': 'tooltip',
-      'type': 'string',
+      name: 'tooltip',
+      baseName: 'tooltip',
+      type: 'string'
     },
     {
-      'name': 'updated',
-      'baseName': 'updated',
-      'type': 'Date',
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
     },
     {
-      'name': 'valueType',
-      'baseName': 'valueType',
-      'type': 'string',
+      name: 'valueType',
+      baseName: 'valueType',
+      type: 'string'
     },
     {
-      'name': 'workflow',
-      'baseName': 'workflow',
-      'type': 'Workflow',
+      name: 'workflow',
+      baseName: 'workflow',
+      type: 'Workflow'
     },
     {
-      'name': 'workflowId',
-      'baseName': 'workflowId',
-      'type': 'string',
-    }];
+      name: 'workflowId',
+      baseName: 'workflowId',
+      type: 'string'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return super.getAttributeTypeMap().concat(TextArea.attributeTypeMap);

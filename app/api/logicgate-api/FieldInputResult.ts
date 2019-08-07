@@ -5,22 +5,23 @@ export class FieldInputResult {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'fieldType',
-      'baseName': 'fieldType',
-      'type': 'string',
+      name: 'fieldType',
+      baseName: 'fieldType',
+      type: 'string'
     },
     {
-      'name': 'id',
-      'baseName': 'id',
-      'type': 'string',
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      'name': 'name',
-      'baseName': 'name',
-      'type': 'string',
-    }];
+      name: 'name',
+      baseName: 'name',
+      type: 'string'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return FieldInputResult.attributeTypeMap;

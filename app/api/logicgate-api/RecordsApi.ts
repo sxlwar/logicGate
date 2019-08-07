@@ -1,13 +1,12 @@
-import {Record} from './Record';
-import {FilteredRecord} from './FilteredRecord';
-import {Authentication, VoidAuth} from './Authentication';
-import {defaultBasePath} from './defaultBasePath';
-import {ObjectSerializer} from './ObjectSerializer';
+import { Record } from './Record';
+import { FilteredRecord } from './FilteredRecord';
+import { Authentication, VoidAuth } from './Authentication';
+import { defaultBasePath } from './defaultBasePath';
+import { ObjectSerializer } from './ObjectSerializer';
 import { ClientResponse } from 'http';
-import { Options } from 'request'
+import { Options } from 'request';
 import * as request from 'request';
-export enum RecordsApiApiKeys {
-}
+export enum RecordsApiApiKeys {}
 
 export class RecordsApi {
   protected _basePath = defaultBasePath;
@@ -15,7 +14,7 @@ export class RecordsApi {
   protected _useQuerystring: boolean = false;
 
   protected authentications = {
-    'default': <Authentication>new VoidAuth(),
+    default: <Authentication>new VoidAuth()
   };
 
   constructor(basePath?: string);
@@ -59,9 +58,15 @@ export class RecordsApi {
    * @param layout Layout ID
    * @param {*} [options] Override http request options.
    */
-  public createChildUsingPOST(child: Record, record: string, layout?: string, options: any = {}): Promise<{ response: ClientResponse; body: FilteredRecord; }> {
-    const localVarPath = this.basePath + '/api/v1/assignments/{record}/child'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public createChildUsingPOST(
+    child: Record,
+    record: string,
+    layout?: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: FilteredRecord }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/assignments/{record}/child'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -91,7 +96,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(child, 'Record'),
+      body: ObjectSerializer.serialize(child, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -103,16 +108,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: FilteredRecord; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: FilteredRecord }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'FilteredRecord');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -127,9 +132,15 @@ export class RecordsApi {
    * @param layout Layout ID
    * @param {*} [options] Override http request options.
    */
-  public createChildUsingPOST1(child: Record, record: string, layout?: string, options: any = {}): Promise<{ response: ClientResponse; body: FilteredRecord; }> {
-    const localVarPath = this.basePath + '/api/v1/records/{record}/child'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public createChildUsingPOST1(
+    child: Record,
+    record: string,
+    layout?: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: FilteredRecord }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/records/{record}/child'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -159,7 +170,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(child, 'Record'),
+      body: ObjectSerializer.serialize(child, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -171,16 +182,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: FilteredRecord; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: FilteredRecord }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'FilteredRecord');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -195,9 +206,15 @@ export class RecordsApi {
    * @param layout Layout ID
    * @param {*} [options] Override http request options.
    */
-  public createParentUsingPOST(parent: Record, record: string, layout?: string, options: any = {}): Promise<{ response: ClientResponse; body: FilteredRecord; }> {
-    const localVarPath = this.basePath + '/api/v1/assignments/{record}/parent'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public createParentUsingPOST(
+    parent: Record,
+    record: string,
+    layout?: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: FilteredRecord }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/assignments/{record}/parent'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -227,7 +244,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(parent, 'Record'),
+      body: ObjectSerializer.serialize(parent, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -239,16 +256,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: FilteredRecord; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: FilteredRecord }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'FilteredRecord');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -263,9 +280,15 @@ export class RecordsApi {
    * @param layout Layout ID
    * @param {*} [options] Override http request options.
    */
-  public createParentUsingPOST1(parent: Record, record: string, layout?: string, options: any = {}): Promise<{ response: ClientResponse; body: FilteredRecord; }> {
-    const localVarPath = this.basePath + '/api/v1/records/{record}/parent'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public createParentUsingPOST1(
+    parent: Record,
+    record: string,
+    layout?: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: FilteredRecord }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/records/{record}/parent'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -295,7 +318,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(parent, 'Record'),
+      body: ObjectSerializer.serialize(parent, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -307,16 +330,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: FilteredRecord; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: FilteredRecord }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'FilteredRecord');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -329,7 +352,7 @@ export class RecordsApi {
    * @param record record
    * @param {*} [options] Override http request options.
    */
-  public createPublicUsingPOST(record: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
+  public createPublicUsingPOST(record: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record }> {
     const localVarPath = this.basePath + '/api/v1/assignments/public';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -351,7 +374,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(record, 'Record'),
+      body: ObjectSerializer.serialize(record, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -363,16 +386,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -385,7 +408,10 @@ export class RecordsApi {
    * @param record record
    * @param {*} [options] Override http request options.
    */
-  public createPublicUsingPOST1(record: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
+  public createPublicUsingPOST1(
+    record: Record,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Record }> {
     const localVarPath = this.basePath + '/api/v1/records/public';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -407,7 +433,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(record, 'Record'),
+      body: ObjectSerializer.serialize(record, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -419,16 +445,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -441,7 +467,7 @@ export class RecordsApi {
    * @param record record
    * @param {*} [options] Override http request options.
    */
-  public createRecordUsingPOST(record: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
+  public createRecordUsingPOST(record: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record }> {
     const localVarPath = this.basePath + '/api/v1/assignments';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -463,7 +489,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(record, 'Record'),
+      body: ObjectSerializer.serialize(record, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -475,16 +501,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -497,7 +523,10 @@ export class RecordsApi {
    * @param record record
    * @param {*} [options] Override http request options.
    */
-  public createRecordUsingPOST1(record: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
+  public createRecordUsingPOST1(
+    record: Record,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Record }> {
     const localVarPath = this.basePath + '/api/v1/records';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -519,7 +548,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(record, 'Record'),
+      body: ObjectSerializer.serialize(record, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -531,16 +560,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -554,9 +583,13 @@ export class RecordsApi {
    * @param map Assignment ID to delete mapping with
    * @param {*} [options] Override http request options.
    */
-  public deleteMappingUsingDELETE(record: string, map?: string, options: any = {}): Promise<{ response: ClientResponse; body?: any; }> {
-    const localVarPath = this.basePath + '/api/v1/assignments/{record}'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public deleteMappingUsingDELETE(
+    record: string,
+    map?: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body?: any }> {
+    const localVarPath =
+      this.basePath + '/api/v1/assignments/{record}'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -580,7 +613,7 @@ export class RecordsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -592,15 +625,15 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body?: any; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body?: any }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -613,9 +646,9 @@ export class RecordsApi {
    * @param record record
    * @param {*} [options] Override http request options.
    */
-  public deleteUsingDELETE2(record: string, options: any = {}): Promise<{ response: ClientResponse; body?: any; }> {
-    const localVarPath = this.basePath + '/api/v1/records/{record}'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public deleteUsingDELETE2(record: string, options: any = {}): Promise<{ response: ClientResponse; body?: any }> {
+    const localVarPath =
+      this.basePath + '/api/v1/records/{record}'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -635,7 +668,7 @@ export class RecordsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -647,15 +680,15 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body?: any; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body?: any }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -669,7 +702,11 @@ export class RecordsApi {
    * @param minUpdated Minimum updated time value. The value is a unix timestamp.
    * @param {*} [options] Override http request options.
    */
-  public getRecordChildrenByLastUpdatedUsingGET1(hasChild: 'true', minUpdated?: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<Record>; }> {
+  public getRecordChildrenByLastUpdatedUsingGET1(
+    hasChild: 'true',
+    minUpdated?: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Array<Record> }> {
     const localVarPath = this.basePath + '/api/v1/records';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -677,11 +714,13 @@ export class RecordsApi {
 
     // verify required parameter 'hasChild' is not null or undefined
     if (hasChild === null || hasChild === undefined) {
-      throw new Error('Required parameter hasChild was null or undefined when calling getRecordChildrenByLastUpdatedUsingGET1.');
+      throw new Error(
+        'Required parameter hasChild was null or undefined when calling getRecordChildrenByLastUpdatedUsingGET1.'
+      );
     }
 
     if (hasChild !== undefined) {
-      localVarQueryParameters['hasChild'] = ObjectSerializer.serialize(hasChild, '\'true\'');
+      localVarQueryParameters['hasChild'] = ObjectSerializer.serialize(hasChild, "'true'");
     }
 
     if (minUpdated !== undefined) {
@@ -698,7 +737,7 @@ export class RecordsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -710,16 +749,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Array<Record>; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Array<Record> }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<Record>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -732,9 +771,9 @@ export class RecordsApi {
    * @param record record
    * @param {*} [options] Override http request options.
    */
-  public getRecordUsingGET(record: string, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
-    const localVarPath = this.basePath + '/api/v1/assignments/{record}'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public getRecordUsingGET(record: string, options: any = {}): Promise<{ response: ClientResponse; body: Record }> {
+    const localVarPath =
+      this.basePath + '/api/v1/assignments/{record}'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -754,7 +793,7 @@ export class RecordsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -766,16 +805,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -788,9 +827,9 @@ export class RecordsApi {
    * @param record record
    * @param {*} [options] Override http request options.
    */
-  public getRecordUsingGET1(record: string, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
-    const localVarPath = this.basePath + '/api/v1/records/{record}'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public getRecordUsingGET1(record: string, options: any = {}): Promise<{ response: ClientResponse; body: Record }> {
+    const localVarPath =
+      this.basePath + '/api/v1/records/{record}'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -810,7 +849,7 @@ export class RecordsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -822,16 +861,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -846,7 +885,12 @@ export class RecordsApi {
    * @param textValue Text value to be searched against
    * @param {*} [options] Override http request options.
    */
-  public getRecordsForFieldAndCurrentValueUsingGET(field?: string, numericValue?: string, textValue?: string, options: any = {}): Promise<{ response: ClientResponse; body: Array<Record>; }> {
+  public getRecordsForFieldAndCurrentValueUsingGET(
+    field?: string,
+    numericValue?: string,
+    textValue?: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Array<Record> }> {
     const localVarPath = this.basePath + '/api/v1/assignments';
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -874,7 +918,7 @@ export class RecordsApi {
       headers: localVarHeaderParams,
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
-      json: true,
+      json: true
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -886,16 +930,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Array<Record>; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Array<Record> }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Array<Record>');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -910,10 +954,17 @@ export class RecordsApi {
    * @param redirect redirect
    * @param {*} [options] Override http request options.
    */
-  public redirectRecordUsingPUT(record: string, record2: Record, redirect: string, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
-    const localVarPath = this.basePath + '/api/v1/assignments/{record}/redirect/{redirect}'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)))
-      .replace('{' + 'redirect' + '}', encodeURIComponent(String(redirect)));
+  public redirectRecordUsingPUT(
+    record: string,
+    record2: Record,
+    redirect: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Record }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/assignments/{record}/redirect/{redirect}'
+        .replace('{' + 'record' + '}', encodeURIComponent(String(record)))
+        .replace('{' + 'redirect' + '}', encodeURIComponent(String(redirect)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -944,7 +995,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(record2, 'Record'),
+      body: ObjectSerializer.serialize(record2, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -956,16 +1007,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -980,10 +1031,17 @@ export class RecordsApi {
    * @param redirect redirect
    * @param {*} [options] Override http request options.
    */
-  public redirectRecordUsingPUT1(record: string, record2: Record, redirect: string, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
-    const localVarPath = this.basePath + '/api/v1/records/{record}/redirect/{redirect}'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)))
-      .replace('{' + 'redirect' + '}', encodeURIComponent(String(redirect)));
+  public redirectRecordUsingPUT1(
+    record: string,
+    record2: Record,
+    redirect: string,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Record }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/records/{record}/redirect/{redirect}'
+        .replace('{' + 'record' + '}', encodeURIComponent(String(record)))
+        .replace('{' + 'redirect' + '}', encodeURIComponent(String(redirect)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -1014,7 +1072,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(record2, 'Record'),
+      body: ObjectSerializer.serialize(record2, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -1026,16 +1084,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -1049,9 +1107,14 @@ export class RecordsApi {
    * @param record2 record
    * @param {*} [options] Override http request options.
    */
-  public submitRecordUsingPUT(record: string, record2: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
-    const localVarPath = this.basePath + '/api/v1/assignments/{record}/progress'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public submitRecordUsingPUT(
+    record: string,
+    record2: Record,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Record }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/assignments/{record}/progress'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -1077,7 +1140,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(record2, 'Record'),
+      body: ObjectSerializer.serialize(record2, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -1089,16 +1152,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -1112,9 +1175,14 @@ export class RecordsApi {
    * @param record2 record
    * @param {*} [options] Override http request options.
    */
-  public submitRecordUsingPUT1(record: string, record2: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
-    const localVarPath = this.basePath + '/api/v1/records/{record}/progress'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public submitRecordUsingPUT1(
+    record: string,
+    record2: Record,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Record }> {
+    const localVarPath =
+      this.basePath +
+      '/api/v1/records/{record}/progress'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -1140,7 +1208,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(record2, 'Record'),
+      body: ObjectSerializer.serialize(record2, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -1152,16 +1220,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -1175,9 +1243,13 @@ export class RecordsApi {
    * @param record2 record
    * @param {*} [options] Override http request options.
    */
-  public updateRecordUsingPUT(record: string, record2: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
-    const localVarPath = this.basePath + '/api/v1/assignments/{record}'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public updateRecordUsingPUT(
+    record: string,
+    record2: Record,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Record }> {
+    const localVarPath =
+      this.basePath + '/api/v1/assignments/{record}'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -1203,7 +1275,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(record2, 'Record'),
+      body: ObjectSerializer.serialize(record2, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -1215,16 +1287,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });
@@ -1238,9 +1310,13 @@ export class RecordsApi {
    * @param record2 record
    * @param {*} [options] Override http request options.
    */
-  public updateRecordUsingPUT1(record: string, record2: Record, options: any = {}): Promise<{ response: ClientResponse; body: Record; }> {
-    const localVarPath = this.basePath + '/api/v1/records/{record}'
-      .replace('{' + 'record' + '}', encodeURIComponent(String(record)));
+  public updateRecordUsingPUT1(
+    record: string,
+    record2: Record,
+    options: any = {}
+  ): Promise<{ response: ClientResponse; body: Record }> {
+    const localVarPath =
+      this.basePath + '/api/v1/records/{record}'.replace('{' + 'record' + '}', encodeURIComponent(String(record)));
     const localVarQueryParameters: any = {};
     const localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
     const localVarFormParams: any = {};
@@ -1266,7 +1342,7 @@ export class RecordsApi {
       uri: localVarPath,
       useQuerystring: this._useQuerystring,
       json: true,
-      body: ObjectSerializer.serialize(record2, 'Record'),
+      body: ObjectSerializer.serialize(record2, 'Record')
     };
 
     this.authentications.default.applyToRequest(localVarRequestOptions);
@@ -1278,16 +1354,16 @@ export class RecordsApi {
         localVarRequestOptions.form = localVarFormParams;
       }
     }
-    return new Promise<{ response: ClientResponse; body: Record; }>((resolve, reject) => {
+    return new Promise<{ response: ClientResponse; body: Record }>((resolve, reject) => {
       request(localVarRequestOptions, (error, response, body) => {
         if (error) {
           reject(error);
         } else {
           body = ObjectSerializer.deserialize(body, 'Record');
           if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-            resolve({response: response, body: body});
+            resolve({ response: response, body: body });
           } else {
-            reject({response: response, body: body});
+            reject({ response: response, body: body });
           }
         }
       });

@@ -10,7 +10,7 @@ describe('main window', function spec() {
   beforeAll(async () => {
     app = new Application({
       path: electronPath,
-      args: [path.join(__dirname, '..', '..', 'app')],
+      args: [path.join(__dirname, '..', '..', 'app')]
     });
     return app.start();
   });
@@ -61,7 +61,7 @@ describe('main window', function spec() {
     const { client } = app;
 
     const buttons = await findButtons();
-    await client.elementIdClick(buttons[0]);  // +
+    await client.elementIdClick(buttons[0]); // +
     expect(await findCounter().getText()).toBe('1');
   });
 
@@ -69,15 +69,15 @@ describe('main window', function spec() {
     const { client } = app;
 
     const buttons = await findButtons();
-    await client.elementIdClick(buttons[1]);  // -
+    await client.elementIdClick(buttons[1]); // -
     expect(await findCounter().getText()).toBe('0');
   });
 
-  it('shouldn\'t change if even and if odd button clicked', async () => {
+  it("shouldn't change if even and if odd button clicked", async () => {
     const { client } = app;
 
     const buttons = await findButtons();
-    await client.elementIdClick(buttons[2]);  // odd
+    await client.elementIdClick(buttons[2]); // odd
     expect(await findCounter().getText()).toBe('0');
   });
 
@@ -85,8 +85,8 @@ describe('main window', function spec() {
     const { client } = app;
 
     const buttons = await findButtons();
-    await client.elementIdClick(buttons[0]);  // +
-    await client.elementIdClick(buttons[2]);  // odd
+    await client.elementIdClick(buttons[0]); // +
+    await client.elementIdClick(buttons[2]); // odd
     expect(await findCounter().getText()).toBe('2');
   });
 
@@ -94,7 +94,7 @@ describe('main window', function spec() {
     const { client } = app;
 
     const buttons = await findButtons();
-    await client.elementIdClick(buttons[3]);  // async
+    await client.elementIdClick(buttons[3]); // async
     expect(await findCounter().getText()).toBe('2');
     await delay(1000);
     expect(await findCounter().getText()).toBe('3');
@@ -102,13 +102,9 @@ describe('main window', function spec() {
 
   it('should navigate to home using back button', async () => {
     const { client } = app;
-    await client.element(
-      '[data-tid="backButton"] > a'
-    ).click();
+    await client.element('[data-tid="backButton"] > a').click();
     await delay(100);
 
-    expect(
-      await client.isExisting('[data-tid="container"]')
-    ).toBe(true);
+    expect(await client.isExisting('[data-tid="container"]')).toBe(true);
   });
 });

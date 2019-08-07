@@ -1,5 +1,5 @@
-import {ModuleEntitlement} from './ModuleEntitlement';
-import {StepEntitlement} from './StepEntitlement';
+import { ModuleEntitlement } from './ModuleEntitlement';
+import { StepEntitlement } from './StepEntitlement';
 
 export class Role {
   'active'?: boolean;
@@ -17,67 +17,68 @@ export class Role {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{ name: string, baseName: string, type: string }> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      'name': 'active',
-      'baseName': 'active',
-      'type': 'boolean',
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      'name': 'created',
-      'baseName': 'created',
-      'type': 'Date',
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      'name': 'id',
-      'baseName': 'id',
-      'type': 'string',
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      'name': 'labels',
-      'baseName': 'labels',
-      'type': 'Array<string>',
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      'name': 'locked',
-      'baseName': 'locked',
-      'type': 'boolean',
+      name: 'locked',
+      baseName: 'locked',
+      type: 'boolean'
     },
     {
-      'name': 'moduleCount',
-      'baseName': 'moduleCount',
-      'type': 'number',
+      name: 'moduleCount',
+      baseName: 'moduleCount',
+      type: 'number'
     },
     {
-      'name': 'moduleEntitlements',
-      'baseName': 'moduleEntitlements',
-      'type': 'Array<ModuleEntitlement>',
+      name: 'moduleEntitlements',
+      baseName: 'moduleEntitlements',
+      type: 'Array<ModuleEntitlement>'
     },
     {
-      'name': 'name',
-      'baseName': 'name',
-      'type': 'string',
+      name: 'name',
+      baseName: 'name',
+      type: 'string'
     },
     {
-      'name': 'nodeEntitlements',
-      'baseName': 'nodeEntitlements',
-      'type': 'Array<StepEntitlement>',
+      name: 'nodeEntitlements',
+      baseName: 'nodeEntitlements',
+      type: 'Array<StepEntitlement>'
     },
     {
-      'name': 'stepCount',
-      'baseName': 'stepCount',
-      'type': 'number',
+      name: 'stepCount',
+      baseName: 'stepCount',
+      type: 'number'
     },
     {
-      'name': 'stepEntitlements',
-      'baseName': 'stepEntitlements',
-      'type': 'Array<StepEntitlement>',
+      name: 'stepEntitlements',
+      baseName: 'stepEntitlements',
+      type: 'Array<StepEntitlement>'
     },
     {
-      'name': 'updated',
-      'baseName': 'updated',
-      'type': 'Date',
-    }];
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return Role.attributeTypeMap;

@@ -1,6 +1,6 @@
-import {LayoutField} from './LayoutField';
-import {Layout} from './Layout';
-import {Workflow} from './Workflow';
+import { LayoutField } from './LayoutField';
+import { Layout } from './Layout';
+import { Workflow } from './Workflow';
 
 export class Display extends Layout {
   'active'?: boolean;
@@ -16,60 +16,60 @@ export class Display extends Layout {
 
   static discriminator: string | undefined = undefined;
 
-  static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+  static attributeTypeMap: Array<{ name: string; baseName: string; type: string }> = [
     {
-      "name": "active",
-      "baseName": "active",
-      "type": "boolean"
+      name: 'active',
+      baseName: 'active',
+      type: 'boolean'
     },
     {
-      "name": "created",
-      "baseName": "created",
-      "type": "Date"
+      name: 'created',
+      baseName: 'created',
+      type: 'Date'
     },
     {
-      "name": "defaultLayout",
-      "baseName": "defaultLayout",
-      "type": "boolean"
+      name: 'defaultLayout',
+      baseName: 'defaultLayout',
+      type: 'boolean'
     },
     {
-      "name": "id",
-      "baseName": "id",
-      "type": "string"
+      name: 'id',
+      baseName: 'id',
+      type: 'string'
     },
     {
-      "name": "labels",
-      "baseName": "labels",
-      "type": "Array<string>"
+      name: 'labels',
+      baseName: 'labels',
+      type: 'Array<string>'
     },
     {
-      "name": "layoutFields",
-      "baseName": "layoutFields",
-      "type": "Array<LayoutField>"
+      name: 'layoutFields',
+      baseName: 'layoutFields',
+      type: 'Array<LayoutField>'
     },
     {
-      "name": "title",
-      "baseName": "title",
-      "type": "string"
+      name: 'title',
+      baseName: 'title',
+      type: 'string'
     },
     {
-      "name": "updated",
-      "baseName": "updated",
-      "type": "Date"
+      name: 'updated',
+      baseName: 'updated',
+      type: 'Date'
     },
     {
-      "name": "workflow",
-      "baseName": "workflow",
-      "type": "Workflow"
+      name: 'workflow',
+      baseName: 'workflow',
+      type: 'Workflow'
     },
     {
-      "name": "workflowId",
-      "baseName": "workflowId",
-      "type": "string"
-    }    ];
+      name: 'workflowId',
+      baseName: 'workflowId',
+      type: 'string'
+    }
+  ];
 
   static getAttributeTypeMap() {
     return super.getAttributeTypeMap().concat(Display.attributeTypeMap);
   }
 }
-

@@ -12,22 +12,21 @@
  * Do not edit the class manually.
  */
 
+import * as url from 'url';
+import * as portableFetch from 'portable-fetch';
+import { Configuration } from './configuration';
 
-import * as url from "url";
-import * as portableFetch from "portable-fetch";
-import { Configuration } from "./configuration";
-
-const BASE_PATH = "https://agilegrcsolutions.logicgate.com".replace(/\/+$/, "");
+const BASE_PATH = 'https://agilegrcsolutions.logicgate.com'.replace(/\/+$/, '');
 
 /**
  *
  * @export
  */
 export const COLLECTION_FORMATS = {
-    csv: ",",
-    ssv: " ",
-    tsv: "\t",
-    pipes: "|",
+  csv: ',',
+  ssv: ' ',
+  tsv: '\t',
+  pipes: '|'
 };
 
 /**
@@ -36,46 +35,50 @@ export const COLLECTION_FORMATS = {
  * @interface FetchAPI
  */
 export interface FetchAPI {
-    (url: string, init?: any): Promise<Response>;
+  (url: string, init?: any): Promise<Response>;
 }
 
 /**
- *  
+ *
  * @export
  * @interface FetchArgs
  */
 export interface FetchArgs {
-    url: string;
-    options: any;
+  url: string;
+  options: any;
 }
 
 /**
- * 
+ *
  * @export
  * @class BaseAPI
  */
 export class BaseAPI {
-    protected configuration: Configuration;
+  protected configuration: Configuration;
 
-    constructor(configuration?: Configuration, protected basePath: string = BASE_PATH, protected fetch: FetchAPI = portableFetch) {
-        if (configuration) {
-            this.configuration = configuration;
-            this.basePath = configuration.basePath || this.basePath;
-        }
+  constructor(
+    configuration?: Configuration,
+    protected basePath: string = BASE_PATH,
+    protected fetch: FetchAPI = portableFetch
+  ) {
+    if (configuration) {
+      this.configuration = configuration;
+      this.basePath = configuration.basePath || this.basePath;
     }
-};
+  }
+}
 
 /**
- * 
+ *
  * @export
  * @class RequiredError
  * @extends {Error}
  */
 export class RequiredError extends Error {
-    name: "RequiredError"
-    constructor(public field: string, msg?: string) {
-        super(msg);
-    }
+  name: 'RequiredError';
+  constructor(public field: string, msg?: string) {
+    super(msg);
+  }
 }
 
 /**
@@ -84,284 +87,284 @@ export class RequiredError extends Error {
  * @interface AccessAudit
  */
 export interface AccessAudit {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AccessAudit
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof AccessAudit
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof AccessAudit
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof AccessAudit
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof AccessAudit
-     */
-    remoteAddress?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof AccessAudit
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof AccessAudit
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof AccessAudit
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof AccessAudit
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof AccessAudit
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof AccessAudit
+   */
+  remoteAddress?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof AccessAudit
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface Active
  */
 export interface Active extends User {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Active
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Active
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof Active
-     */
-    assignments?: Array<Record>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    company?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Active
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Active
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Active
-     */
-    disabled?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    email?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Active
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof Active
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    first?: string;
-    /**
-     * 
-     * @type {Field}
-     * @memberof Active
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    imageUrl?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    intercomHash?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Active
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Active
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    languageTag?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    last?: string;
-    /**
-     * 
-     * @type {AccessAudit}
-     * @memberof Active
-     */
-    lastLogin?: AccessAudit;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Active
-     */
-    locked?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof Active
-     */
-    loginAttempts?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    name?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Active
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    password?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Active
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof Active
-     */
-    records?: Array<Record>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    resetPasswordToken?: string;
-    /**
-     * 
-     * @type {Array<Role>}
-     * @memberof Active
-     */
-    roles?: Array<Role>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Active
-     */
-    sendEmail?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    status?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Active
-     */
-    superUser?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    tier?: Active.TierEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    timeZone?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Active
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Active
-     */
-    valueType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Active
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Active
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof Active
+   */
+  assignments?: Array<Record>;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  company?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Active
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Active
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Active
+   */
+  disabled?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  email?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Active
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof Active
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  first?: string;
+  /**
+   *
+   * @type {Field}
+   * @memberof Active
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  imageUrl?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  intercomHash?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Active
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Active
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  languageTag?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  last?: string;
+  /**
+   *
+   * @type {AccessAudit}
+   * @memberof Active
+   */
+  lastLogin?: AccessAudit;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Active
+   */
+  locked?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof Active
+   */
+  loginAttempts?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  name?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof Active
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  password?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof Active
+   */
+  priority?: number;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof Active
+   */
+  records?: Array<Record>;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  resetPasswordToken?: string;
+  /**
+   *
+   * @type {Array<Role>}
+   * @memberof Active
+   */
+  roles?: Array<Role>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Active
+   */
+  sendEmail?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  status?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Active
+   */
+  superUser?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  tier?: Active.TierEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  timeZone?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Active
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Active
+   */
+  valueType?: string;
 }
 
 /**
@@ -369,131 +372,131 @@ export interface Active extends User {
  * @namespace Active
  */
 export namespace Active {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum TierEnum {
-        PRIMARY = <any> 'PRIMARY',
-        SECONDARY = <any> 'SECONDARY',
-        LIMITED = <any> 'LIMITED'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum TierEnum {
+    PRIMARY = <any>'PRIMARY',
+    SECONDARY = <any>'SECONDARY',
+    LIMITED = <any>'LIMITED'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface Attachment
  */
 export interface Attachment extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Attachment
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Attachment
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Attachment
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof Attachment
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Attachment
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Attachment
-     */
-    enableVersions?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Attachment
-     */
-    fieldType: Attachment.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Attachment
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Attachment
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof Attachment
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Attachment
-     */
-    labels?: Array<string>;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof Attachment
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Attachment
-     */
-    operators?: Array<Attachment.OperatorsEnum>;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof Attachment
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Attachment
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Attachment
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof Attachment
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Attachment
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Attachment
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Attachment
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Attachment
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof Attachment
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Attachment
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Attachment
+   */
+  enableVersions?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Attachment
+   */
+  fieldType: Attachment.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Attachment
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Attachment
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof Attachment
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Attachment
+   */
+  labels?: Array<string>;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof Attachment
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Attachment
+   */
+  operators?: Array<Attachment.OperatorsEnum>;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof Attachment
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Attachment
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Attachment
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof Attachment
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Attachment
+   */
+  workflowId?: string;
 }
 
 /**
@@ -501,183 +504,183 @@ export interface Attachment extends Field {
  * @namespace Attachment
  */
 export namespace Attachment {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface Calculation
  */
 export interface Calculation extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Calculation
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Calculation
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Calculation
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof Calculation
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Calculation
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Calculation
-     */
-    expression?: string;
-    /**
-     * Fields used to evaluate the expression of the calculation
-     * @type {Array<FieldInput>}
-     * @memberof Calculation
-     */
-    fieldInputs?: Array<FieldInput>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Calculation
-     */
-    fieldType: Calculation.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Calculation
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Calculation
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof Calculation
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Calculation
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Calculation
-     */
-    labelsEnabled?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Calculation
-     */
-    logicalHandling?: Calculation.LogicalHandlingEnum;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof Calculation
-     */
-    name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Calculation
-     */
-    nullStrategy?: Calculation.NullStrategyEnum;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Calculation
-     */
-    operators?: Array<Calculation.OperatorsEnum>;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof Calculation
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Calculation
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Calculation
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof Calculation
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Calculation
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Calculation
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Calculation
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Calculation
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof Calculation
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Calculation
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Calculation
+   */
+  expression?: string;
+  /**
+   * Fields used to evaluate the expression of the calculation
+   * @type {Array<FieldInput>}
+   * @memberof Calculation
+   */
+  fieldInputs?: Array<FieldInput>;
+  /**
+   *
+   * @type {string}
+   * @memberof Calculation
+   */
+  fieldType: Calculation.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Calculation
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Calculation
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof Calculation
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Calculation
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Calculation
+   */
+  labelsEnabled?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Calculation
+   */
+  logicalHandling?: Calculation.LogicalHandlingEnum;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof Calculation
+   */
+  name?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Calculation
+   */
+  nullStrategy?: Calculation.NullStrategyEnum;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Calculation
+   */
+  operators?: Array<Calculation.OperatorsEnum>;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof Calculation
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Calculation
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Calculation
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof Calculation
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Calculation
+   */
+  workflowId?: string;
 }
 
 /**
@@ -685,308 +688,308 @@ export interface Calculation extends Field {
  * @namespace Calculation
  */
 export namespace Calculation {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum LogicalHandlingEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum NullStrategyEnum {
-        NULL = <any> 'NULL',
-        ZERO = <any> 'ZERO',
-        ONE = <any> 'ONE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum LogicalHandlingEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum NullStrategyEnum {
+    NULL = <any>'NULL',
+    ZERO = <any>'ZERO',
+    ONE = <any>'ONE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface Chain
  */
 export interface Chain extends Step {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Chain
-     */
-    active?: boolean;
-    /**
-     * Allow entitlements to the node.
-     * @type {boolean}
-     * @memberof Chain
-     */
-    allowEntitlements?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Chain
-     */
-    chain?: boolean;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof Chain
-     */
-    contains?: Workflow;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Chain
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Chain
-     */
-    end?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Chain
-     */
-    id?: string;
-    /**
-     * Allows a node to become a public node.
-     * @type {boolean}
-     * @memberof Chain
-     */
-    isPublic?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Chain
-     */
-    labels?: Array<string>;
-    /**
-     * Node name.
-     * @type {string}
-     * @memberof Chain
-     */
-    name?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Chain
-     */
-    origin?: boolean;
-    /**
-     * Determines the node's place in the workflow.
-     * @type {number}
-     * @memberof Chain
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Chain
-     */
-    _public?: boolean;
-    /**
-     * Object containing all SLA information.
-     * @type {ServiceLevelAgreement}
-     * @memberof Chain
-     */
-    sla?: ServiceLevelAgreement;
-    /**
-     * Node type.
-     * @type {string}
-     * @memberof Chain
-     */
-    stepType?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Chain
-     */
-    updated?: Date;
-    /**
-     * Workflow that the node belongs to.
-     * @type {Workflow}
-     * @memberof Chain
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Chain
-     */
-    workflowId?: string;
-    /**
-     * Vertical position of the node on the process screen.
-     * @type {number}
-     * @memberof Chain
-     */
-    xpos?: number;
-    /**
-     * Horizontal position of the node on the process screen.
-     * @type {number}
-     * @memberof Chain
-     */
-    ypos?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Chain
+   */
+  active?: boolean;
+  /**
+   * Allow entitlements to the node.
+   * @type {boolean}
+   * @memberof Chain
+   */
+  allowEntitlements?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Chain
+   */
+  chain?: boolean;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof Chain
+   */
+  contains?: Workflow;
+  /**
+   *
+   * @type {Date}
+   * @memberof Chain
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Chain
+   */
+  end?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Chain
+   */
+  id?: string;
+  /**
+   * Allows a node to become a public node.
+   * @type {boolean}
+   * @memberof Chain
+   */
+  isPublic?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Chain
+   */
+  labels?: Array<string>;
+  /**
+   * Node name.
+   * @type {string}
+   * @memberof Chain
+   */
+  name?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Chain
+   */
+  origin?: boolean;
+  /**
+   * Determines the node's place in the workflow.
+   * @type {number}
+   * @memberof Chain
+   */
+  priority?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Chain
+   */
+  _public?: boolean;
+  /**
+   * Object containing all SLA information.
+   * @type {ServiceLevelAgreement}
+   * @memberof Chain
+   */
+  sla?: ServiceLevelAgreement;
+  /**
+   * Node type.
+   * @type {string}
+   * @memberof Chain
+   */
+  stepType?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Chain
+   */
+  updated?: Date;
+  /**
+   * Workflow that the node belongs to.
+   * @type {Workflow}
+   * @memberof Chain
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Chain
+   */
+  workflowId?: string;
+  /**
+   * Vertical position of the node on the process screen.
+   * @type {number}
+   * @memberof Chain
+   */
+  xpos?: number;
+  /**
+   * Horizontal position of the node on the process screen.
+   * @type {number}
+   * @memberof Chain
+   */
+  ypos?: number;
 }
 
 /**
- * 
+ *
  * @export
  * @interface Checkbox
  */
 export interface Checkbox extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Checkbox
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Checkbox
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Checkbox
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof Checkbox
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Checkbox
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Checkbox
-     */
-    fieldType: Checkbox.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Checkbox
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Checkbox
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof Checkbox
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Checkbox
-     */
-    labels?: Array<string>;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof Checkbox
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Checkbox
-     */
-    operators?: Array<Checkbox.OperatorsEnum>;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof Checkbox
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Checkbox
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Checkbox
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof Checkbox
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Checkbox
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Checkbox
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Checkbox
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Checkbox
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof Checkbox
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Checkbox
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Checkbox
+   */
+  fieldType: Checkbox.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Checkbox
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Checkbox
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof Checkbox
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Checkbox
+   */
+  labels?: Array<string>;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof Checkbox
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Checkbox
+   */
+  operators?: Array<Checkbox.OperatorsEnum>;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof Checkbox
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Checkbox
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Checkbox
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof Checkbox
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Checkbox
+   */
+  workflowId?: string;
 }
 
 /**
@@ -994,215 +997,215 @@ export interface Checkbox extends Field {
  * @namespace Checkbox
  */
 export namespace Checkbox {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface ChildResult
  */
 export interface ChildResult {
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof ChildResult
-     */
-    children?: Array<Record>;
-    /**
-     * 
-     * @type {Record}
-     * @memberof ChildResult
-     */
-    parent?: Record;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof ChildResult
+   */
+  children?: Array<Record>;
+  /**
+   *
+   * @type {Record}
+   * @memberof ChildResult
+   */
+  parent?: Record;
 }
 
 /**
- * 
+ *
  * @export
  * @interface CleanAttachment
  */
 export interface CleanAttachment extends CurrentValue {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CleanAttachment
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CleanAttachment
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CleanAttachment
-     */
-    attachmentStatus?: CleanAttachment.AttachmentStatusEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof CleanAttachment
-     */
-    awsS3Key?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CleanAttachment
-     */
-    contentType?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CleanAttachment
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CleanAttachment
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CleanAttachment
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CleanAttachment
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof CleanAttachment
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof CleanAttachment
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CleanAttachment
-     */
-    fileExtension?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof CleanAttachment
-     */
-    fileSize?: number;
-    /**
-     * 
-     * @type {Field}
-     * @memberof CleanAttachment
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof CleanAttachment
-     */
-    id?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CleanAttachment
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof CleanAttachment
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof CleanAttachment
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CleanAttachment
-     */
-    originalFileExtension?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof CleanAttachment
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CleanAttachment
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CleanAttachment
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof CleanAttachment
-     */
-    valueType?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof CleanAttachment
-     */
-    versionCount?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CleanAttachment
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CleanAttachment
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof CleanAttachment
+   */
+  attachmentStatus?: CleanAttachment.AttachmentStatusEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof CleanAttachment
+   */
+  awsS3Key?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CleanAttachment
+   */
+  contentType?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof CleanAttachment
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CleanAttachment
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof CleanAttachment
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CleanAttachment
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof CleanAttachment
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof CleanAttachment
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CleanAttachment
+   */
+  fileExtension?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof CleanAttachment
+   */
+  fileSize?: number;
+  /**
+   *
+   * @type {Field}
+   * @memberof CleanAttachment
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof CleanAttachment
+   */
+  id?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CleanAttachment
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof CleanAttachment
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof CleanAttachment
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof CleanAttachment
+   */
+  originalFileExtension?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof CleanAttachment
+   */
+  priority?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof CleanAttachment
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof CleanAttachment
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof CleanAttachment
+   */
+  valueType?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof CleanAttachment
+   */
+  versionCount?: number;
 }
 
 /**
@@ -1210,387 +1213,387 @@ export interface CleanAttachment extends CurrentValue {
  * @namespace CleanAttachment
  */
 export namespace CleanAttachment {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum AttachmentStatusEnum {
-        PENDING = <any> 'PENDING',
-        CLEAN = <any> 'CLEAN',
-        DIRTY = <any> 'DIRTY'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum AttachmentStatusEnum {
+    PENDING = <any>'PENDING',
+    CLEAN = <any>'CLEAN',
+    DIRTY = <any>'DIRTY'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface CurrentCommonValue
  */
 export interface CurrentCommonValue extends CurrentValue {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentCommonValue
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentCommonValue
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CurrentCommonValue
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentCommonValue
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentCommonValue
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentCommonValue
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof CurrentCommonValue
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentCommonValue
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {Field}
-     * @memberof CurrentCommonValue
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentCommonValue
-     */
-    id?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentCommonValue
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof CurrentCommonValue
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof CurrentCommonValue
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CurrentCommonValue
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentCommonValue
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CurrentCommonValue
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentCommonValue
-     */
-    valueType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentCommonValue
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentCommonValue
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof CurrentCommonValue
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentCommonValue
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentCommonValue
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentCommonValue
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof CurrentCommonValue
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentCommonValue
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {Field}
+   * @memberof CurrentCommonValue
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentCommonValue
+   */
+  id?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentCommonValue
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof CurrentCommonValue
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof CurrentCommonValue
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof CurrentCommonValue
+   */
+  priority?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentCommonValue
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof CurrentCommonValue
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentCommonValue
+   */
+  valueType?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface CurrentDateRangeValue
  */
 export interface CurrentDateRangeValue extends CurrentValue {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateRangeValue
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateRangeValue
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CurrentDateRangeValue
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateRangeValue
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateRangeValue
-     */
-    defaultToNow?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentDateRangeValue
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateRangeValue
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CurrentDateRangeValue
-     */
-    endTemporalValue?: Date;
-    /**
-     * 
-     * @type {Field}
-     * @memberof CurrentDateRangeValue
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentDateRangeValue
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateRangeValue
-     */
-    hasTime?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof CurrentDateRangeValue
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentDateRangeValue
-     */
-    id?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateRangeValue
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof CurrentDateRangeValue
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof CurrentDateRangeValue
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CurrentDateRangeValue
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CurrentDateRangeValue
-     */
-    temporalValue?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentDateRangeValue
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CurrentDateRangeValue
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentDateRangeValue
-     */
-    valueType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateRangeValue
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateRangeValue
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof CurrentDateRangeValue
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateRangeValue
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateRangeValue
+   */
+  defaultToNow?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentDateRangeValue
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateRangeValue
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof CurrentDateRangeValue
+   */
+  endTemporalValue?: Date;
+  /**
+   *
+   * @type {Field}
+   * @memberof CurrentDateRangeValue
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentDateRangeValue
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateRangeValue
+   */
+  hasTime?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof CurrentDateRangeValue
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentDateRangeValue
+   */
+  id?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateRangeValue
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof CurrentDateRangeValue
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof CurrentDateRangeValue
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof CurrentDateRangeValue
+   */
+  priority?: number;
+  /**
+   *
+   * @type {Date}
+   * @memberof CurrentDateRangeValue
+   */
+  temporalValue?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentDateRangeValue
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof CurrentDateRangeValue
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentDateRangeValue
+   */
+  valueType?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface CurrentDateValue
  */
 export interface CurrentDateValue extends CurrentValue {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateValue
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateValue
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CurrentDateValue
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateValue
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateValue
-     */
-    defaultToNow?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentDateValue
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateValue
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof CurrentDateValue
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentDateValue
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateValue
-     */
-    hasTime?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof CurrentDateValue
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentDateValue
-     */
-    id?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentDateValue
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof CurrentDateValue
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof CurrentDateValue
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CurrentDateValue
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CurrentDateValue
-     */
-    temporalValue?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentDateValue
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CurrentDateValue
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentDateValue
-     */
-    valueType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateValue
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateValue
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof CurrentDateValue
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateValue
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateValue
+   */
+  defaultToNow?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentDateValue
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateValue
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof CurrentDateValue
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentDateValue
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateValue
+   */
+  hasTime?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof CurrentDateValue
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentDateValue
+   */
+  id?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentDateValue
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof CurrentDateValue
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof CurrentDateValue
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof CurrentDateValue
+   */
+  priority?: number;
+  /**
+   *
+   * @type {Date}
+   * @memberof CurrentDateValue
+   */
+  temporalValue?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentDateValue
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof CurrentDateValue
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentDateValue
+   */
+  valueType?: string;
 }
 
 /**
@@ -1599,236 +1602,236 @@ export interface CurrentDateValue extends CurrentValue {
  * @interface CurrentValue
  */
 export interface CurrentValue {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentValue
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentValue
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CurrentValue
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentValue
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentValue
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentValue
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof CurrentValue
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentValue
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {Field}
-     * @memberof CurrentValue
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentValue
-     */
-    id?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CurrentValue
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof CurrentValue
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof CurrentValue
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CurrentValue
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentValue
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CurrentValue
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof CurrentValue
-     */
-    valueType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentValue
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentValue
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof CurrentValue
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentValue
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentValue
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentValue
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof CurrentValue
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentValue
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {Field}
+   * @memberof CurrentValue
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentValue
+   */
+  id?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CurrentValue
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof CurrentValue
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof CurrentValue
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof CurrentValue
+   */
+  priority?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentValue
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof CurrentValue
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof CurrentValue
+   */
+  valueType?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface DatePicker
  */
 export interface DatePicker extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DatePicker
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof DatePicker
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof DatePicker
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof DatePicker
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DatePicker
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof DatePicker
-     */
-    fieldType: DatePicker.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DatePicker
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DatePicker
-     */
-    hasTime?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof DatePicker
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof DatePicker
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof DatePicker
-     */
-    labels?: Array<string>;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof DatePicker
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof DatePicker
-     */
-    operators?: Array<DatePicker.OperatorsEnum>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DatePicker
-     */
-    presentOrFuture?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DatePicker
-     */
-    presentOrPast?: boolean;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof DatePicker
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof DatePicker
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof DatePicker
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof DatePicker
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof DatePicker
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DatePicker
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof DatePicker
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof DatePicker
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof DatePicker
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DatePicker
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof DatePicker
+   */
+  fieldType: DatePicker.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DatePicker
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DatePicker
+   */
+  hasTime?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof DatePicker
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof DatePicker
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof DatePicker
+   */
+  labels?: Array<string>;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof DatePicker
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof DatePicker
+   */
+  operators?: Array<DatePicker.OperatorsEnum>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DatePicker
+   */
+  presentOrFuture?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DatePicker
+   */
+  presentOrPast?: boolean;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof DatePicker
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof DatePicker
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof DatePicker
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof DatePicker
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof DatePicker
+   */
+  workflowId?: string;
 }
 
 /**
@@ -1836,195 +1839,195 @@ export interface DatePicker extends Field {
  * @namespace DatePicker
  */
 export namespace DatePicker {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface DirtyAttachment
  */
 export interface DirtyAttachment extends CurrentValue {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DirtyAttachment
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DirtyAttachment
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof DirtyAttachment
-     */
-    attachmentStatus?: DirtyAttachment.AttachmentStatusEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof DirtyAttachment
-     */
-    awsS3Key?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DirtyAttachment
-     */
-    contentType?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof DirtyAttachment
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DirtyAttachment
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof DirtyAttachment
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DirtyAttachment
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof DirtyAttachment
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof DirtyAttachment
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DirtyAttachment
-     */
-    fileExtension?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof DirtyAttachment
-     */
-    fileSize?: number;
-    /**
-     * 
-     * @type {Field}
-     * @memberof DirtyAttachment
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof DirtyAttachment
-     */
-    id?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DirtyAttachment
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof DirtyAttachment
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof DirtyAttachment
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof DirtyAttachment
-     */
-    originalFileExtension?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof DirtyAttachment
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof DirtyAttachment
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof DirtyAttachment
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof DirtyAttachment
-     */
-    valueType?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof DirtyAttachment
-     */
-    versionCount?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DirtyAttachment
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DirtyAttachment
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof DirtyAttachment
+   */
+  attachmentStatus?: DirtyAttachment.AttachmentStatusEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof DirtyAttachment
+   */
+  awsS3Key?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof DirtyAttachment
+   */
+  contentType?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof DirtyAttachment
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DirtyAttachment
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof DirtyAttachment
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DirtyAttachment
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof DirtyAttachment
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof DirtyAttachment
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof DirtyAttachment
+   */
+  fileExtension?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof DirtyAttachment
+   */
+  fileSize?: number;
+  /**
+   *
+   * @type {Field}
+   * @memberof DirtyAttachment
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof DirtyAttachment
+   */
+  id?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DirtyAttachment
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof DirtyAttachment
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof DirtyAttachment
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof DirtyAttachment
+   */
+  originalFileExtension?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof DirtyAttachment
+   */
+  priority?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof DirtyAttachment
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof DirtyAttachment
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof DirtyAttachment
+   */
+  valueType?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof DirtyAttachment
+   */
+  versionCount?: number;
 }
 
 /**
@@ -2032,257 +2035,257 @@ export interface DirtyAttachment extends CurrentValue {
  * @namespace DirtyAttachment
  */
 export namespace DirtyAttachment {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum AttachmentStatusEnum {
-        PENDING = <any> 'PENDING',
-        CLEAN = <any> 'CLEAN',
-        DIRTY = <any> 'DIRTY'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum AttachmentStatusEnum {
+    PENDING = <any>'PENDING',
+    CLEAN = <any>'CLEAN',
+    DIRTY = <any>'DIRTY'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface Disabled
  */
 export interface Disabled extends User {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Disabled
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Disabled
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof Disabled
-     */
-    assignments?: Array<Record>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    company?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Disabled
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Disabled
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Disabled
-     */
-    disabled?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    email?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Disabled
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof Disabled
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    first?: string;
-    /**
-     * 
-     * @type {Field}
-     * @memberof Disabled
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    imageUrl?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    intercomHash?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Disabled
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Disabled
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    languageTag?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    last?: string;
-    /**
-     * 
-     * @type {AccessAudit}
-     * @memberof Disabled
-     */
-    lastLogin?: AccessAudit;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Disabled
-     */
-    locked?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof Disabled
-     */
-    loginAttempts?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    name?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Disabled
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    password?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Disabled
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof Disabled
-     */
-    records?: Array<Record>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    resetPasswordToken?: string;
-    /**
-     * 
-     * @type {Array<Role>}
-     * @memberof Disabled
-     */
-    roles?: Array<Role>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Disabled
-     */
-    sendEmail?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    status?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Disabled
-     */
-    superUser?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    tier?: Disabled.TierEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    timeZone?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Disabled
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Disabled
-     */
-    valueType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Disabled
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Disabled
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof Disabled
+   */
+  assignments?: Array<Record>;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  company?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Disabled
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Disabled
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Disabled
+   */
+  disabled?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  email?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Disabled
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof Disabled
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  first?: string;
+  /**
+   *
+   * @type {Field}
+   * @memberof Disabled
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  imageUrl?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  intercomHash?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Disabled
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Disabled
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  languageTag?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  last?: string;
+  /**
+   *
+   * @type {AccessAudit}
+   * @memberof Disabled
+   */
+  lastLogin?: AccessAudit;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Disabled
+   */
+  locked?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof Disabled
+   */
+  loginAttempts?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  name?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof Disabled
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  password?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof Disabled
+   */
+  priority?: number;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof Disabled
+   */
+  records?: Array<Record>;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  resetPasswordToken?: string;
+  /**
+   *
+   * @type {Array<Role>}
+   * @memberof Disabled
+   */
+  roles?: Array<Role>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Disabled
+   */
+  sendEmail?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  status?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Disabled
+   */
+  superUser?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  tier?: Disabled.TierEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  timeZone?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Disabled
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Disabled
+   */
+  valueType?: string;
 }
 
 /**
@@ -2290,193 +2293,193 @@ export interface Disabled extends User {
  * @namespace Disabled
  */
 export namespace Disabled {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum TierEnum {
-        PRIMARY = <any> 'PRIMARY',
-        SECONDARY = <any> 'SECONDARY',
-        LIMITED = <any> 'LIMITED'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum TierEnum {
+    PRIMARY = <any>'PRIMARY',
+    SECONDARY = <any>'SECONDARY',
+    LIMITED = <any>'LIMITED'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface Display
  */
 export interface Display extends Layout {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Display
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Display
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Display
-     */
-    defaultLayout?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Display
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Display
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Array<LayoutField>}
-     * @memberof Display
-     */
-    layoutFields?: Array<LayoutField>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Display
-     */
-    title?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Display
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof Display
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Display
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Display
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof Display
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Display
+   */
+  defaultLayout?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Display
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Display
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Array<LayoutField>}
+   * @memberof Display
+   */
+  layoutFields?: Array<LayoutField>;
+  /**
+   *
+   * @type {string}
+   * @memberof Display
+   */
+  title?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Display
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof Display
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Display
+   */
+  workflowId?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface DueDate
  */
 export interface DueDate extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DueDate
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof DueDate
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof DueDate
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof DueDate
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DueDate
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof DueDate
-     */
-    fieldType: DueDate.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DueDate
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof DueDate
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof DueDate
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof DueDate
-     */
-    labels?: Array<string>;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof DueDate
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof DueDate
-     */
-    operators?: Array<DueDate.OperatorsEnum>;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof DueDate
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof DueDate
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof DueDate
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof DueDate
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof DueDate
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DueDate
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof DueDate
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof DueDate
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof DueDate
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DueDate
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof DueDate
+   */
+  fieldType: DueDate.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DueDate
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof DueDate
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof DueDate
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof DueDate
+   */
+  labels?: Array<string>;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof DueDate
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof DueDate
+   */
+  operators?: Array<DueDate.OperatorsEnum>;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof DueDate
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof DueDate
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof DueDate
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof DueDate
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof DueDate
+   */
+  workflowId?: string;
 }
 
 /**
@@ -2484,159 +2487,159 @@ export interface DueDate extends Field {
  * @namespace DueDate
  */
 export namespace DueDate {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface ESignature
  */
 export interface ESignature extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ESignature
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ESignature
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ESignature
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof ESignature
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ESignature
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ESignature
-     */
-    fieldType: ESignature.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ESignature
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ESignature
-     */
-    hasSignature?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ESignature
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof ESignature
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ESignature
-     */
-    labels?: Array<string>;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof ESignature
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ESignature
-     */
-    operators?: Array<ESignature.OperatorsEnum>;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof ESignature
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ESignature
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof ESignature
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof ESignature
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof ESignature
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ESignature
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ESignature
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof ESignature
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof ESignature
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ESignature
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof ESignature
+   */
+  fieldType: ESignature.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ESignature
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ESignature
+   */
+  hasSignature?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof ESignature
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof ESignature
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ESignature
+   */
+  labels?: Array<string>;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof ESignature
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ESignature
+   */
+  operators?: Array<ESignature.OperatorsEnum>;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof ESignature
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof ESignature
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof ESignature
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof ESignature
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof ESignature
+   */
+  workflowId?: string;
 }
 
 /**
@@ -2644,413 +2647,413 @@ export interface ESignature extends Field {
  * @namespace ESignature
  */
 export namespace ESignature {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface End
  */
 export interface End extends Step {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof End
-     */
-    active?: boolean;
-    /**
-     * Allow entitlements to the node.
-     * @type {boolean}
-     * @memberof End
-     */
-    allowEntitlements?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof End
-     */
-    chain?: boolean;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof End
-     */
-    contains?: Workflow;
-    /**
-     * 
-     * @type {Date}
-     * @memberof End
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof End
-     */
-    end?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof End
-     */
-    id?: string;
-    /**
-     * Allows a node to become a public node.
-     * @type {boolean}
-     * @memberof End
-     */
-    isPublic?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof End
-     */
-    labels?: Array<string>;
-    /**
-     * Node name.
-     * @type {string}
-     * @memberof End
-     */
-    name?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof End
-     */
-    origin?: boolean;
-    /**
-     * Determines the node's place in the workflow.
-     * @type {number}
-     * @memberof End
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof End
-     */
-    _public?: boolean;
-    /**
-     * Object containing all SLA information.
-     * @type {ServiceLevelAgreement}
-     * @memberof End
-     */
-    sla?: ServiceLevelAgreement;
-    /**
-     * Node type.
-     * @type {string}
-     * @memberof End
-     */
-    stepType?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof End
-     */
-    updated?: Date;
-    /**
-     * Workflow that the node belongs to.
-     * @type {Workflow}
-     * @memberof End
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof End
-     */
-    workflowId?: string;
-    /**
-     * Vertical position of the node on the process screen.
-     * @type {number}
-     * @memberof End
-     */
-    xpos?: number;
-    /**
-     * Horizontal position of the node on the process screen.
-     * @type {number}
-     * @memberof End
-     */
-    ypos?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof End
+   */
+  active?: boolean;
+  /**
+   * Allow entitlements to the node.
+   * @type {boolean}
+   * @memberof End
+   */
+  allowEntitlements?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof End
+   */
+  chain?: boolean;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof End
+   */
+  contains?: Workflow;
+  /**
+   *
+   * @type {Date}
+   * @memberof End
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof End
+   */
+  end?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof End
+   */
+  id?: string;
+  /**
+   * Allows a node to become a public node.
+   * @type {boolean}
+   * @memberof End
+   */
+  isPublic?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof End
+   */
+  labels?: Array<string>;
+  /**
+   * Node name.
+   * @type {string}
+   * @memberof End
+   */
+  name?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof End
+   */
+  origin?: boolean;
+  /**
+   * Determines the node's place in the workflow.
+   * @type {number}
+   * @memberof End
+   */
+  priority?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof End
+   */
+  _public?: boolean;
+  /**
+   * Object containing all SLA information.
+   * @type {ServiceLevelAgreement}
+   * @memberof End
+   */
+  sla?: ServiceLevelAgreement;
+  /**
+   * Node type.
+   * @type {string}
+   * @memberof End
+   */
+  stepType?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof End
+   */
+  updated?: Date;
+  /**
+   * Workflow that the node belongs to.
+   * @type {Workflow}
+   * @memberof End
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof End
+   */
+  workflowId?: string;
+  /**
+   * Vertical position of the node on the process screen.
+   * @type {number}
+   * @memberof End
+   */
+  xpos?: number;
+  /**
+   * Horizontal position of the node on the process screen.
+   * @type {number}
+   * @memberof End
+   */
+  ypos?: number;
 }
 
 /**
- * 
+ *
  * @export
  * @interface External
  */
 export interface External extends User {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof External
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof External
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof External
-     */
-    assignments?: Array<Record>;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    company?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof External
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof External
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof External
-     */
-    disabled?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    email?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof External
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof External
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    first?: string;
-    /**
-     * 
-     * @type {Field}
-     * @memberof External
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    imageUrl?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    intercomHash?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof External
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof External
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    languageTag?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    last?: string;
-    /**
-     * 
-     * @type {AccessAudit}
-     * @memberof External
-     */
-    lastLogin?: AccessAudit;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof External
-     */
-    locked?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof External
-     */
-    loginAttempts?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    name?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof External
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    password?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof External
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof External
-     */
-    records?: Array<Record>;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    resetPasswordToken?: string;
-    /**
-     * 
-     * @type {Array<Role>}
-     * @memberof External
-     */
-    roles?: Array<Role>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof External
-     */
-    sendEmail?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    status?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof External
-     */
-    superUser?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    tier?: External.TierEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    timeZone?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof External
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof External
-     */
-    valueType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof External
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof External
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof External
+   */
+  assignments?: Array<Record>;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  company?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof External
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof External
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof External
+   */
+  disabled?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  email?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof External
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof External
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  first?: string;
+  /**
+   *
+   * @type {Field}
+   * @memberof External
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  imageUrl?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  intercomHash?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof External
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof External
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  languageTag?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  last?: string;
+  /**
+   *
+   * @type {AccessAudit}
+   * @memberof External
+   */
+  lastLogin?: AccessAudit;
+  /**
+   *
+   * @type {boolean}
+   * @memberof External
+   */
+  locked?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof External
+   */
+  loginAttempts?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  name?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof External
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  password?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof External
+   */
+  priority?: number;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof External
+   */
+  records?: Array<Record>;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  resetPasswordToken?: string;
+  /**
+   *
+   * @type {Array<Role>}
+   * @memberof External
+   */
+  roles?: Array<Role>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof External
+   */
+  sendEmail?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  status?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof External
+   */
+  superUser?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  tier?: External.TierEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  timeZone?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof External
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof External
+   */
+  valueType?: string;
 }
 
 /**
@@ -3058,15 +3061,15 @@ export interface External extends User {
  * @namespace External
  */
 export namespace External {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum TierEnum {
-        PRIMARY = <any> 'PRIMARY',
-        SECONDARY = <any> 'SECONDARY',
-        LIMITED = <any> 'LIMITED'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum TierEnum {
+    PRIMARY = <any>'PRIMARY',
+    SECONDARY = <any>'SECONDARY',
+    LIMITED = <any>'LIMITED'
+  }
 }
 
 /**
@@ -3075,108 +3078,108 @@ export namespace External {
  * @interface Field
  */
 export interface Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Field
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Field
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Field
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof Field
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Field
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Field
-     */
-    fieldType: Field.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Field
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Field
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof Field
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Field
-     */
-    labels?: Array<string>;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof Field
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Field
-     */
-    operators?: Array<Field.OperatorsEnum>;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof Field
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Field
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Field
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof Field
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Field
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Field
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Field
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Field
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof Field
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Field
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Field
+   */
+  fieldType: Field.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Field
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Field
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof Field
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Field
+   */
+  labels?: Array<string>;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof Field
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Field
+   */
+  operators?: Array<Field.OperatorsEnum>;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof Field
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Field
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Field
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof Field
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Field
+   */
+  workflowId?: string;
 }
 
 /**
@@ -3184,43 +3187,43 @@ export interface Field {
  * @namespace Field
  */
 export namespace Field {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
@@ -3229,430 +3232,429 @@ export namespace Field {
  * @interface FieldInput
  */
 export interface FieldInput {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof FieldInput
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof FieldInput
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {FieldInputResult}
-     * @memberof FieldInput
-     */
-    fieldResult?: FieldInputResult;
-    /**
-     * 
-     * @type {string}
-     * @memberof FieldInput
-     */
-    id?: string;
-    /**
-     * Field input to be used in the parent field's expression
-     * @type {Field}
-     * @memberof FieldInput
-     */
-    input?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof FieldInput
-     */
-    inputId?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof FieldInput
-     */
-    labels?: Array<string>;
-    /**
-     * Parent field that will use the input field in the expression.
-     * @type {Field}
-     * @memberof FieldInput
-     */
-    parent?: Field;
-    /**
-     * Determines the fields place within the expression.
-     * @type {number}
-     * @memberof FieldInput
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof FieldInput
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof FieldInput
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof FieldInput
+   */
+  created?: Date;
+  /**
+   *
+   * @type {FieldInputResult}
+   * @memberof FieldInput
+   */
+  fieldResult?: FieldInputResult;
+  /**
+   *
+   * @type {string}
+   * @memberof FieldInput
+   */
+  id?: string;
+  /**
+   * Field input to be used in the parent field's expression
+   * @type {Field}
+   * @memberof FieldInput
+   */
+  input?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof FieldInput
+   */
+  inputId?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof FieldInput
+   */
+  labels?: Array<string>;
+  /**
+   * Parent field that will use the input field in the expression.
+   * @type {Field}
+   * @memberof FieldInput
+   */
+  parent?: Field;
+  /**
+   * Determines the fields place within the expression.
+   * @type {number}
+   * @memberof FieldInput
+   */
+  priority?: number;
+  /**
+   *
+   * @type {Date}
+   * @memberof FieldInput
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface FieldInputResult
  */
 export interface FieldInputResult {
-    /**
-     * 
-     * @type {string}
-     * @memberof FieldInputResult
-     */
-    fieldType?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FieldInputResult
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FieldInputResult
-     */
-    name?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof FieldInputResult
+   */
+  fieldType?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof FieldInputResult
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof FieldInputResult
+   */
+  name?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface FilteredRecord
  */
 export interface FilteredRecord {
-    /**
-     * 
-     * @type {RecordDetails}
-     * @memberof FilteredRecord
-     */
-    assignment?: RecordDetails;
-    /**
-     * 
-     * @type {Array<RecordProperty>}
-     * @memberof FilteredRecord
-     */
-    properties?: Array<RecordProperty>;
-    /**
-     * 
-     * @type {RecordDetails}
-     * @memberof FilteredRecord
-     */
-    record?: RecordDetails;
+  /**
+   *
+   * @type {RecordDetails}
+   * @memberof FilteredRecord
+   */
+  assignment?: RecordDetails;
+  /**
+   *
+   * @type {Array<RecordProperty>}
+   * @memberof FilteredRecord
+   */
+  properties?: Array<RecordProperty>;
+  /**
+   *
+   * @type {RecordDetails}
+   * @memberof FilteredRecord
+   */
+  record?: RecordDetails;
 }
 
 /**
- * 
+ *
  * @export
  * @interface GraphEntity
  */
 export interface GraphEntity {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GraphEntity
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GraphEntity
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof GraphEntity
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof GraphEntity
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GraphEntity
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof GraphEntity
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof GraphEntity
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof GraphEntity
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof GraphEntity
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof GraphEntity
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface ImportRecordRequest
  */
 export interface ImportRecordRequest extends ImportRequest {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ImportRecordRequest
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ImportRecordRequest
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof ImportRecordRequest
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ImportRecordRequest
-     */
-    importType?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ImportRecordRequest
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Layout}
-     * @memberof ImportRecordRequest
-     */
-    layout?: Layout;
-    /**
-     * 
-     * @type {Step}
-     * @memberof ImportRecordRequest
-     */
-    targetStep?: Step;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ImportRecordRequest
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ImportRecordRequest
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof ImportRecordRequest
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof ImportRecordRequest
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ImportRecordRequest
+   */
+  importType?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ImportRecordRequest
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Layout}
+   * @memberof ImportRecordRequest
+   */
+  layout?: Layout;
+  /**
+   *
+   * @type {Step}
+   * @memberof ImportRecordRequest
+   */
+  targetStep?: Step;
+  /**
+   *
+   * @type {Date}
+   * @memberof ImportRecordRequest
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface ImportRequest
  */
 export interface ImportRequest {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ImportRequest
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ImportRequest
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof ImportRequest
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ImportRequest
-     */
-    importType?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ImportRequest
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ImportRequest
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ImportRequest
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof ImportRequest
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof ImportRequest
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ImportRequest
+   */
+  importType?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ImportRequest
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof ImportRequest
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface ImportUserRequest
  */
 export interface ImportUserRequest extends ImportRequest {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ImportUserRequest
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ImportUserRequest
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof ImportUserRequest
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ImportUserRequest
-     */
-    importType?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ImportUserRequest
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ImportUserRequest
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ImportUserRequest
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof ImportUserRequest
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof ImportUserRequest
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ImportUserRequest
+   */
+  importType?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ImportUserRequest
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof ImportUserRequest
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface InputStream
  */
-export interface InputStream {
-}
+export interface InputStream {}
 
 /**
- * 
+ *
  * @export
  * @interface LabelValue
  */
 export interface LabelValue extends CurrentValue {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LabelValue
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LabelValue
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof LabelValue
-     */
-    color?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof LabelValue
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LabelValue
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof LabelValue
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LabelValue
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof LabelValue
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof LabelValue
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {Field}
-     * @memberof LabelValue
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof LabelValue
-     */
-    icon?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LabelValue
-     */
-    id?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LabelValue
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof LabelValue
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof LabelValue
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof LabelValue
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof LabelValue
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof LabelValue
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof LabelValue
-     */
-    valueType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LabelValue
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LabelValue
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof LabelValue
+   */
+  color?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof LabelValue
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LabelValue
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof LabelValue
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LabelValue
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof LabelValue
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof LabelValue
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {Field}
+   * @memberof LabelValue
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof LabelValue
+   */
+  icon?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof LabelValue
+   */
+  id?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LabelValue
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof LabelValue
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof LabelValue
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof LabelValue
+   */
+  priority?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof LabelValue
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof LabelValue
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof LabelValue
+   */
+  valueType?: string;
 }
 
 /**
@@ -3661,218 +3663,218 @@ export interface LabelValue extends CurrentValue {
  * @interface Layout
  */
 export interface Layout {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Layout
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Layout
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Layout
-     */
-    defaultLayout?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Layout
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Layout
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Array<LayoutField>}
-     * @memberof Layout
-     */
-    layoutFields?: Array<LayoutField>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Layout
-     */
-    title?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Layout
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof Layout
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Layout
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Layout
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof Layout
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Layout
+   */
+  defaultLayout?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Layout
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Layout
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Array<LayoutField>}
+   * @memberof Layout
+   */
+  layoutFields?: Array<LayoutField>;
+  /**
+   *
+   * @type {string}
+   * @memberof Layout
+   */
+  title?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Layout
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof Layout
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Layout
+   */
+  workflowId?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface LayoutField
  */
 export interface LayoutField {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LayoutField
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    category?: LayoutField.CategoryEnum;
-    /**
-     * 
-     * @type {Date}
-     * @memberof LayoutField
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    direction?: LayoutField.DirectionEnum;
-    /**
-     * 
-     * @type {Field}
-     * @memberof LayoutField
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    header?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    headerOrFieldName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    labelDisplayType?: LayoutField.LabelDisplayTypeEnum;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof LayoutField
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    layoutId?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LayoutField
-     */
-    link?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof LayoutField
-     */
-    operators?: Array<LayoutField.OperatorsEnum>;
-    /**
-     * 
-     * @type {number}
-     * @memberof LayoutField
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    sortProperty?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LayoutField
-     */
-    sortable?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    systemField?: LayoutField.SystemFieldEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LayoutField
-     */
-    toDelete?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof LayoutField
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof LayoutField
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    workflowId?: string;
-    /**
-     * 
-     * @type {WorkflowMap}
-     * @memberof LayoutField
-     */
-    workflowMap?: WorkflowMap;
-    /**
-     * 
-     * @type {string}
-     * @memberof LayoutField
-     */
-    workflowMapId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LayoutField
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  category?: LayoutField.CategoryEnum;
+  /**
+   *
+   * @type {Date}
+   * @memberof LayoutField
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  direction?: LayoutField.DirectionEnum;
+  /**
+   *
+   * @type {Field}
+   * @memberof LayoutField
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  header?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  headerOrFieldName?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  labelDisplayType?: LayoutField.LabelDisplayTypeEnum;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof LayoutField
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  layoutId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LayoutField
+   */
+  link?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof LayoutField
+   */
+  operators?: Array<LayoutField.OperatorsEnum>;
+  /**
+   *
+   * @type {number}
+   * @memberof LayoutField
+   */
+  priority?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  sortProperty?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LayoutField
+   */
+  sortable?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  systemField?: LayoutField.SystemFieldEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LayoutField
+   */
+  toDelete?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof LayoutField
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof LayoutField
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  workflowId?: string;
+  /**
+   *
+   * @type {WorkflowMap}
+   * @memberof LayoutField
+   */
+  workflowMap?: WorkflowMap;
+  /**
+   *
+   * @type {string}
+   * @memberof LayoutField
+   */
+  workflowMapId?: string;
 }
 
 /**
@@ -3880,317 +3882,317 @@ export interface LayoutField {
  * @namespace LayoutField
  */
 export namespace LayoutField {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum CategoryEnum {
-        RECORD = <any> 'RECORD',
-        USERS = <any> 'USERS',
-        PROCESS = <any> 'PROCESS',
-        WORKFLOW = <any> 'WORKFLOW',
-        GLOBAL = <any> 'GLOBAL'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum DirectionEnum {
-        ASC = <any> 'ASC',
-        DESC = <any> 'DESC'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum LabelDisplayTypeEnum {
-        VALUE = <any> 'VALUE',
-        LABEL = <any> 'LABEL',
-        ALL = <any> 'ALL'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum SystemFieldEnum {
-        NAME = <any> 'NAME',
-        STATUS = <any> 'STATUS',
-        CREATED = <any> 'CREATED',
-        USERDATE = <any> 'USER_DATE',
-        EFFECTIVEDUEDATE = <any> 'EFFECTIVE_DUE_DATE',
-        DUEDATE = <any> 'DUE_DATE',
-        ID = <any> 'ID',
-        USERNAME = <any> 'USER_NAME',
-        USERID = <any> 'USER_ID',
-        CREATORNAME = <any> 'CREATOR_NAME',
-        USERGROUP = <any> 'USER_GROUP',
-        STEPNAME = <any> 'STEP_NAME',
-        STEPID = <any> 'STEP_ID',
-        ORIGINNAME = <any> 'ORIGIN_NAME',
-        WORKFLOWNAME = <any> 'WORKFLOW_NAME',
-        WORKFLOWRECORDPREFIX = <any> 'WORKFLOW_RECORD_PREFIX',
-        WORKFLOWID = <any> 'WORKFLOW_ID'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum CategoryEnum {
+    RECORD = <any>'RECORD',
+    USERS = <any>'USERS',
+    PROCESS = <any>'PROCESS',
+    WORKFLOW = <any>'WORKFLOW',
+    GLOBAL = <any>'GLOBAL'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum DirectionEnum {
+    ASC = <any>'ASC',
+    DESC = <any>'DESC'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum LabelDisplayTypeEnum {
+    VALUE = <any>'VALUE',
+    LABEL = <any>'LABEL',
+    ALL = <any>'ALL'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum SystemFieldEnum {
+    NAME = <any>'NAME',
+    STATUS = <any>'STATUS',
+    CREATED = <any>'CREATED',
+    USERDATE = <any>'USER_DATE',
+    EFFECTIVEDUEDATE = <any>'EFFECTIVE_DUE_DATE',
+    DUEDATE = <any>'DUE_DATE',
+    ID = <any>'ID',
+    USERNAME = <any>'USER_NAME',
+    USERID = <any>'USER_ID',
+    CREATORNAME = <any>'CREATOR_NAME',
+    USERGROUP = <any>'USER_GROUP',
+    STEPNAME = <any>'STEP_NAME',
+    STEPID = <any>'STEP_ID',
+    ORIGINNAME = <any>'ORIGIN_NAME',
+    WORKFLOWNAME = <any>'WORKFLOW_NAME',
+    WORKFLOWRECORDPREFIX = <any>'WORKFLOW_RECORD_PREFIX',
+    WORKFLOWID = <any>'WORKFLOW_ID'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface Locked
  */
 export interface Locked extends User {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Locked
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Locked
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof Locked
-     */
-    assignments?: Array<Record>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    company?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Locked
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Locked
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Locked
-     */
-    disabled?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    email?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Locked
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof Locked
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    first?: string;
-    /**
-     * 
-     * @type {Field}
-     * @memberof Locked
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    imageUrl?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    intercomHash?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Locked
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Locked
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    languageTag?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    last?: string;
-    /**
-     * 
-     * @type {AccessAudit}
-     * @memberof Locked
-     */
-    lastLogin?: AccessAudit;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Locked
-     */
-    locked?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof Locked
-     */
-    loginAttempts?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    name?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Locked
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    password?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Locked
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof Locked
-     */
-    records?: Array<Record>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    resetPasswordToken?: string;
-    /**
-     * 
-     * @type {Array<Role>}
-     * @memberof Locked
-     */
-    roles?: Array<Role>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Locked
-     */
-    sendEmail?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    status?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Locked
-     */
-    superUser?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    tier?: Locked.TierEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    timeZone?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Locked
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Locked
-     */
-    valueType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Locked
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Locked
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof Locked
+   */
+  assignments?: Array<Record>;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  company?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Locked
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Locked
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Locked
+   */
+  disabled?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  email?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Locked
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof Locked
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  first?: string;
+  /**
+   *
+   * @type {Field}
+   * @memberof Locked
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  imageUrl?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  intercomHash?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Locked
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Locked
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  languageTag?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  last?: string;
+  /**
+   *
+   * @type {AccessAudit}
+   * @memberof Locked
+   */
+  lastLogin?: AccessAudit;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Locked
+   */
+  locked?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof Locked
+   */
+  loginAttempts?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  name?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof Locked
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  password?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof Locked
+   */
+  priority?: number;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof Locked
+   */
+  records?: Array<Record>;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  resetPasswordToken?: string;
+  /**
+   *
+   * @type {Array<Role>}
+   * @memberof Locked
+   */
+  roles?: Array<Role>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Locked
+   */
+  sendEmail?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  status?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Locked
+   */
+  superUser?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  tier?: Locked.TierEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  timeZone?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Locked
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Locked
+   */
+  valueType?: string;
 }
 
 /**
@@ -4198,295 +4200,295 @@ export interface Locked extends User {
  * @namespace Locked
  */
 export namespace Locked {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum TierEnum {
-        PRIMARY = <any> 'PRIMARY',
-        SECONDARY = <any> 'SECONDARY',
-        LIMITED = <any> 'LIMITED'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum TierEnum {
+    PRIMARY = <any>'PRIMARY',
+    SECONDARY = <any>'SECONDARY',
+    LIMITED = <any>'LIMITED'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface LogIn
  */
 export interface LogIn extends AccessAudit {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LogIn
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof LogIn
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof LogIn
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof LogIn
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof LogIn
-     */
-    remoteAddress?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof LogIn
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LogIn
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof LogIn
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof LogIn
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof LogIn
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof LogIn
+   */
+  remoteAddress?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof LogIn
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface LogInFail
  */
 export interface LogInFail extends AccessAudit {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LogInFail
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof LogInFail
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof LogInFail
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof LogInFail
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof LogInFail
-     */
-    remoteAddress?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof LogInFail
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LogInFail
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof LogInFail
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof LogInFail
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof LogInFail
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof LogInFail
+   */
+  remoteAddress?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof LogInFail
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface LogOut
  */
 export interface LogOut extends AccessAudit {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LogOut
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof LogOut
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof LogOut
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof LogOut
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof LogOut
-     */
-    remoteAddress?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof LogOut
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LogOut
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof LogOut
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof LogOut
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof LogOut
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof LogOut
+   */
+  remoteAddress?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof LogOut
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface ManyToMany
  */
 export interface ManyToMany extends WorkflowMap {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ManyToMany
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManyToMany
-     */
-    childId?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ManyToMany
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManyToMany
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ManyToMany
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManyToMany
-     */
-    parentId?: string;
-    /**
-     * 
-     * @type {WorkflowResult}
-     * @memberof ManyToMany
-     */
-    parentResult?: WorkflowResult;
-    /**
-     * Parent workflow.
-     * @type {Workflow}
-     * @memberof ManyToMany
-     */
-    parentWorkflow?: Workflow;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ManyToMany
-     */
-    updated?: Date;
-    /**
-     * Child workflow to be connected.
-     * @type {Workflow}
-     * @memberof ManyToMany
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManyToMany
-     */
-    workflowMapType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ManyToMany
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof ManyToMany
+   */
+  childId?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof ManyToMany
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof ManyToMany
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ManyToMany
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof ManyToMany
+   */
+  parentId?: string;
+  /**
+   *
+   * @type {WorkflowResult}
+   * @memberof ManyToMany
+   */
+  parentResult?: WorkflowResult;
+  /**
+   * Parent workflow.
+   * @type {Workflow}
+   * @memberof ManyToMany
+   */
+  parentWorkflow?: Workflow;
+  /**
+   *
+   * @type {Date}
+   * @memberof ManyToMany
+   */
+  updated?: Date;
+  /**
+   * Child workflow to be connected.
+   * @type {Workflow}
+   * @memberof ManyToMany
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof ManyToMany
+   */
+  workflowMapType?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface ManyToOne
  */
 export interface ManyToOne extends WorkflowMap {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ManyToOne
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManyToOne
-     */
-    childId?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ManyToOne
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManyToOne
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ManyToOne
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManyToOne
-     */
-    parentId?: string;
-    /**
-     * 
-     * @type {WorkflowResult}
-     * @memberof ManyToOne
-     */
-    parentResult?: WorkflowResult;
-    /**
-     * Parent workflow.
-     * @type {Workflow}
-     * @memberof ManyToOne
-     */
-    parentWorkflow?: Workflow;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ManyToOne
-     */
-    updated?: Date;
-    /**
-     * Child workflow to be connected.
-     * @type {Workflow}
-     * @memberof ManyToOne
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManyToOne
-     */
-    workflowMapType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ManyToOne
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof ManyToOne
+   */
+  childId?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof ManyToOne
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof ManyToOne
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ManyToOne
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof ManyToOne
+   */
+  parentId?: string;
+  /**
+   *
+   * @type {WorkflowResult}
+   * @memberof ManyToOne
+   */
+  parentResult?: WorkflowResult;
+  /**
+   * Parent workflow.
+   * @type {Workflow}
+   * @memberof ManyToOne
+   */
+  parentWorkflow?: Workflow;
+  /**
+   *
+   * @type {Date}
+   * @memberof ManyToOne
+   */
+  updated?: Date;
+  /**
+   * Child workflow to be connected.
+   * @type {Workflow}
+   * @memberof ManyToOne
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof ManyToOne
+   */
+  workflowMapType?: string;
 }
 
 /**
@@ -4495,250 +4497,250 @@ export interface ManyToOne extends WorkflowMap {
  * @interface ModelDefault
  */
 export interface ModelDefault extends Layout {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ModelDefault
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ModelDefault
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ModelDefault
-     */
-    defaultLayout?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelDefault
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ModelDefault
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Array<LayoutField>}
-     * @memberof ModelDefault
-     */
-    layoutFields?: Array<LayoutField>;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelDefault
-     */
-    title?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ModelDefault
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof ModelDefault
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelDefault
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ModelDefault
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof ModelDefault
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ModelDefault
+   */
+  defaultLayout?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelDefault
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ModelDefault
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Array<LayoutField>}
+   * @memberof ModelDefault
+   */
+  layoutFields?: Array<LayoutField>;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelDefault
+   */
+  title?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof ModelDefault
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof ModelDefault
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelDefault
+   */
+  workflowId?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface ModelFile
  */
 export interface ModelFile {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ModelFile
-     */
-    absolute?: boolean;
-    /**
-     * 
-     * @type {any}
-     * @memberof ModelFile
-     */
-    absoluteFile?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelFile
-     */
-    absolutePath?: string;
-    /**
-     * 
-     * @type {any}
-     * @memberof ModelFile
-     */
-    canonicalFile?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelFile
-     */
-    canonicalPath?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ModelFile
-     */
-    directory?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ModelFile
-     */
-    executable?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ModelFile
-     */
-    file?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof ModelFile
-     */
-    freeSpace?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ModelFile
-     */
-    hidden?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof ModelFile
-     */
-    lastModified?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelFile
-     */
-    name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelFile
-     */
-    parent?: string;
-    /**
-     * 
-     * @type {any}
-     * @memberof ModelFile
-     */
-    parentFile?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelFile
-     */
-    path?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ModelFile
-     */
-    readable?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof ModelFile
-     */
-    totalSpace?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ModelFile
-     */
-    usableSpace?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ModelFile
-     */
-    writable?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ModelFile
+   */
+  absolute?: boolean;
+  /**
+   *
+   * @type {any}
+   * @memberof ModelFile
+   */
+  absoluteFile?: any;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelFile
+   */
+  absolutePath?: string;
+  /**
+   *
+   * @type {any}
+   * @memberof ModelFile
+   */
+  canonicalFile?: any;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelFile
+   */
+  canonicalPath?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ModelFile
+   */
+  directory?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ModelFile
+   */
+  executable?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ModelFile
+   */
+  file?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof ModelFile
+   */
+  freeSpace?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ModelFile
+   */
+  hidden?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof ModelFile
+   */
+  lastModified?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelFile
+   */
+  name?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelFile
+   */
+  parent?: string;
+  /**
+   *
+   * @type {any}
+   * @memberof ModelFile
+   */
+  parentFile?: any;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelFile
+   */
+  path?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ModelFile
+   */
+  readable?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof ModelFile
+   */
+  totalSpace?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ModelFile
+   */
+  usableSpace?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ModelFile
+   */
+  writable?: boolean;
 }
 
 /**
- * 
+ *
  * @export
  * @interface Module
  */
 export interface Module {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Module
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Module
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Module
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Module
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Module
-     */
-    name?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Module
-     */
-    onlyUse?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Module
-     */
-    tab?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Module
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Module
-     */
-    value?: Module.ValueEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Module
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof Module
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Module
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Module
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof Module
+   */
+  name?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Module
+   */
+  onlyUse?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Module
+   */
+  tab?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Module
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Module
+   */
+  value?: Module.ValueEnum;
 }
 
 /**
@@ -4746,189 +4748,189 @@ export interface Module {
  * @namespace Module
  */
 export namespace Module {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum ValueEnum {
-        AASSIGN = <any> 'A_ASSIGN',
-        AIMPORT = <any> 'A_IMPORT',
-        AALLFIELDS = <any> 'A_ALL_FIELDS',
-        ABUILD = <any> 'A_BUILD',
-        AAPIACCESS = <any> 'A_API_ACCESS',
-        RRECORDS = <any> 'R_RECORDS',
-        RSTATUS = <any> 'R_STATUS',
-        RPRODUCTIVITY = <any> 'R_PRODUCTIVITY',
-        RTABLEREPORTS = <any> 'R_TABLE_REPORTS',
-        RDASHBOARDS = <any> 'R_DASHBOARDS',
-        ADMINALL = <any> 'ADMIN_ALL'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum ValueEnum {
+    AASSIGN = <any>'A_ASSIGN',
+    AIMPORT = <any>'A_IMPORT',
+    AALLFIELDS = <any>'A_ALL_FIELDS',
+    ABUILD = <any>'A_BUILD',
+    AAPIACCESS = <any>'A_API_ACCESS',
+    RRECORDS = <any>'R_RECORDS',
+    RSTATUS = <any>'R_STATUS',
+    RPRODUCTIVITY = <any>'R_PRODUCTIVITY',
+    RTABLEREPORTS = <any>'R_TABLE_REPORTS',
+    RDASHBOARDS = <any>'R_DASHBOARDS',
+    ADMINALL = <any>'ADMIN_ALL'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface ModuleEntitlement
  */
 export interface ModuleEntitlement {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ModuleEntitlement
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ModuleEntitlement
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModuleEntitlement
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ModuleEntitlement
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Module}
-     * @memberof ModuleEntitlement
-     */
-    module?: Module;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModuleEntitlement
-     */
-    operationType?: string;
-    /**
-     * 
-     * @type {Role}
-     * @memberof ModuleEntitlement
-     */
-    role?: Role;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ModuleEntitlement
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ModuleEntitlement
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof ModuleEntitlement
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof ModuleEntitlement
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ModuleEntitlement
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Module}
+   * @memberof ModuleEntitlement
+   */
+  module?: Module;
+  /**
+   *
+   * @type {string}
+   * @memberof ModuleEntitlement
+   */
+  operationType?: string;
+  /**
+   *
+   * @type {Role}
+   * @memberof ModuleEntitlement
+   */
+  role?: Role;
+  /**
+   *
+   * @type {Date}
+   * @memberof ModuleEntitlement
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface MultiSelect
  */
 export interface MultiSelect extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof MultiSelect
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof MultiSelect
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof MultiSelect
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof MultiSelect
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof MultiSelect
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof MultiSelect
-     */
-    fieldType: MultiSelect.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof MultiSelect
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof MultiSelect
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof MultiSelect
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof MultiSelect
-     */
-    labels?: Array<string>;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof MultiSelect
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof MultiSelect
-     */
-    operators?: Array<MultiSelect.OperatorsEnum>;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof MultiSelect
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof MultiSelect
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof MultiSelect
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof MultiSelect
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof MultiSelect
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof MultiSelect
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof MultiSelect
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof MultiSelect
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof MultiSelect
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof MultiSelect
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof MultiSelect
+   */
+  fieldType: MultiSelect.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof MultiSelect
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof MultiSelect
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof MultiSelect
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof MultiSelect
+   */
+  labels?: Array<string>;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof MultiSelect
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof MultiSelect
+   */
+  operators?: Array<MultiSelect.OperatorsEnum>;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof MultiSelect
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof MultiSelect
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof MultiSelect
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof MultiSelect
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof MultiSelect
+   */
+  workflowId?: string;
 }
 
 /**
@@ -4936,165 +4938,165 @@ export interface MultiSelect extends Field {
  * @namespace MultiSelect
  */
 export namespace MultiSelect {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface Number
  */
 export interface Number extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Number
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Number
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Number
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof Number
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Number
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Number
-     */
-    fieldType: Number.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Number
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Number
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof Number
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Number
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Number
-     */
-    message?: string;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof Number
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Number
-     */
-    operators?: Array<Number.OperatorsEnum>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Number
-     */
-    pattern?: string;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof Number
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Number
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Number
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof Number
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Number
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Number
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Number
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Number
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof Number
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Number
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Number
+   */
+  fieldType: Number.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Number
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Number
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof Number
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Number
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof Number
+   */
+  message?: string;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof Number
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Number
+   */
+  operators?: Array<Number.OperatorsEnum>;
+  /**
+   *
+   * @type {string}
+   * @memberof Number
+   */
+  pattern?: string;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof Number
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Number
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Number
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof Number
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Number
+   */
+  workflowId?: string;
 }
 
 /**
@@ -5102,675 +5104,675 @@ export interface Number extends Field {
  * @namespace Number
  */
 export namespace Number {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface OneToMany
  */
 export interface OneToMany extends WorkflowMap {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OneToMany
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OneToMany
-     */
-    childId?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof OneToMany
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof OneToMany
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OneToMany
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof OneToMany
-     */
-    parentId?: string;
-    /**
-     * 
-     * @type {WorkflowResult}
-     * @memberof OneToMany
-     */
-    parentResult?: WorkflowResult;
-    /**
-     * Parent workflow.
-     * @type {Workflow}
-     * @memberof OneToMany
-     */
-    parentWorkflow?: Workflow;
-    /**
-     * 
-     * @type {Date}
-     * @memberof OneToMany
-     */
-    updated?: Date;
-    /**
-     * Child workflow to be connected.
-     * @type {Workflow}
-     * @memberof OneToMany
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof OneToMany
-     */
-    workflowMapType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof OneToMany
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof OneToMany
+   */
+  childId?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof OneToMany
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof OneToMany
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof OneToMany
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof OneToMany
+   */
+  parentId?: string;
+  /**
+   *
+   * @type {WorkflowResult}
+   * @memberof OneToMany
+   */
+  parentResult?: WorkflowResult;
+  /**
+   * Parent workflow.
+   * @type {Workflow}
+   * @memberof OneToMany
+   */
+  parentWorkflow?: Workflow;
+  /**
+   *
+   * @type {Date}
+   * @memberof OneToMany
+   */
+  updated?: Date;
+  /**
+   * Child workflow to be connected.
+   * @type {Workflow}
+   * @memberof OneToMany
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof OneToMany
+   */
+  workflowMapType?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface OneToOne
  */
 export interface OneToOne extends WorkflowMap {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OneToOne
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OneToOne
-     */
-    childId?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof OneToOne
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof OneToOne
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OneToOne
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof OneToOne
-     */
-    parentId?: string;
-    /**
-     * 
-     * @type {WorkflowResult}
-     * @memberof OneToOne
-     */
-    parentResult?: WorkflowResult;
-    /**
-     * Parent workflow.
-     * @type {Workflow}
-     * @memberof OneToOne
-     */
-    parentWorkflow?: Workflow;
-    /**
-     * 
-     * @type {Date}
-     * @memberof OneToOne
-     */
-    updated?: Date;
-    /**
-     * Child workflow to be connected.
-     * @type {Workflow}
-     * @memberof OneToOne
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof OneToOne
-     */
-    workflowMapType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof OneToOne
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof OneToOne
+   */
+  childId?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof OneToOne
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof OneToOne
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof OneToOne
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof OneToOne
+   */
+  parentId?: string;
+  /**
+   *
+   * @type {WorkflowResult}
+   * @memberof OneToOne
+   */
+  parentResult?: WorkflowResult;
+  /**
+   * Parent workflow.
+   * @type {Workflow}
+   * @memberof OneToOne
+   */
+  parentWorkflow?: Workflow;
+  /**
+   *
+   * @type {Date}
+   * @memberof OneToOne
+   */
+  updated?: Date;
+  /**
+   * Child workflow to be connected.
+   * @type {Workflow}
+   * @memberof OneToOne
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof OneToOne
+   */
+  workflowMapType?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface Origin
  */
 export interface Origin extends Step {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Origin
-     */
-    active?: boolean;
-    /**
-     * Allow entitlements to the node.
-     * @type {boolean}
-     * @memberof Origin
-     */
-    allowEntitlements?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Origin
-     */
-    chain?: boolean;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof Origin
-     */
-    contains?: Workflow;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Origin
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Origin
-     */
-    end?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Origin
-     */
-    id?: string;
-    /**
-     * Allows a node to become a public node.
-     * @type {boolean}
-     * @memberof Origin
-     */
-    isPublic?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Origin
-     */
-    labels?: Array<string>;
-    /**
-     * Node name.
-     * @type {string}
-     * @memberof Origin
-     */
-    name?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Origin
-     */
-    origin?: boolean;
-    /**
-     * Determines the node's place in the workflow.
-     * @type {number}
-     * @memberof Origin
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Origin
-     */
-    _public?: boolean;
-    /**
-     * Object containing all SLA information.
-     * @type {ServiceLevelAgreement}
-     * @memberof Origin
-     */
-    sla?: ServiceLevelAgreement;
-    /**
-     * Node type.
-     * @type {string}
-     * @memberof Origin
-     */
-    stepType?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Origin
-     */
-    updated?: Date;
-    /**
-     * Workflow that the node belongs to.
-     * @type {Workflow}
-     * @memberof Origin
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Origin
-     */
-    workflowId?: string;
-    /**
-     * Vertical position of the node on the process screen.
-     * @type {number}
-     * @memberof Origin
-     */
-    xpos?: number;
-    /**
-     * Horizontal position of the node on the process screen.
-     * @type {number}
-     * @memberof Origin
-     */
-    ypos?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Origin
+   */
+  active?: boolean;
+  /**
+   * Allow entitlements to the node.
+   * @type {boolean}
+   * @memberof Origin
+   */
+  allowEntitlements?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Origin
+   */
+  chain?: boolean;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof Origin
+   */
+  contains?: Workflow;
+  /**
+   *
+   * @type {Date}
+   * @memberof Origin
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Origin
+   */
+  end?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Origin
+   */
+  id?: string;
+  /**
+   * Allows a node to become a public node.
+   * @type {boolean}
+   * @memberof Origin
+   */
+  isPublic?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Origin
+   */
+  labels?: Array<string>;
+  /**
+   * Node name.
+   * @type {string}
+   * @memberof Origin
+   */
+  name?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Origin
+   */
+  origin?: boolean;
+  /**
+   * Determines the node's place in the workflow.
+   * @type {number}
+   * @memberof Origin
+   */
+  priority?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Origin
+   */
+  _public?: boolean;
+  /**
+   * Object containing all SLA information.
+   * @type {ServiceLevelAgreement}
+   * @memberof Origin
+   */
+  sla?: ServiceLevelAgreement;
+  /**
+   * Node type.
+   * @type {string}
+   * @memberof Origin
+   */
+  stepType?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Origin
+   */
+  updated?: Date;
+  /**
+   * Workflow that the node belongs to.
+   * @type {Workflow}
+   * @memberof Origin
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Origin
+   */
+  workflowId?: string;
+  /**
+   * Vertical position of the node on the process screen.
+   * @type {number}
+   * @memberof Origin
+   */
+  xpos?: number;
+  /**
+   * Horizontal position of the node on the process screen.
+   * @type {number}
+   * @memberof Origin
+   */
+  ypos?: number;
 }
 
 /**
- * 
+ *
  * @export
  * @interface PageOfCurrentValue
  */
 export interface PageOfCurrentValue {
-    /**
-     * 
-     * @type {Array<CurrentValue>}
-     * @memberof PageOfCurrentValue
-     */
-    content?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageOfCurrentValue
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageOfCurrentValue
-     */
-    first?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageOfCurrentValue
-     */
-    last?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfCurrentValue
-     */
-    number?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfCurrentValue
-     */
-    numberOfElements?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfCurrentValue
-     */
-    size?: number;
-    /**
-     * 
-     * @type {Sort}
-     * @memberof PageOfCurrentValue
-     */
-    sort?: Sort;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfCurrentValue
-     */
-    totalElements?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfCurrentValue
-     */
-    totalPages?: number;
+  /**
+   *
+   * @type {Array<CurrentValue>}
+   * @memberof PageOfCurrentValue
+   */
+  content?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageOfCurrentValue
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageOfCurrentValue
+   */
+  first?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageOfCurrentValue
+   */
+  last?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfCurrentValue
+   */
+  number?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfCurrentValue
+   */
+  numberOfElements?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfCurrentValue
+   */
+  size?: number;
+  /**
+   *
+   * @type {Sort}
+   * @memberof PageOfCurrentValue
+   */
+  sort?: Sort;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfCurrentValue
+   */
+  totalElements?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfCurrentValue
+   */
+  totalPages?: number;
 }
 
 /**
- * 
+ *
  * @export
  * @interface PageOfField
  */
 export interface PageOfField {
-    /**
-     * 
-     * @type {Array<Field>}
-     * @memberof PageOfField
-     */
-    content?: Array<Field>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageOfField
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageOfField
-     */
-    first?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageOfField
-     */
-    last?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfField
-     */
-    number?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfField
-     */
-    numberOfElements?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfField
-     */
-    size?: number;
-    /**
-     * 
-     * @type {Sort}
-     * @memberof PageOfField
-     */
-    sort?: Sort;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfField
-     */
-    totalElements?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfField
-     */
-    totalPages?: number;
+  /**
+   *
+   * @type {Array<Field>}
+   * @memberof PageOfField
+   */
+  content?: Array<Field>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageOfField
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageOfField
+   */
+  first?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageOfField
+   */
+  last?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfField
+   */
+  number?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfField
+   */
+  numberOfElements?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfField
+   */
+  size?: number;
+  /**
+   *
+   * @type {Sort}
+   * @memberof PageOfField
+   */
+  sort?: Sort;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfField
+   */
+  totalElements?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfField
+   */
+  totalPages?: number;
 }
 
 /**
- * 
+ *
  * @export
  * @interface PageOfWorkflowResult
  */
 export interface PageOfWorkflowResult {
-    /**
-     * 
-     * @type {Array<WorkflowResult>}
-     * @memberof PageOfWorkflowResult
-     */
-    content?: Array<WorkflowResult>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageOfWorkflowResult
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageOfWorkflowResult
-     */
-    first?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageOfWorkflowResult
-     */
-    last?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfWorkflowResult
-     */
-    number?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfWorkflowResult
-     */
-    numberOfElements?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfWorkflowResult
-     */
-    size?: number;
-    /**
-     * 
-     * @type {Sort}
-     * @memberof PageOfWorkflowResult
-     */
-    sort?: Sort;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfWorkflowResult
-     */
-    totalElements?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageOfWorkflowResult
-     */
-    totalPages?: number;
+  /**
+   *
+   * @type {Array<WorkflowResult>}
+   * @memberof PageOfWorkflowResult
+   */
+  content?: Array<WorkflowResult>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageOfWorkflowResult
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageOfWorkflowResult
+   */
+  first?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageOfWorkflowResult
+   */
+  last?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfWorkflowResult
+   */
+  number?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfWorkflowResult
+   */
+  numberOfElements?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfWorkflowResult
+   */
+  size?: number;
+  /**
+   *
+   * @type {Sort}
+   * @memberof PageOfWorkflowResult
+   */
+  sort?: Sort;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfWorkflowResult
+   */
+  totalElements?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfWorkflowResult
+   */
+  totalPages?: number;
 }
 
 /**
- * 
+ *
  * @export
  * @interface PendingAttachment
  */
 export interface PendingAttachment extends CurrentValue {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PendingAttachment
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PendingAttachment
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof PendingAttachment
-     */
-    attachmentStatus?: PendingAttachment.AttachmentStatusEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof PendingAttachment
-     */
-    awsS3Key?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PendingAttachment
-     */
-    contentType?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof PendingAttachment
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PendingAttachment
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof PendingAttachment
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PendingAttachment
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof PendingAttachment
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof PendingAttachment
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PendingAttachment
-     */
-    fileExtension?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof PendingAttachment
-     */
-    fileSize?: number;
-    /**
-     * 
-     * @type {Field}
-     * @memberof PendingAttachment
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof PendingAttachment
-     */
-    id?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PendingAttachment
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof PendingAttachment
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof PendingAttachment
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PendingAttachment
-     */
-    originalFileExtension?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof PendingAttachment
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PendingAttachment
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof PendingAttachment
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof PendingAttachment
-     */
-    valueType?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof PendingAttachment
-     */
-    versionCount?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PendingAttachment
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PendingAttachment
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof PendingAttachment
+   */
+  attachmentStatus?: PendingAttachment.AttachmentStatusEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof PendingAttachment
+   */
+  awsS3Key?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof PendingAttachment
+   */
+  contentType?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof PendingAttachment
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PendingAttachment
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof PendingAttachment
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PendingAttachment
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof PendingAttachment
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof PendingAttachment
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof PendingAttachment
+   */
+  fileExtension?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof PendingAttachment
+   */
+  fileSize?: number;
+  /**
+   *
+   * @type {Field}
+   * @memberof PendingAttachment
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof PendingAttachment
+   */
+  id?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PendingAttachment
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof PendingAttachment
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof PendingAttachment
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof PendingAttachment
+   */
+  originalFileExtension?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof PendingAttachment
+   */
+  priority?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof PendingAttachment
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof PendingAttachment
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof PendingAttachment
+   */
+  valueType?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof PendingAttachment
+   */
+  versionCount?: number;
 }
 
 /**
@@ -5778,15 +5780,15 @@ export interface PendingAttachment extends CurrentValue {
  * @namespace PendingAttachment
  */
 export namespace PendingAttachment {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum AttachmentStatusEnum {
-        PENDING = <any> 'PENDING',
-        CLEAN = <any> 'CLEAN',
-        DIRTY = <any> 'DIRTY'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum AttachmentStatusEnum {
+    PENDING = <any>'PENDING',
+    CLEAN = <any>'CLEAN',
+    DIRTY = <any>'DIRTY'
+  }
 }
 
 /**
@@ -5795,72 +5797,72 @@ export namespace PendingAttachment {
  * @interface Process
  */
 export interface Process {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Process
-     */
-    active?: boolean;
-    /**
-     * Icon color of the process.
-     * @type {string}
-     * @memberof Process
-     */
-    color?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Process
-     */
-    copied?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Process
-     */
-    created?: Date;
-    /**
-     * Icon type of the process.
-     * @type {string}
-     * @memberof Process
-     */
-    icon?: Process.IconEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof Process
-     */
-    id?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Process
-     */
-    imported?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Process
-     */
-    labels?: Array<string>;
-    /**
-     * Name of the process.
-     * @type {string}
-     * @memberof Process
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Process
-     */
-    updated?: Date;
-    /**
-     * Workflows associated to the process.
-     * @type {Array<Workflow>}
-     * @memberof Process
-     */
-    workflows?: Array<Workflow>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Process
+   */
+  active?: boolean;
+  /**
+   * Icon color of the process.
+   * @type {string}
+   * @memberof Process
+   */
+  color?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Process
+   */
+  copied?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof Process
+   */
+  created?: Date;
+  /**
+   * Icon type of the process.
+   * @type {string}
+   * @memberof Process
+   */
+  icon?: Process.IconEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof Process
+   */
+  id?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Process
+   */
+  imported?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Process
+   */
+  labels?: Array<string>;
+  /**
+   * Name of the process.
+   * @type {string}
+   * @memberof Process
+   */
+  name?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Process
+   */
+  updated?: Date;
+  /**
+   * Workflows associated to the process.
+   * @type {Array<Workflow>}
+   * @memberof Process
+   */
+  workflows?: Array<Workflow>;
 }
 
 /**
@@ -5868,146 +5870,146 @@ export interface Process {
  * @namespace Process
  */
 export namespace Process {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum IconEnum {
-        Bookmark = <any> 'fa-bookmark',
-        Bolt = <any> 'fa-bolt',
-        Bullhorn = <any> 'fa-bullhorn',
-        Certificate = <any> 'fa-certificate',
-        CheckSquareO = <any> 'fa-check-square-o',
-        Cloud = <any> 'fa-cloud',
-        Comments = <any> 'fa-comments',
-        Dollar = <any> 'fa-dollar',
-        ExclamationTriangle = <any> 'fa-exclamation-triangle',
-        FileTextO = <any> 'fa-file-text-o',
-        Folder = <any> 'fa-folder',
-        Gift = <any> 'fa-gift',
-        Globe = <any> 'fa-globe',
-        Heartbeat = <any> 'fa-heartbeat',
-        Leaf = <any> 'fa-leaf',
-        Legal = <any> 'fa-legal',
-        LifeRing = <any> 'fa-life-ring',
-        Medkit = <any> 'fa-medkit',
-        Money = <any> 'fa-money',
-        Percent = <any> 'fa-percent',
-        Rocket = <any> 'fa-rocket',
-        Signal = <any> 'fa-signal',
-        University = <any> 'fa-university',
-        UserCircle = <any> 'fa-user-circle'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum IconEnum {
+    Bookmark = <any>'fa-bookmark',
+    Bolt = <any>'fa-bolt',
+    Bullhorn = <any>'fa-bullhorn',
+    Certificate = <any>'fa-certificate',
+    CheckSquareO = <any>'fa-check-square-o',
+    Cloud = <any>'fa-cloud',
+    Comments = <any>'fa-comments',
+    Dollar = <any>'fa-dollar',
+    ExclamationTriangle = <any>'fa-exclamation-triangle',
+    FileTextO = <any>'fa-file-text-o',
+    Folder = <any>'fa-folder',
+    Gift = <any>'fa-gift',
+    Globe = <any>'fa-globe',
+    Heartbeat = <any>'fa-heartbeat',
+    Leaf = <any>'fa-leaf',
+    Legal = <any>'fa-legal',
+    LifeRing = <any>'fa-life-ring',
+    Medkit = <any>'fa-medkit',
+    Money = <any>'fa-money',
+    Percent = <any>'fa-percent',
+    Rocket = <any>'fa-rocket',
+    Signal = <any>'fa-signal',
+    University = <any>'fa-university',
+    UserCircle = <any>'fa-user-circle'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface Radio
  */
 export interface Radio extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Radio
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Radio
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Radio
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof Radio
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Radio
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Radio
-     */
-    fieldType: Radio.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Radio
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Radio
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof Radio
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Radio
-     */
-    labels?: Array<string>;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof Radio
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Radio
-     */
-    operators?: Array<Radio.OperatorsEnum>;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof Radio
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Radio
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Radio
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof Radio
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Radio
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Radio
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Radio
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Radio
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof Radio
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Radio
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Radio
+   */
+  fieldType: Radio.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Radio
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Radio
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof Radio
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Radio
+   */
+  labels?: Array<string>;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof Radio
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Radio
+   */
+  operators?: Array<Radio.OperatorsEnum>;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof Radio
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Radio
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Radio
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof Radio
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Radio
+   */
+  workflowId?: string;
 }
 
 /**
@@ -6015,219 +6017,219 @@ export interface Radio extends Field {
  * @namespace Radio
  */
 export namespace Radio {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface Record
  */
 export interface Record {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Record
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Record
-     */
-    activeDate?: Date;
-    /**
-     * 
-     * @type {User}
-     * @memberof Record
-     */
-    assignee?: User;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof Record
-     */
-    assignments?: Array<Record>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Record
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {User}
-     * @memberof Record
-     */
-    creator?: User;
-    /**
-     * 
-     * @type {Array<ValueMap>}
-     * @memberof Record
-     */
-    currentValueMaps?: Array<ValueMap>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Record
-     */
-    dueDate?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Record
-     */
-    enteredNodeDate?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Record
-     */
-    enteredStepDate?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Record
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Record
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Record
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Step}
-     * @memberof Record
-     */
-    node?: Step;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Record
-     */
-    nodeDueDate?: Date;
-    /**
-     * 
-     * @type {Step}
-     * @memberof Record
-     */
-    origin?: Step;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Record
-     */
-    _public?: boolean;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof Record
-     */
-    records?: Array<Record>;
-    /**
-     * 
-     * @type {number}
-     * @memberof Record
-     */
-    sequenceId?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Record
-     */
-    status?: Record.StatusEnum;
-    /**
-     * 
-     * @type {Step}
-     * @memberof Record
-     */
-    step?: Step;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Record
-     */
-    stepDueDate?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Record
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {User}
-     * @memberof Record
-     */
-    user?: User;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Record
-     */
-    userDate?: Date;
-    /**
-     * 
-     * @type {Array<UserGroup>}
-     * @memberof Record
-     */
-    userGroups?: Array<UserGroup>;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof Record
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Record
-     */
-    workflowDueDate?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Record
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof Record
+   */
+  activeDate?: Date;
+  /**
+   *
+   * @type {User}
+   * @memberof Record
+   */
+  assignee?: User;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof Record
+   */
+  assignments?: Array<Record>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Record
+   */
+  created?: Date;
+  /**
+   *
+   * @type {User}
+   * @memberof Record
+   */
+  creator?: User;
+  /**
+   *
+   * @type {Array<ValueMap>}
+   * @memberof Record
+   */
+  currentValueMaps?: Array<ValueMap>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Record
+   */
+  dueDate?: Date;
+  /**
+   *
+   * @type {Date}
+   * @memberof Record
+   */
+  enteredNodeDate?: Date;
+  /**
+   *
+   * @type {Date}
+   * @memberof Record
+   */
+  enteredStepDate?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Record
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Record
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof Record
+   */
+  name?: string;
+  /**
+   *
+   * @type {Step}
+   * @memberof Record
+   */
+  node?: Step;
+  /**
+   *
+   * @type {Date}
+   * @memberof Record
+   */
+  nodeDueDate?: Date;
+  /**
+   *
+   * @type {Step}
+   * @memberof Record
+   */
+  origin?: Step;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Record
+   */
+  _public?: boolean;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof Record
+   */
+  records?: Array<Record>;
+  /**
+   *
+   * @type {number}
+   * @memberof Record
+   */
+  sequenceId?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof Record
+   */
+  status?: Record.StatusEnum;
+  /**
+   *
+   * @type {Step}
+   * @memberof Record
+   */
+  step?: Step;
+  /**
+   *
+   * @type {Date}
+   * @memberof Record
+   */
+  stepDueDate?: Date;
+  /**
+   *
+   * @type {Date}
+   * @memberof Record
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {User}
+   * @memberof Record
+   */
+  user?: User;
+  /**
+   *
+   * @type {Date}
+   * @memberof Record
+   */
+  userDate?: Date;
+  /**
+   *
+   * @type {Array<UserGroup>}
+   * @memberof Record
+   */
+  userGroups?: Array<UserGroup>;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof Record
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {Date}
+   * @memberof Record
+   */
+  workflowDueDate?: Date;
 }
 
 /**
@@ -6235,135 +6237,135 @@ export interface Record {
  * @namespace Record
  */
 export namespace Record {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum StatusEnum {
-        INACTIVE = <any> 'INACTIVE',
-        NOTASSIGNED = <any> 'NOT_ASSIGNED',
-        ASSIGNED = <any> 'ASSIGNED',
-        INPROGRESS = <any> 'IN_PROGRESS',
-        COMPLETE = <any> 'COMPLETE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum StatusEnum {
+    INACTIVE = <any>'INACTIVE',
+    NOTASSIGNED = <any>'NOT_ASSIGNED',
+    ASSIGNED = <any>'ASSIGNED',
+    INPROGRESS = <any>'IN_PROGRESS',
+    COMPLETE = <any>'COMPLETE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface RecordDetails
  */
 export interface RecordDetails {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RecordDetails
-     */
-    canEdit?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RecordDetails
-     */
-    canRead?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof RecordDetails
-     */
-    depth?: number;
-    /**
-     * 
-     * @type {Date}
-     * @memberof RecordDetails
-     */
-    dueDate?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecordDetails
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecordDetails
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Step}
-     * @memberof RecordDetails
-     */
-    step?: Step;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RecordDetails
-     */
-    stepEnd?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecordDetails
-     */
-    stepId?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RecordDetails
-     */
-    user?: boolean;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof RecordDetails
-     */
-    workflow?: Workflow;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RecordDetails
+   */
+  canEdit?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RecordDetails
+   */
+  canRead?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof RecordDetails
+   */
+  depth?: number;
+  /**
+   *
+   * @type {Date}
+   * @memberof RecordDetails
+   */
+  dueDate?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof RecordDetails
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof RecordDetails
+   */
+  name?: string;
+  /**
+   *
+   * @type {Step}
+   * @memberof RecordDetails
+   */
+  step?: Step;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RecordDetails
+   */
+  stepEnd?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof RecordDetails
+   */
+  stepId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RecordDetails
+   */
+  user?: boolean;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof RecordDetails
+   */
+  workflow?: Workflow;
 }
 
 /**
- * 
+ *
  * @export
  * @interface RecordProperty
  */
 export interface RecordProperty {
-    /**
-     * 
-     * @type {string}
-     * @memberof RecordProperty
-     */
-    fieldType?: RecordProperty.FieldTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecordProperty
-     */
-    formattedValue?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecordProperty
-     */
-    header?: string;
-    /**
-     * 
-     * @type {any}
-     * @memberof RecordProperty
-     */
-    rawValue?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecordProperty
-     */
-    systemField?: RecordProperty.SystemFieldEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecordProperty
-     */
-    url?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof RecordProperty
+   */
+  fieldType?: RecordProperty.FieldTypeEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof RecordProperty
+   */
+  formattedValue?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof RecordProperty
+   */
+  header?: string;
+  /**
+   *
+   * @type {any}
+   * @memberof RecordProperty
+   */
+  rawValue?: any;
+  /**
+   *
+   * @type {string}
+   * @memberof RecordProperty
+   */
+  systemField?: RecordProperty.SystemFieldEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof RecordProperty
+   */
+  url?: string;
 }
 
 /**
@@ -6371,152 +6373,152 @@ export interface RecordProperty {
  * @namespace RecordProperty
  */
 export namespace RecordProperty {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum SystemFieldEnum {
-        NAME = <any> 'NAME',
-        STATUS = <any> 'STATUS',
-        CREATED = <any> 'CREATED',
-        USERDATE = <any> 'USER_DATE',
-        EFFECTIVEDUEDATE = <any> 'EFFECTIVE_DUE_DATE',
-        DUEDATE = <any> 'DUE_DATE',
-        ID = <any> 'ID',
-        USERNAME = <any> 'USER_NAME',
-        USERID = <any> 'USER_ID',
-        CREATORNAME = <any> 'CREATOR_NAME',
-        USERGROUP = <any> 'USER_GROUP',
-        STEPNAME = <any> 'STEP_NAME',
-        STEPID = <any> 'STEP_ID',
-        ORIGINNAME = <any> 'ORIGIN_NAME',
-        WORKFLOWNAME = <any> 'WORKFLOW_NAME',
-        WORKFLOWRECORDPREFIX = <any> 'WORKFLOW_RECORD_PREFIX',
-        WORKFLOWID = <any> 'WORKFLOW_ID'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum SystemFieldEnum {
+    NAME = <any>'NAME',
+    STATUS = <any>'STATUS',
+    CREATED = <any>'CREATED',
+    USERDATE = <any>'USER_DATE',
+    EFFECTIVEDUEDATE = <any>'EFFECTIVE_DUE_DATE',
+    DUEDATE = <any>'DUE_DATE',
+    ID = <any>'ID',
+    USERNAME = <any>'USER_NAME',
+    USERID = <any>'USER_ID',
+    CREATORNAME = <any>'CREATOR_NAME',
+    USERGROUP = <any>'USER_GROUP',
+    STEPNAME = <any>'STEP_NAME',
+    STEPID = <any>'STEP_ID',
+    ORIGINNAME = <any>'ORIGIN_NAME',
+    WORKFLOWNAME = <any>'WORKFLOW_NAME',
+    WORKFLOWRECORDPREFIX = <any>'WORKFLOW_RECORD_PREFIX',
+    WORKFLOWID = <any>'WORKFLOW_ID'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface ReportFilter
  */
 export interface ReportFilter {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ReportFilter
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ReportFilter
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {Field}
-     * @memberof ReportFilter
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ReportFilter
-     */
-    filteredRelativeIds?: Array<string>;
-    /**
-     * 
-     * @type {Array<GraphEntity>}
-     * @memberof ReportFilter
-     */
-    filteredRelatives?: Array<GraphEntity>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ReportFilter
-     */
-    fixed?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ReportFilter
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ReportFilter
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof ReportFilter
-     */
-    operator?: ReportFilter.OperatorEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof ReportFilter
-     */
-    recordRelationship?: ReportFilter.RecordRelationshipEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof ReportFilter
-     */
-    systemField?: ReportFilter.SystemFieldEnum;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ReportFilter
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ReportFilter
-     */
-    valid?: boolean;
-    /**
-     * 
-     * @type {Array<CurrentValue>}
-     * @memberof ReportFilter
-     */
-    values?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof ReportFilter
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof ReportFilter
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ReportFilter
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof ReportFilter
+   */
+  created?: Date;
+  /**
+   *
+   * @type {Field}
+   * @memberof ReportFilter
+   */
+  field?: Field;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ReportFilter
+   */
+  filteredRelativeIds?: Array<string>;
+  /**
+   *
+   * @type {Array<GraphEntity>}
+   * @memberof ReportFilter
+   */
+  filteredRelatives?: Array<GraphEntity>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ReportFilter
+   */
+  fixed?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof ReportFilter
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ReportFilter
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof ReportFilter
+   */
+  operator?: ReportFilter.OperatorEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof ReportFilter
+   */
+  recordRelationship?: ReportFilter.RecordRelationshipEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof ReportFilter
+   */
+  systemField?: ReportFilter.SystemFieldEnum;
+  /**
+   *
+   * @type {Date}
+   * @memberof ReportFilter
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ReportFilter
+   */
+  valid?: boolean;
+  /**
+   *
+   * @type {Array<CurrentValue>}
+   * @memberof ReportFilter
+   */
+  values?: Array<CurrentValue>;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof ReportFilter
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof ReportFilter
+   */
+  workflowId?: string;
 }
 
 /**
@@ -6524,369 +6526,369 @@ export interface ReportFilter {
  * @namespace ReportFilter
  */
 export namespace ReportFilter {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum RecordRelationshipEnum {
-        CURRENTSTEP = <any> 'CURRENT_STEP',
-        ORIGINSTEP = <any> 'ORIGIN_STEP'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum SystemFieldEnum {
-        NAME = <any> 'NAME',
-        STATUS = <any> 'STATUS',
-        CREATED = <any> 'CREATED',
-        USERDATE = <any> 'USER_DATE',
-        EFFECTIVEDUEDATE = <any> 'EFFECTIVE_DUE_DATE',
-        DUEDATE = <any> 'DUE_DATE',
-        ID = <any> 'ID',
-        USERNAME = <any> 'USER_NAME',
-        USERID = <any> 'USER_ID',
-        CREATORNAME = <any> 'CREATOR_NAME',
-        USERGROUP = <any> 'USER_GROUP',
-        STEPNAME = <any> 'STEP_NAME',
-        STEPID = <any> 'STEP_ID',
-        ORIGINNAME = <any> 'ORIGIN_NAME',
-        WORKFLOWNAME = <any> 'WORKFLOW_NAME',
-        WORKFLOWRECORDPREFIX = <any> 'WORKFLOW_RECORD_PREFIX',
-        WORKFLOWID = <any> 'WORKFLOW_ID'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum RecordRelationshipEnum {
+    CURRENTSTEP = <any>'CURRENT_STEP',
+    ORIGINSTEP = <any>'ORIGIN_STEP'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum SystemFieldEnum {
+    NAME = <any>'NAME',
+    STATUS = <any>'STATUS',
+    CREATED = <any>'CREATED',
+    USERDATE = <any>'USER_DATE',
+    EFFECTIVEDUEDATE = <any>'EFFECTIVE_DUE_DATE',
+    DUEDATE = <any>'DUE_DATE',
+    ID = <any>'ID',
+    USERNAME = <any>'USER_NAME',
+    USERID = <any>'USER_ID',
+    CREATORNAME = <any>'CREATOR_NAME',
+    USERGROUP = <any>'USER_GROUP',
+    STEPNAME = <any>'STEP_NAME',
+    STEPID = <any>'STEP_ID',
+    ORIGINNAME = <any>'ORIGIN_NAME',
+    WORKFLOWNAME = <any>'WORKFLOW_NAME',
+    WORKFLOWRECORDPREFIX = <any>'WORKFLOW_RECORD_PREFIX',
+    WORKFLOWID = <any>'WORKFLOW_ID'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface Repository
  */
 export interface Repository extends Layout {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Repository
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Repository
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Repository
-     */
-    defaultLayout?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Repository
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Repository
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Array<LayoutField>}
-     * @memberof Repository
-     */
-    layoutFields?: Array<LayoutField>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Repository
-     */
-    title?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Repository
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof Repository
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Repository
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Repository
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof Repository
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Repository
+   */
+  defaultLayout?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Repository
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Repository
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Array<LayoutField>}
+   * @memberof Repository
+   */
+  layoutFields?: Array<LayoutField>;
+  /**
+   *
+   * @type {string}
+   * @memberof Repository
+   */
+  title?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Repository
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof Repository
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Repository
+   */
+  workflowId?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface Resource
  */
 export interface Resource {
-    /**
-     * 
-     * @type {string}
-     * @memberof Resource
-     */
-    description?: string;
-    /**
-     * 
-     * @type {any}
-     * @memberof Resource
-     */
-    file?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof Resource
-     */
-    filename?: string;
-    /**
-     * 
-     * @type {InputStream}
-     * @memberof Resource
-     */
-    inputStream?: InputStream;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Resource
-     */
-    open?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Resource
-     */
-    readable?: boolean;
-    /**
-     * 
-     * @type {URI}
-     * @memberof Resource
-     */
-    uri?: URI;
-    /**
-     * 
-     * @type {URL}
-     * @memberof Resource
-     */
-    url?: URL;
+  /**
+   *
+   * @type {string}
+   * @memberof Resource
+   */
+  description?: string;
+  /**
+   *
+   * @type {any}
+   * @memberof Resource
+   */
+  file?: any;
+  /**
+   *
+   * @type {string}
+   * @memberof Resource
+   */
+  filename?: string;
+  /**
+   *
+   * @type {InputStream}
+   * @memberof Resource
+   */
+  inputStream?: InputStream;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Resource
+   */
+  open?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Resource
+   */
+  readable?: boolean;
+  /**
+   *
+   * @type {URI}
+   * @memberof Resource
+   */
+  uri?: URI;
+  /**
+   *
+   * @type {URL}
+   * @memberof Resource
+   */
+  url?: URL;
 }
 
 /**
- * 
+ *
  * @export
  * @interface Role
  */
 export interface Role {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Role
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Role
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Role
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Role
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Role
-     */
-    locked?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof Role
-     */
-    moduleCount?: number;
-    /**
-     * 
-     * @type {Array<ModuleEntitlement>}
-     * @memberof Role
-     */
-    moduleEntitlements?: Array<ModuleEntitlement>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Role
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<StepEntitlement>}
-     * @memberof Role
-     */
-    nodeEntitlements?: Array<StepEntitlement>;
-    /**
-     * 
-     * @type {number}
-     * @memberof Role
-     */
-    stepCount?: number;
-    /**
-     * 
-     * @type {Array<StepEntitlement>}
-     * @memberof Role
-     */
-    stepEntitlements?: Array<StepEntitlement>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Role
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Role
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof Role
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Role
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Role
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Role
+   */
+  locked?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof Role
+   */
+  moduleCount?: number;
+  /**
+   *
+   * @type {Array<ModuleEntitlement>}
+   * @memberof Role
+   */
+  moduleEntitlements?: Array<ModuleEntitlement>;
+  /**
+   *
+   * @type {string}
+   * @memberof Role
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<StepEntitlement>}
+   * @memberof Role
+   */
+  nodeEntitlements?: Array<StepEntitlement>;
+  /**
+   *
+   * @type {number}
+   * @memberof Role
+   */
+  stepCount?: number;
+  /**
+   *
+   * @type {Array<StepEntitlement>}
+   * @memberof Role
+   */
+  stepEntitlements?: Array<StepEntitlement>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Role
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface Select
  */
 export interface Select extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Select
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Select
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Select
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof Select
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Select
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Select
-     */
-    fieldType: Select.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Select
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Select
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof Select
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Select
-     */
-    labels?: Array<string>;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof Select
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Select
-     */
-    operators?: Array<Select.OperatorsEnum>;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof Select
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Select
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Select
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof Select
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Select
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Select
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Select
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Select
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof Select
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Select
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Select
+   */
+  fieldType: Select.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Select
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Select
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof Select
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Select
+   */
+  labels?: Array<string>;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof Select
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Select
+   */
+  operators?: Array<Select.OperatorsEnum>;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof Select
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Select
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Select
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof Select
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Select
+   */
+  workflowId?: string;
 }
 
 /**
@@ -6894,89 +6896,89 @@ export interface Select extends Field {
  * @namespace Select
  */
 export namespace Select {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface ServiceLevelAgreement
  */
 export interface ServiceLevelAgreement {
-    /**
-     * 
-     * @type {number}
-     * @memberof ServiceLevelAgreement
-     */
-    duration?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ServiceLevelAgreement
-     */
-    enabled?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof ServiceLevelAgreement
+   */
+  duration?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ServiceLevelAgreement
+   */
+  enabled?: boolean;
 }
 
 /**
- * 
+ *
  * @export
  * @interface Sort
  */
 export interface Sort {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Sort
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Sort
-     */
-    sorted?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Sort
-     */
-    unsorted?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Sort
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Sort
+   */
+  sorted?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Sort
+   */
+  unsorted?: boolean;
 }
 
 /**
@@ -6985,470 +6987,470 @@ export interface Sort {
  * @interface Step
  */
 export interface Step {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Step
-     */
-    active?: boolean;
-    /**
-     * Allow entitlements to the node.
-     * @type {boolean}
-     * @memberof Step
-     */
-    allowEntitlements?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Step
-     */
-    chain?: boolean;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof Step
-     */
-    contains?: Workflow;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Step
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Step
-     */
-    end?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Step
-     */
-    id?: string;
-    /**
-     * Allows a node to become a public node.
-     * @type {boolean}
-     * @memberof Step
-     */
-    isPublic?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Step
-     */
-    labels?: Array<string>;
-    /**
-     * Node name.
-     * @type {string}
-     * @memberof Step
-     */
-    name?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Step
-     */
-    origin?: boolean;
-    /**
-     * Determines the node's place in the workflow.
-     * @type {number}
-     * @memberof Step
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Step
-     */
-    _public?: boolean;
-    /**
-     * Object containing all SLA information.
-     * @type {ServiceLevelAgreement}
-     * @memberof Step
-     */
-    sla?: ServiceLevelAgreement;
-    /**
-     * Node type.
-     * @type {string}
-     * @memberof Step
-     */
-    stepType?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Step
-     */
-    updated?: Date;
-    /**
-     * Workflow that the node belongs to.
-     * @type {Workflow}
-     * @memberof Step
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Step
-     */
-    workflowId?: string;
-    /**
-     * Vertical position of the node on the process screen.
-     * @type {number}
-     * @memberof Step
-     */
-    xpos?: number;
-    /**
-     * Horizontal position of the node on the process screen.
-     * @type {number}
-     * @memberof Step
-     */
-    ypos?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Step
+   */
+  active?: boolean;
+  /**
+   * Allow entitlements to the node.
+   * @type {boolean}
+   * @memberof Step
+   */
+  allowEntitlements?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Step
+   */
+  chain?: boolean;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof Step
+   */
+  contains?: Workflow;
+  /**
+   *
+   * @type {Date}
+   * @memberof Step
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Step
+   */
+  end?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Step
+   */
+  id?: string;
+  /**
+   * Allows a node to become a public node.
+   * @type {boolean}
+   * @memberof Step
+   */
+  isPublic?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Step
+   */
+  labels?: Array<string>;
+  /**
+   * Node name.
+   * @type {string}
+   * @memberof Step
+   */
+  name?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Step
+   */
+  origin?: boolean;
+  /**
+   * Determines the node's place in the workflow.
+   * @type {number}
+   * @memberof Step
+   */
+  priority?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Step
+   */
+  _public?: boolean;
+  /**
+   * Object containing all SLA information.
+   * @type {ServiceLevelAgreement}
+   * @memberof Step
+   */
+  sla?: ServiceLevelAgreement;
+  /**
+   * Node type.
+   * @type {string}
+   * @memberof Step
+   */
+  stepType?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Step
+   */
+  updated?: Date;
+  /**
+   * Workflow that the node belongs to.
+   * @type {Workflow}
+   * @memberof Step
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Step
+   */
+  workflowId?: string;
+  /**
+   * Vertical position of the node on the process screen.
+   * @type {number}
+   * @memberof Step
+   */
+  xpos?: number;
+  /**
+   * Horizontal position of the node on the process screen.
+   * @type {number}
+   * @memberof Step
+   */
+  ypos?: number;
 }
 
 /**
- * 
+ *
  * @export
  * @interface StepEntitlement
  */
 export interface StepEntitlement {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof StepEntitlement
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof StepEntitlement
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof StepEntitlement
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof StepEntitlement
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Step}
-     * @memberof StepEntitlement
-     */
-    node?: Step;
-    /**
-     * 
-     * @type {string}
-     * @memberof StepEntitlement
-     */
-    operationType?: string;
-    /**
-     * 
-     * @type {Role}
-     * @memberof StepEntitlement
-     */
-    role?: Role;
-    /**
-     * 
-     * @type {Step}
-     * @memberof StepEntitlement
-     */
-    step?: Step;
-    /**
-     * 
-     * @type {Date}
-     * @memberof StepEntitlement
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof StepEntitlement
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof StepEntitlement
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof StepEntitlement
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof StepEntitlement
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Step}
+   * @memberof StepEntitlement
+   */
+  node?: Step;
+  /**
+   *
+   * @type {string}
+   * @memberof StepEntitlement
+   */
+  operationType?: string;
+  /**
+   *
+   * @type {Role}
+   * @memberof StepEntitlement
+   */
+  role?: Role;
+  /**
+   *
+   * @type {Step}
+   * @memberof StepEntitlement
+   */
+  step?: Step;
+  /**
+   *
+   * @type {Date}
+   * @memberof StepEntitlement
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface TableReport
  */
 export interface TableReport extends Layout {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TableReport
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof TableReport
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TableReport
-     */
-    defaultLayout?: boolean;
-    /**
-     * 
-     * @type {Array<ReportFilter>}
-     * @memberof TableReport
-     */
-    filterList?: Array<ReportFilter>;
-    /**
-     * 
-     * @type {string}
-     * @memberof TableReport
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof TableReport
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Array<LayoutField>}
-     * @memberof TableReport
-     */
-    layoutFields?: Array<LayoutField>;
-    /**
-     * 
-     * @type {string}
-     * @memberof TableReport
-     */
-    title?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof TableReport
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof TableReport
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof TableReport
-     */
-    workflowId?: string;
-    /**
-     * 
-     * @type {Array<TableReportJoin>}
-     * @memberof TableReport
-     */
-    workflowJoins?: Array<TableReportJoin>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TableReport
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof TableReport
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TableReport
+   */
+  defaultLayout?: boolean;
+  /**
+   *
+   * @type {Array<ReportFilter>}
+   * @memberof TableReport
+   */
+  filterList?: Array<ReportFilter>;
+  /**
+   *
+   * @type {string}
+   * @memberof TableReport
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof TableReport
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Array<LayoutField>}
+   * @memberof TableReport
+   */
+  layoutFields?: Array<LayoutField>;
+  /**
+   *
+   * @type {string}
+   * @memberof TableReport
+   */
+  title?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof TableReport
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof TableReport
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof TableReport
+   */
+  workflowId?: string;
+  /**
+   *
+   * @type {Array<TableReportJoin>}
+   * @memberof TableReport
+   */
+  workflowJoins?: Array<TableReportJoin>;
 }
 
 /**
- * 
+ *
  * @export
  * @interface TableReportJoin
  */
 export interface TableReportJoin {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TableReportJoin
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<TableReportJoin>}
-     * @memberof TableReportJoin
-     */
-    childrenJoins?: Array<TableReportJoin>;
-    /**
-     * 
-     * @type {TableReportJoin}
-     * @memberof TableReportJoin
-     */
-    comesFrom?: TableReportJoin;
-    /**
-     * 
-     * @type {string}
-     * @memberof TableReportJoin
-     */
-    comesFromId?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof TableReportJoin
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TableReportJoin
-     */
-    distinct?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof TableReportJoin
-     */
-    id?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TableReportJoin
-     */
-    isDistinct?: boolean;
-    /**
-     * 
-     * @type {WorkflowMap}
-     * @memberof TableReportJoin
-     */
-    joinedThrough?: WorkflowMap;
-    /**
-     * 
-     * @type {Workflow}
-     * @memberof TableReportJoin
-     */
-    joinedWorkflow?: Workflow;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof TableReportJoin
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof TableReportJoin
-     */
-    updated?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TableReportJoin
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<TableReportJoin>}
+   * @memberof TableReportJoin
+   */
+  childrenJoins?: Array<TableReportJoin>;
+  /**
+   *
+   * @type {TableReportJoin}
+   * @memberof TableReportJoin
+   */
+  comesFrom?: TableReportJoin;
+  /**
+   *
+   * @type {string}
+   * @memberof TableReportJoin
+   */
+  comesFromId?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof TableReportJoin
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TableReportJoin
+   */
+  distinct?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof TableReportJoin
+   */
+  id?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TableReportJoin
+   */
+  isDistinct?: boolean;
+  /**
+   *
+   * @type {WorkflowMap}
+   * @memberof TableReportJoin
+   */
+  joinedThrough?: WorkflowMap;
+  /**
+   *
+   * @type {Workflow}
+   * @memberof TableReportJoin
+   */
+  joinedWorkflow?: Workflow;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof TableReportJoin
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof TableReportJoin
+   */
+  updated?: Date;
 }
 
 /**
- * 
+ *
  * @export
  * @interface Text
  */
 export interface Text extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Text
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Text
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Text
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof Text
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Text
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Text
-     */
-    fieldType: Text.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Text
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Text
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof Text
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Text
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Text
-     */
-    message?: string;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof Text
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Text
-     */
-    operators?: Array<Text.OperatorsEnum>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Text
-     */
-    pattern?: string;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof Text
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Text
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Text
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof Text
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof Text
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Text
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Text
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Text
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof Text
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Text
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Text
+   */
+  fieldType: Text.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Text
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof Text
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof Text
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Text
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof Text
+   */
+  message?: string;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof Text
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Text
+   */
+  operators?: Array<Text.OperatorsEnum>;
+  /**
+   *
+   * @type {string}
+   * @memberof Text
+   */
+  pattern?: string;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof Text
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof Text
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof Text
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof Text
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof Text
+   */
+  workflowId?: string;
 }
 
 /**
@@ -7456,171 +7458,171 @@ export interface Text extends Field {
  * @namespace Text
  */
 export namespace Text {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface TextArea
  */
 export interface TextArea extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TextArea
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof TextArea
-     */
-    convertibleTo?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof TextArea
-     */
-    created?: Date;
-    /**
-     * Relationship to current values that are associated to the field.
-     * @type {Array<CurrentValue>}
-     * @memberof TextArea
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TextArea
-     */
-    discrete?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof TextArea
-     */
-    fieldType: TextArea.FieldTypeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TextArea
-     */
-    global?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TextArea
-     */
-    hasHtml?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof TextArea
-     */
-    id?: string;
-    /**
-     * The label will appear as the label for the field when it appears on forms for user's to complete.
-     * @type {string}
-     * @memberof TextArea
-     */
-    label?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof TextArea
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof TextArea
-     */
-    message?: string;
-    /**
-     * The name of the field.
-     * @type {string}
-     * @memberof TextArea
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof TextArea
-     */
-    operators?: Array<TextArea.OperatorsEnum>;
-    /**
-     * 
-     * @type {string}
-     * @memberof TextArea
-     */
-    pattern?: string;
-    /**
-     * A text value that will populate any tooltip information.
-     * @type {string}
-     * @memberof TextArea
-     */
-    tooltip?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof TextArea
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof TextArea
-     */
-    valueType?: string;
-    /**
-     * Workflow object that is associated to the field.
-     * @type {Workflow}
-     * @memberof TextArea
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof TextArea
-     */
-    workflowId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TextArea
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof TextArea
+   */
+  convertibleTo?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof TextArea
+   */
+  created?: Date;
+  /**
+   * Relationship to current values that are associated to the field.
+   * @type {Array<CurrentValue>}
+   * @memberof TextArea
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TextArea
+   */
+  discrete?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof TextArea
+   */
+  fieldType: TextArea.FieldTypeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TextArea
+   */
+  global?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TextArea
+   */
+  hasHtml?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof TextArea
+   */
+  id?: string;
+  /**
+   * The label will appear as the label for the field when it appears on forms for user's to complete.
+   * @type {string}
+   * @memberof TextArea
+   */
+  label?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof TextArea
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof TextArea
+   */
+  message?: string;
+  /**
+   * The name of the field.
+   * @type {string}
+   * @memberof TextArea
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof TextArea
+   */
+  operators?: Array<TextArea.OperatorsEnum>;
+  /**
+   *
+   * @type {string}
+   * @memberof TextArea
+   */
+  pattern?: string;
+  /**
+   * A text value that will populate any tooltip information.
+   * @type {string}
+   * @memberof TextArea
+   */
+  tooltip?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof TextArea
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof TextArea
+   */
+  valueType?: string;
+  /**
+   * Workflow object that is associated to the field.
+   * @type {Workflow}
+   * @memberof TextArea
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof TextArea
+   */
+  workflowId?: string;
 }
 
 /**
@@ -7628,248 +7630,247 @@ export interface TextArea extends Field {
  * @namespace TextArea
  */
 export namespace TextArea {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum FieldTypeEnum {
-        TEXT = <any> 'TEXT',
-        TEXTAREA = <any> 'TEXT_AREA',
-        DATEPICKER = <any> 'DATE_PICKER',
-        NUMBER = <any> 'NUMBER',
-        ESIGNATURE = <any> 'E_SIGNATURE',
-        CHECKBOX = <any> 'CHECKBOX',
-        MULTISELECT = <any> 'MULTI_SELECT',
-        RADIO = <any> 'RADIO',
-        SELECT = <any> 'SELECT',
-        USER = <any> 'USER',
-        ATTACHMENT = <any> 'ATTACHMENT',
-        CALCULATION = <any> 'CALCULATION',
-        DUEDATE = <any> 'DUE_DATE'
-    }
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum OperatorsEnum {
-        EQUALS = <any> 'EQUALS',
-        NOTEQUALS = <any> 'NOT_EQUALS',
-        GREATERTHAN = <any> 'GREATER_THAN',
-        GREATERTHANEQUALS = <any> 'GREATER_THAN_EQUALS',
-        LESSTHAN = <any> 'LESS_THAN',
-        LESSTHANEQUALS = <any> 'LESS_THAN_EQUALS',
-        CONTAINS = <any> 'CONTAINS',
-        DOESNOTCONTAIN = <any> 'DOES_NOT_CONTAIN',
-        NULL = <any> 'NULL',
-        NOTNULL = <any> 'NOT_NULL',
-        MATCHES = <any> 'MATCHES',
-        DATERANGE = <any> 'DATE_RANGE'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum FieldTypeEnum {
+    TEXT = <any>'TEXT',
+    TEXTAREA = <any>'TEXT_AREA',
+    DATEPICKER = <any>'DATE_PICKER',
+    NUMBER = <any>'NUMBER',
+    ESIGNATURE = <any>'E_SIGNATURE',
+    CHECKBOX = <any>'CHECKBOX',
+    MULTISELECT = <any>'MULTI_SELECT',
+    RADIO = <any>'RADIO',
+    SELECT = <any>'SELECT',
+    USER = <any>'USER',
+    ATTACHMENT = <any>'ATTACHMENT',
+    CALCULATION = <any>'CALCULATION',
+    DUEDATE = <any>'DUE_DATE'
+  }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum OperatorsEnum {
+    EQUALS = <any>'EQUALS',
+    NOTEQUALS = <any>'NOT_EQUALS',
+    GREATERTHAN = <any>'GREATER_THAN',
+    GREATERTHANEQUALS = <any>'GREATER_THAN_EQUALS',
+    LESSTHAN = <any>'LESS_THAN',
+    LESSTHANEQUALS = <any>'LESS_THAN_EQUALS',
+    CONTAINS = <any>'CONTAINS',
+    DOESNOTCONTAIN = <any>'DOES_NOT_CONTAIN',
+    NULL = <any>'NULL',
+    NOTNULL = <any>'NOT_NULL',
+    MATCHES = <any>'MATCHES',
+    DATERANGE = <any>'DATE_RANGE'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface URI
  */
 export interface URI {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof URI
-     */
-    absolute?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    authority?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    fragment?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    host?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof URI
-     */
-    opaque?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    path?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof URI
-     */
-    port?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    query?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    rawAuthority?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    rawFragment?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    rawPath?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    rawQuery?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    rawSchemeSpecificPart?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    rawUserInfo?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    scheme?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    schemeSpecificPart?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URI
-     */
-    userInfo?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof URI
+   */
+  absolute?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  authority?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  fragment?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  host?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof URI
+   */
+  opaque?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  path?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof URI
+   */
+  port?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  query?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  rawAuthority?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  rawFragment?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  rawPath?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  rawQuery?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  rawSchemeSpecificPart?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  rawUserInfo?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  scheme?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  schemeSpecificPart?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URI
+   */
+  userInfo?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface URL
  */
 export interface URL {
-    /**
-     * 
-     * @type {string}
-     * @memberof URL
-     */
-    authority?: string;
-    /**
-     * 
-     * @type {any}
-     * @memberof URL
-     */
-    content?: any;
-    /**
-     * 
-     * @type {number}
-     * @memberof URL
-     */
-    defaultPort?: number;
-    /**
-     * 
-     * @type {URLStreamHandler}
-     * @memberof URL
-     */
-    deserializedFields?: URLStreamHandler;
-    /**
-     * 
-     * @type {string}
-     * @memberof URL
-     */
-    file?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URL
-     */
-    host?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URL
-     */
-    path?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof URL
-     */
-    port?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof URL
-     */
-    protocol?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URL
-     */
-    query?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof URL
-     */
-    ref?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof URL
-     */
-    serializedHashCode?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof URL
-     */
-    userInfo?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URL
+   */
+  authority?: string;
+  /**
+   *
+   * @type {any}
+   * @memberof URL
+   */
+  content?: any;
+  /**
+   *
+   * @type {number}
+   * @memberof URL
+   */
+  defaultPort?: number;
+  /**
+   *
+   * @type {URLStreamHandler}
+   * @memberof URL
+   */
+  deserializedFields?: URLStreamHandler;
+  /**
+   *
+   * @type {string}
+   * @memberof URL
+   */
+  file?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URL
+   */
+  host?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URL
+   */
+  path?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof URL
+   */
+  port?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof URL
+   */
+  protocol?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URL
+   */
+  query?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof URL
+   */
+  ref?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof URL
+   */
+  serializedHashCode?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof URL
+   */
+  userInfo?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface URLStreamHandler
  */
-export interface URLStreamHandler {
-}
+export interface URLStreamHandler {}
 
 /**
  * Entity for storing all information pertaining to a user.
@@ -7877,240 +7878,240 @@ export interface URLStreamHandler {
  * @interface User
  */
 export interface User extends Field {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
-    archived?: boolean;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof User
-     */
-    assignments?: Array<Record>;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    company?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof User
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
-    _default?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
-    disabled?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    discriminator?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    email?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
-    empty?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof User
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    fieldId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    first?: string;
-    /**
-     * 
-     * @type {Field}
-     * @memberof User
-     */
-    hasValue?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    imageUrl?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    intercomHash?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
-    isDefault?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof User
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    languageTag?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    last?: string;
-    /**
-     * 
-     * @type {AccessAudit}
-     * @memberof User
-     */
-    lastLogin?: AccessAudit;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
-    locked?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof User
-     */
-    loginAttempts?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    name?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof User
-     */
-    numericValue?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    password?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof User
-     */
-    priority?: number;
-    /**
-     * 
-     * @type {Array<Record>}
-     * @memberof User
-     */
-    records?: Array<Record>;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    resetPasswordToken?: string;
-    /**
-     * 
-     * @type {Array<Role>}
-     * @memberof User
-     */
-    roles?: Array<Role>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
-    sendEmail?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    status?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
-    superUser?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    textValue?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    tier?: User.TierEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    timeZone?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof User
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    valueType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof User
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof User
+   */
+  archived?: boolean;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof User
+   */
+  assignments?: Array<Record>;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  company?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof User
+   */
+  created?: Date;
+  /**
+   *
+   * @type {boolean}
+   * @memberof User
+   */
+  _default?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof User
+   */
+  disabled?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  discriminator?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  email?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof User
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof User
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  fieldId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  first?: string;
+  /**
+   *
+   * @type {Field}
+   * @memberof User
+   */
+  hasValue?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  imageUrl?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  intercomHash?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof User
+   */
+  isDefault?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof User
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  languageTag?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  last?: string;
+  /**
+   *
+   * @type {AccessAudit}
+   * @memberof User
+   */
+  lastLogin?: AccessAudit;
+  /**
+   *
+   * @type {boolean}
+   * @memberof User
+   */
+  locked?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof User
+   */
+  loginAttempts?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  name?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof User
+   */
+  numericValue?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  password?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof User
+   */
+  priority?: number;
+  /**
+   *
+   * @type {Array<Record>}
+   * @memberof User
+   */
+  records?: Array<Record>;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  resetPasswordToken?: string;
+  /**
+   *
+   * @type {Array<Role>}
+   * @memberof User
+   */
+  roles?: Array<Role>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof User
+   */
+  sendEmail?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  status?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof User
+   */
+  superUser?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  textValue?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  tier?: User.TierEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  timeZone?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof User
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  valueType?: string;
 }
 
 /**
@@ -8118,163 +8119,163 @@ export interface User extends Field {
  * @namespace User
  */
 export namespace User {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum TierEnum {
-        PRIMARY = <any> 'PRIMARY',
-        SECONDARY = <any> 'SECONDARY',
-        LIMITED = <any> 'LIMITED'
-    }
+  /**
+   * @export
+   * @enum {string}
+   */
+  export enum TierEnum {
+    PRIMARY = <any>'PRIMARY',
+    SECONDARY = <any>'SECONDARY',
+    LIMITED = <any>'LIMITED'
+  }
 }
 
 /**
- * 
+ *
  * @export
  * @interface UserGroup
  */
 export interface UserGroup {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserGroup
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserGroup
-     */
-    assignmentDefault?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof UserGroup
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserGroup
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof UserGroup
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserGroup
-     */
-    recordDefault?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserGroup
-     */
-    title?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof UserGroup
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {Array<User>}
-     * @memberof UserGroup
-     */
-    users?: Array<User>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof UserGroup
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof UserGroup
+   */
+  assignmentDefault?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof UserGroup
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof UserGroup
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof UserGroup
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof UserGroup
+   */
+  recordDefault?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof UserGroup
+   */
+  title?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof UserGroup
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {Array<User>}
+   * @memberof UserGroup
+   */
+  users?: Array<User>;
 }
 
 /**
- * 
+ *
  * @export
  * @interface ValueMap
  */
 export interface ValueMap {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ValueMap
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Record}
-     * @memberof ValueMap
-     */
-    assignment?: Record;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ValueMap
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {Array<CurrentValue>}
-     * @memberof ValueMap
-     */
-    currentValues?: Array<CurrentValue>;
-    /**
-     * 
-     * @type {number}
-     * @memberof ValueMap
-     */
-    expressionResult?: number;
-    /**
-     * 
-     * @type {Field}
-     * @memberof ValueMap
-     */
-    field?: Field;
-    /**
-     * 
-     * @type {string}
-     * @memberof ValueMap
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ValueMap
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Step}
-     * @memberof ValueMap
-     */
-    node?: Step;
-    /**
-     * 
-     * @type {Record}
-     * @memberof ValueMap
-     */
-    record?: Record;
-    /**
-     * 
-     * @type {Step}
-     * @memberof ValueMap
-     */
-    step?: Step;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ValueMap
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {User}
-     * @memberof ValueMap
-     */
-    user?: User;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ValueMap
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Record}
+   * @memberof ValueMap
+   */
+  assignment?: Record;
+  /**
+   *
+   * @type {Date}
+   * @memberof ValueMap
+   */
+  created?: Date;
+  /**
+   *
+   * @type {Array<CurrentValue>}
+   * @memberof ValueMap
+   */
+  currentValues?: Array<CurrentValue>;
+  /**
+   *
+   * @type {number}
+   * @memberof ValueMap
+   */
+  expressionResult?: number;
+  /**
+   *
+   * @type {Field}
+   * @memberof ValueMap
+   */
+  field?: Field;
+  /**
+   *
+   * @type {string}
+   * @memberof ValueMap
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ValueMap
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Step}
+   * @memberof ValueMap
+   */
+  node?: Step;
+  /**
+   *
+   * @type {Record}
+   * @memberof ValueMap
+   */
+  record?: Record;
+  /**
+   *
+   * @type {Step}
+   * @memberof ValueMap
+   */
+  step?: Step;
+  /**
+   *
+   * @type {Date}
+   * @memberof ValueMap
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {User}
+   * @memberof ValueMap
+   */
+  user?: User;
 }
 
 /**
@@ -8283,150 +8284,150 @@ export interface ValueMap {
  * @interface Workflow
  */
 export interface Workflow {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Workflow
-     */
-    active?: boolean;
-    /**
-     * Nodes created in the workflow are allowed user groups.
-     * @type {boolean}
-     * @memberof Workflow
-     */
-    allowGroups?: boolean;
-    /**
-     * 
-     * @type {Field}
-     * @memberof Workflow
-     */
-    canSelect?: Field;
-    /**
-     * 
-     * @type {Step}
-     * @memberof Workflow
-     */
-    contains?: Step;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Workflow
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {Array<Field>}
-     * @memberof Workflow
-     */
-    fields?: Array<Field>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Workflow
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Workflow
-     */
-    labels?: Array<string>;
-    /**
-     * Name of the workflow.
-     * @type {string}
-     * @memberof Workflow
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Array<Step>}
-     * @memberof Workflow
-     */
-    nodes?: Array<Step>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Workflow
-     */
-    objectName?: string;
-    /**
-     * Determines the workflow's place in the process.
-     * @type {number}
-     * @memberof Workflow
-     */
-    priority?: number;
-    /**
-     * Process that the workflow belongs to.
-     * @type {Process}
-     * @memberof Workflow
-     */
-    process?: Process;
-    /**
-     * 
-     * @type {string}
-     * @memberof Workflow
-     */
-    processId?: string;
-    /**
-     * Name to be used for every record created from the workflow.
-     * @type {string}
-     * @memberof Workflow
-     */
-    recordPrefix?: string;
-    /**
-     * Nodes created in the workflow require user groups.
-     * @type {boolean}
-     * @memberof Workflow
-     */
-    requireGroups?: boolean;
-    /**
-     * 
-     * @type {WorkflowSequence}
-     * @memberof Workflow
-     */
-    sequence?: WorkflowSequence;
-    /**
-     * Object containing all SLA information.
-     * @type {ServiceLevelAgreement}
-     * @memberof Workflow
-     */
-    sla?: ServiceLevelAgreement;
-    /**
-     * List of nodes that the workflow contains.
-     * @type {Array<Step>}
-     * @memberof Workflow
-     */
-    steps?: Array<Step>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Workflow
-     */
-    updated?: Date;
-    /**
-     * User groups that are allowed access to the workflow
-     * @type {Array<UserGroup>}
-     * @memberof Workflow
-     */
-    userGroups?: Array<UserGroup>;
-    /**
-     * 
-     * @type {Array<WorkflowMap>}
-     * @memberof Workflow
-     */
-    workflowMaps?: Array<WorkflowMap>;
-    /**
-     * X axis position of the workflow on the process screen
-     * @type {number}
-     * @memberof Workflow
-     */
-    xpos?: number;
-    /**
-     * Y axis position of the workflow on the process screen
-     * @type {number}
-     * @memberof Workflow
-     */
-    ypos?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Workflow
+   */
+  active?: boolean;
+  /**
+   * Nodes created in the workflow are allowed user groups.
+   * @type {boolean}
+   * @memberof Workflow
+   */
+  allowGroups?: boolean;
+  /**
+   *
+   * @type {Field}
+   * @memberof Workflow
+   */
+  canSelect?: Field;
+  /**
+   *
+   * @type {Step}
+   * @memberof Workflow
+   */
+  contains?: Step;
+  /**
+   *
+   * @type {Date}
+   * @memberof Workflow
+   */
+  created?: Date;
+  /**
+   *
+   * @type {Array<Field>}
+   * @memberof Workflow
+   */
+  fields?: Array<Field>;
+  /**
+   *
+   * @type {string}
+   * @memberof Workflow
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Workflow
+   */
+  labels?: Array<string>;
+  /**
+   * Name of the workflow.
+   * @type {string}
+   * @memberof Workflow
+   */
+  name?: string;
+  /**
+   *
+   * @type {Array<Step>}
+   * @memberof Workflow
+   */
+  nodes?: Array<Step>;
+  /**
+   *
+   * @type {string}
+   * @memberof Workflow
+   */
+  objectName?: string;
+  /**
+   * Determines the workflow's place in the process.
+   * @type {number}
+   * @memberof Workflow
+   */
+  priority?: number;
+  /**
+   * Process that the workflow belongs to.
+   * @type {Process}
+   * @memberof Workflow
+   */
+  process?: Process;
+  /**
+   *
+   * @type {string}
+   * @memberof Workflow
+   */
+  processId?: string;
+  /**
+   * Name to be used for every record created from the workflow.
+   * @type {string}
+   * @memberof Workflow
+   */
+  recordPrefix?: string;
+  /**
+   * Nodes created in the workflow require user groups.
+   * @type {boolean}
+   * @memberof Workflow
+   */
+  requireGroups?: boolean;
+  /**
+   *
+   * @type {WorkflowSequence}
+   * @memberof Workflow
+   */
+  sequence?: WorkflowSequence;
+  /**
+   * Object containing all SLA information.
+   * @type {ServiceLevelAgreement}
+   * @memberof Workflow
+   */
+  sla?: ServiceLevelAgreement;
+  /**
+   * List of nodes that the workflow contains.
+   * @type {Array<Step>}
+   * @memberof Workflow
+   */
+  steps?: Array<Step>;
+  /**
+   *
+   * @type {Date}
+   * @memberof Workflow
+   */
+  updated?: Date;
+  /**
+   * User groups that are allowed access to the workflow
+   * @type {Array<UserGroup>}
+   * @memberof Workflow
+   */
+  userGroups?: Array<UserGroup>;
+  /**
+   *
+   * @type {Array<WorkflowMap>}
+   * @memberof Workflow
+   */
+  workflowMaps?: Array<WorkflowMap>;
+  /**
+   * X axis position of the workflow on the process screen
+   * @type {number}
+   * @memberof Workflow
+   */
+  xpos?: number;
+  /**
+   * Y axis position of the workflow on the process screen
+   * @type {number}
+   * @memberof Workflow
+   */
+  ypos?: number;
 }
 
 /**
@@ -8435,668 +8436,267 @@ export interface Workflow {
  * @interface WorkflowMap
  */
 export interface WorkflowMap {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof WorkflowMap
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkflowMap
-     */
-    childId?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof WorkflowMap
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkflowMap
-     */
-    id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof WorkflowMap
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkflowMap
-     */
-    parentId?: string;
-    /**
-     * 
-     * @type {WorkflowResult}
-     * @memberof WorkflowMap
-     */
-    parentResult?: WorkflowResult;
-    /**
-     * Parent workflow.
-     * @type {Workflow}
-     * @memberof WorkflowMap
-     */
-    parentWorkflow?: Workflow;
-    /**
-     * 
-     * @type {Date}
-     * @memberof WorkflowMap
-     */
-    updated?: Date;
-    /**
-     * Child workflow to be connected.
-     * @type {Workflow}
-     * @memberof WorkflowMap
-     */
-    workflow?: Workflow;
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkflowMap
-     */
-    workflowMapType?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof WorkflowMap
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof WorkflowMap
+   */
+  childId?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof WorkflowMap
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof WorkflowMap
+   */
+  id?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof WorkflowMap
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof WorkflowMap
+   */
+  parentId?: string;
+  /**
+   *
+   * @type {WorkflowResult}
+   * @memberof WorkflowMap
+   */
+  parentResult?: WorkflowResult;
+  /**
+   * Parent workflow.
+   * @type {Workflow}
+   * @memberof WorkflowMap
+   */
+  parentWorkflow?: Workflow;
+  /**
+   *
+   * @type {Date}
+   * @memberof WorkflowMap
+   */
+  updated?: Date;
+  /**
+   * Child workflow to be connected.
+   * @type {Workflow}
+   * @memberof WorkflowMap
+   */
+  workflow?: Workflow;
+  /**
+   *
+   * @type {string}
+   * @memberof WorkflowMap
+   */
+  workflowMapType?: string;
 }
 
 /**
- * 
+ *
  * @export
  * @interface WorkflowResult
  */
 export interface WorkflowResult {
-    /**
-     * 
-     * @type {number}
-     * @memberof WorkflowResult
-     */
-    assignments?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof WorkflowResult
-     */
-    assignmentsComplete?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof WorkflowResult
-     */
-    assignmentsOverdue?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof WorkflowResult
-     */
-    depth?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkflowResult
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkflowResult
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Process}
-     * @memberof WorkflowResult
-     */
-    process?: Process;
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkflowResult
-     */
-    recordPrefix?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof WorkflowResult
-     */
-    records?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof WorkflowResult
-     */
-    recordsComplete?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof WorkflowResult
-     */
-    recordsOverdue?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof WorkflowResult
-     */
-    steps?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof WorkflowResult
+   */
+  assignments?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof WorkflowResult
+   */
+  assignmentsComplete?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof WorkflowResult
+   */
+  assignmentsOverdue?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof WorkflowResult
+   */
+  depth?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof WorkflowResult
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof WorkflowResult
+   */
+  name?: string;
+  /**
+   *
+   * @type {Process}
+   * @memberof WorkflowResult
+   */
+  process?: Process;
+  /**
+   *
+   * @type {string}
+   * @memberof WorkflowResult
+   */
+  recordPrefix?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof WorkflowResult
+   */
+  records?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof WorkflowResult
+   */
+  recordsComplete?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof WorkflowResult
+   */
+  recordsOverdue?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof WorkflowResult
+   */
+  steps?: number;
 }
 
 /**
- * 
+ *
  * @export
  * @interface WorkflowSequence
  */
 export interface WorkflowSequence {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof WorkflowSequence
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {Date}
-     * @memberof WorkflowSequence
-     */
-    created?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkflowSequence
-     */
-    format?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkflowSequence
-     */
-    id?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof WorkflowSequence
-     */
-    incrementBy?: number;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof WorkflowSequence
-     */
-    labels?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof WorkflowSequence
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {number}
-     * @memberof WorkflowSequence
-     */
-    value?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof WorkflowSequence
+   */
+  active?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof WorkflowSequence
+   */
+  created?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof WorkflowSequence
+   */
+  format?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof WorkflowSequence
+   */
+  id?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof WorkflowSequence
+   */
+  incrementBy?: number;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof WorkflowSequence
+   */
+  labels?: Array<string>;
+  /**
+   *
+   * @type {Date}
+   * @memberof WorkflowSequence
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {number}
+   * @memberof WorkflowSequence
+   */
+  value?: number;
 }
-
 
 /**
  * CurrentValuesApi - fetch parameter creator
  * @export
  */
-export const CurrentValuesApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a list of current values for a specified field.
-         * @param {Array<CurrentValue>} currentValues currentValues
-         * @param {string} field field
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST(currentValues: Array<CurrentValue>, field: string, options: any = {}): FetchArgs {
-            // verify required parameter 'currentValues' is not null or undefined
-            if (currentValues === null || currentValues === undefined) {
-                throw new RequiredError('currentValues','Required parameter currentValues was null or undefined when calling createUsingPOST.');
-            }
-            // verify required parameter 'field' is not null or undefined
-            if (field === null || field === undefined) {
-                throw new RequiredError('field','Required parameter field was null or undefined when calling createUsingPOST.');
-            }
-            const localVarPath = `/api/v1/currentValues`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (field !== undefined) {
-                localVarQueryParameter['field'] = field;
-            }
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Array&lt;CurrentValue&gt;" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(currentValues || {}) : (currentValues || "");
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Retrieve current values based on a field id.
-         * @param {string} id id
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {string} [query] query
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findCurrentValuesByFieldUsingGET(id: string, page: string, size: string, query?: string, sort?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling findCurrentValuesByFieldUsingGET.');
-            }
-            // verify required parameter 'page' is not null or undefined
-            if (page === null || page === undefined) {
-                throw new RequiredError('page','Required parameter page was null or undefined when calling findCurrentValuesByFieldUsingGET.');
-            }
-            // verify required parameter 'size' is not null or undefined
-            if (size === null || size === undefined) {
-                throw new RequiredError('size','Required parameter size was null or undefined when calling findCurrentValuesByFieldUsingGET.');
-            }
-            const localVarPath = `/api/v1/currentValues/field/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
-
-            if (query !== undefined) {
-                localVarQueryParameter['query'] = query;
-            }
-
-            if (size !== undefined) {
-                localVarQueryParameter['size'] = size;
-            }
-
-            if (sort !== undefined) {
-                localVarQueryParameter['sort'] = sort;
-            }
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of default current values based on a workflow.
-         * @param {string} workflow workflow
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findDefaultsByWorkflowUsingGET(workflow: string, options: any = {}): FetchArgs {
-            // verify required parameter 'workflow' is not null or undefined
-            if (workflow === null || workflow === undefined) {
-                throw new RequiredError('workflow','Required parameter workflow was null or undefined when calling findDefaultsByWorkflowUsingGET.');
-            }
-            const localVarPath = `/api/v1/currentValues`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (workflow !== undefined) {
-                localVarQueryParameter['workflow'] = workflow;
-            }
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Retrieve the user value options for a particular user field.
-         * @param {string} field field
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} query query
-         * @param {string} size The number of elements to be returned
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findUsersByFieldUsingGET(field: string, page: string, query: string, size: string, sort?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'field' is not null or undefined
-            if (field === null || field === undefined) {
-                throw new RequiredError('field','Required parameter field was null or undefined when calling findUsersByFieldUsingGET.');
-            }
-            // verify required parameter 'page' is not null or undefined
-            if (page === null || page === undefined) {
-                throw new RequiredError('page','Required parameter page was null or undefined when calling findUsersByFieldUsingGET.');
-            }
-            // verify required parameter 'query' is not null or undefined
-            if (query === null || query === undefined) {
-                throw new RequiredError('query','Required parameter query was null or undefined when calling findUsersByFieldUsingGET.');
-            }
-            // verify required parameter 'size' is not null or undefined
-            if (size === null || size === undefined) {
-                throw new RequiredError('size','Required parameter size was null or undefined when calling findUsersByFieldUsingGET.');
-            }
-            const localVarPath = `/api/v1/currentValues/users`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (field !== undefined) {
-                localVarQueryParameter['field'] = field;
-            }
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
-
-            if (query !== undefined) {
-                localVarQueryParameter['query'] = query;
-            }
-
-            if (size !== undefined) {
-                localVarQueryParameter['size'] = size;
-            }
-
-            if (sort !== undefined) {
-                localVarQueryParameter['sort'] = sort;
-            }
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Clear default status from any existing field default values and update the input current value list to default status. The saved default values are returned after.
-         * @param {Array<CurrentValue>} currentValues currentValues
-         * @param {'true'} _default 
-         * @param {string} field field
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateDefaultsUsingPATCH(currentValues: Array<CurrentValue>, _default: 'true', field: string, options: any = {}): FetchArgs {
-            // verify required parameter 'currentValues' is not null or undefined
-            if (currentValues === null || currentValues === undefined) {
-                throw new RequiredError('currentValues','Required parameter currentValues was null or undefined when calling updateDefaultsUsingPATCH.');
-            }
-            // verify required parameter '_default' is not null or undefined
-            if (_default === null || _default === undefined) {
-                throw new RequiredError('_default','Required parameter _default was null or undefined when calling updateDefaultsUsingPATCH.');
-            }
-            // verify required parameter 'field' is not null or undefined
-            if (field === null || field === undefined) {
-                throw new RequiredError('field','Required parameter field was null or undefined when calling updateDefaultsUsingPATCH.');
-            }
-            const localVarPath = `/api/v1/currentValues`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'PATCH' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (_default !== undefined) {
-                localVarQueryParameter['default'] = _default;
-            }
-
-            if (field !== undefined) {
-                localVarQueryParameter['field'] = field;
-            }
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Array&lt;CurrentValue&gt;" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(currentValues || {}) : (currentValues || "");
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * CurrentValuesApi - functional programming interface
- * @export
- */
-export const CurrentValuesApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a list of current values for a specified field.
-         * @param {Array<CurrentValue>} currentValues currentValues
-         * @param {string} field field
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST(currentValues: Array<CurrentValue>, field: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<CurrentValue>> {
-            const localVarFetchArgs = CurrentValuesApiFetchParamCreator(configuration).createUsingPOST(currentValues, field, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Retrieve current values based on a field id.
-         * @param {string} id id
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {string} [query] query
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findCurrentValuesByFieldUsingGET(id: string, page: string, size: string, query?: string, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<CurrentValue> {
-            const localVarFetchArgs = CurrentValuesApiFetchParamCreator(configuration).findCurrentValuesByFieldUsingGET(id, page, size, query, sort, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of default current values based on a workflow.
-         * @param {string} workflow workflow
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findDefaultsByWorkflowUsingGET(workflow: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<CurrentValue>> {
-            const localVarFetchArgs = CurrentValuesApiFetchParamCreator(configuration).findDefaultsByWorkflowUsingGET(workflow, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Retrieve the user value options for a particular user field.
-         * @param {string} field field
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} query query
-         * @param {string} size The number of elements to be returned
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findUsersByFieldUsingGET(field: string, page: string, query: string, size: string, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<PageOfCurrentValue> {
-            const localVarFetchArgs = CurrentValuesApiFetchParamCreator(configuration).findUsersByFieldUsingGET(field, page, query, size, sort, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Clear default status from any existing field default values and update the input current value list to default status. The saved default values are returned after.
-         * @param {Array<CurrentValue>} currentValues currentValues
-         * @param {'true'} _default 
-         * @param {string} field field
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateDefaultsUsingPATCH(currentValues: Array<CurrentValue>, _default: 'true', field: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<CurrentValue>> {
-            const localVarFetchArgs = CurrentValuesApiFetchParamCreator(configuration).updateDefaultsUsingPATCH(currentValues, _default, field, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-    }
-};
-
-/**
- * CurrentValuesApi - factory interface
- * @export
- */
-export const CurrentValuesApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         * 
-         * @summary Create a list of current values for a specified field.
-         * @param {Array<CurrentValue>} currentValues currentValues
-         * @param {string} field field
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST(currentValues: Array<CurrentValue>, field: string, options?: any) {
-            return CurrentValuesApiFp(configuration).createUsingPOST(currentValues, field, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Retrieve current values based on a field id.
-         * @param {string} id id
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {string} [query] query
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findCurrentValuesByFieldUsingGET(id: string, page: string, size: string, query?: string, sort?: string, options?: any) {
-            return CurrentValuesApiFp(configuration).findCurrentValuesByFieldUsingGET(id, page, size, query, sort, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a list of default current values based on a workflow.
-         * @param {string} workflow workflow
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findDefaultsByWorkflowUsingGET(workflow: string, options?: any) {
-            return CurrentValuesApiFp(configuration).findDefaultsByWorkflowUsingGET(workflow, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Retrieve the user value options for a particular user field.
-         * @param {string} field field
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} query query
-         * @param {string} size The number of elements to be returned
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findUsersByFieldUsingGET(field: string, page: string, query: string, size: string, sort?: string, options?: any) {
-            return CurrentValuesApiFp(configuration).findUsersByFieldUsingGET(field, page, query, size, sort, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Clear default status from any existing field default values and update the input current value list to default status. The saved default values are returned after.
-         * @param {Array<CurrentValue>} currentValues currentValues
-         * @param {'true'} _default 
-         * @param {string} field field
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateDefaultsUsingPATCH(currentValues: Array<CurrentValue>, _default: 'true', field: string, options?: any) {
-            return CurrentValuesApiFp(configuration).updateDefaultsUsingPATCH(currentValues, _default, field, options)(fetch, basePath);
-        },
-    };
-};
-
-/**
- * CurrentValuesApi - interface
- * @export
- * @interface CurrentValuesApi
- */
-export interface CurrentValuesApiInterface {
+export const CurrentValuesApiFetchParamCreator = function(configuration?: Configuration) {
+  return {
     /**
-     * 
+     *
      * @summary Create a list of current values for a specified field.
      * @param {Array<CurrentValue>} currentValues currentValues
      * @param {string} field field
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CurrentValuesApiInterface
      */
-    createUsingPOST(currentValues: Array<CurrentValue>, field: string, options?: any): Promise<Array<CurrentValue>>;
+    createUsingPOST(currentValues: Array<CurrentValue>, field: string, options: any = {}): FetchArgs {
+      // verify required parameter 'currentValues' is not null or undefined
+      if (currentValues === null || currentValues === undefined) {
+        throw new RequiredError(
+          'currentValues',
+          'Required parameter currentValues was null or undefined when calling createUsingPOST.'
+        );
+      }
+      // verify required parameter 'field' is not null or undefined
+      if (field === null || field === undefined) {
+        throw new RequiredError(
+          'field',
+          'Required parameter field was null or undefined when calling createUsingPOST.'
+        );
+      }
+      const localVarPath = `/api/v1/currentValues`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
+      if (field !== undefined) {
+        localVarQueryParameter['field'] = field;
+      }
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Array&lt;CurrentValue&gt;' !== 'string' ||
+        localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(currentValues || {}) : currentValues || '';
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
     /**
-     * 
+     *
      * @summary Retrieve current values based on a field id.
      * @param {string} id id
      * @param {string} page Results page wanting to be retrieved
@@ -9105,22 +8705,105 @@ export interface CurrentValuesApiInterface {
      * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CurrentValuesApiInterface
      */
-    findCurrentValuesByFieldUsingGET(id: string, page: string, size: string, query?: string, sort?: string, options?: any): Promise<CurrentValue>;
+    findCurrentValuesByFieldUsingGET(
+      id: string,
+      page: string,
+      size: string,
+      query?: string,
+      sort?: string,
+      options: any = {}
+    ): FetchArgs {
+      // verify required parameter 'id' is not null or undefined
+      if (id === null || id === undefined) {
+        throw new RequiredError(
+          'id',
+          'Required parameter id was null or undefined when calling findCurrentValuesByFieldUsingGET.'
+        );
+      }
+      // verify required parameter 'page' is not null or undefined
+      if (page === null || page === undefined) {
+        throw new RequiredError(
+          'page',
+          'Required parameter page was null or undefined when calling findCurrentValuesByFieldUsingGET.'
+        );
+      }
+      // verify required parameter 'size' is not null or undefined
+      if (size === null || size === undefined) {
+        throw new RequiredError(
+          'size',
+          'Required parameter size was null or undefined when calling findCurrentValuesByFieldUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/currentValues/field/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page;
+      }
+
+      if (query !== undefined) {
+        localVarQueryParameter['query'] = query;
+      }
+
+      if (size !== undefined) {
+        localVarQueryParameter['size'] = size;
+      }
+
+      if (sort !== undefined) {
+        localVarQueryParameter['sort'] = sort;
+      }
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
     /**
-     * 
+     *
      * @summary Return a list of default current values based on a workflow.
      * @param {string} workflow workflow
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CurrentValuesApiInterface
      */
-    findDefaultsByWorkflowUsingGET(workflow: string, options?: any): Promise<Array<CurrentValue>>;
+    findDefaultsByWorkflowUsingGET(workflow: string, options: any = {}): FetchArgs {
+      // verify required parameter 'workflow' is not null or undefined
+      if (workflow === null || workflow === undefined) {
+        throw new RequiredError(
+          'workflow',
+          'Required parameter workflow was null or undefined when calling findDefaultsByWorkflowUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/currentValues`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
+      if (workflow !== undefined) {
+        localVarQueryParameter['workflow'] = workflow;
+      }
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
     /**
-     * 
+     *
      * @summary Retrieve the user value options for a particular user field.
      * @param {string} field field
      * @param {string} page Results page wanting to be retrieved
@@ -9129,22 +8812,486 @@ export interface CurrentValuesApiInterface {
      * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CurrentValuesApiInterface
      */
-    findUsersByFieldUsingGET(field: string, page: string, query: string, size: string, sort?: string, options?: any): Promise<PageOfCurrentValue>;
+    findUsersByFieldUsingGET(
+      field: string,
+      page: string,
+      query: string,
+      size: string,
+      sort?: string,
+      options: any = {}
+    ): FetchArgs {
+      // verify required parameter 'field' is not null or undefined
+      if (field === null || field === undefined) {
+        throw new RequiredError(
+          'field',
+          'Required parameter field was null or undefined when calling findUsersByFieldUsingGET.'
+        );
+      }
+      // verify required parameter 'page' is not null or undefined
+      if (page === null || page === undefined) {
+        throw new RequiredError(
+          'page',
+          'Required parameter page was null or undefined when calling findUsersByFieldUsingGET.'
+        );
+      }
+      // verify required parameter 'query' is not null or undefined
+      if (query === null || query === undefined) {
+        throw new RequiredError(
+          'query',
+          'Required parameter query was null or undefined when calling findUsersByFieldUsingGET.'
+        );
+      }
+      // verify required parameter 'size' is not null or undefined
+      if (size === null || size === undefined) {
+        throw new RequiredError(
+          'size',
+          'Required parameter size was null or undefined when calling findUsersByFieldUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/currentValues/users`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
+      if (field !== undefined) {
+        localVarQueryParameter['field'] = field;
+      }
+
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page;
+      }
+
+      if (query !== undefined) {
+        localVarQueryParameter['query'] = query;
+      }
+
+      if (size !== undefined) {
+        localVarQueryParameter['size'] = size;
+      }
+
+      if (sort !== undefined) {
+        localVarQueryParameter['sort'] = sort;
+      }
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
     /**
-     * 
+     *
      * @summary Clear default status from any existing field default values and update the input current value list to default status. The saved default values are returned after.
      * @param {Array<CurrentValue>} currentValues currentValues
-     * @param {'true'} _default 
+     * @param {'true'} _default
      * @param {string} field field
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CurrentValuesApiInterface
      */
-    updateDefaultsUsingPATCH(currentValues: Array<CurrentValue>, _default: 'true', field: string, options?: any): Promise<Array<CurrentValue>>;
+    updateDefaultsUsingPATCH(
+      currentValues: Array<CurrentValue>,
+      _default: 'true',
+      field: string,
+      options: any = {}
+    ): FetchArgs {
+      // verify required parameter 'currentValues' is not null or undefined
+      if (currentValues === null || currentValues === undefined) {
+        throw new RequiredError(
+          'currentValues',
+          'Required parameter currentValues was null or undefined when calling updateDefaultsUsingPATCH.'
+        );
+      }
+      // verify required parameter '_default' is not null or undefined
+      if (_default === null || _default === undefined) {
+        throw new RequiredError(
+          '_default',
+          'Required parameter _default was null or undefined when calling updateDefaultsUsingPATCH.'
+        );
+      }
+      // verify required parameter 'field' is not null or undefined
+      if (field === null || field === undefined) {
+        throw new RequiredError(
+          'field',
+          'Required parameter field was null or undefined when calling updateDefaultsUsingPATCH.'
+        );
+      }
+      const localVarPath = `/api/v1/currentValues`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'PATCH' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
+      if (_default !== undefined) {
+        localVarQueryParameter['default'] = _default;
+      }
+
+      if (field !== undefined) {
+        localVarQueryParameter['field'] = field;
+      }
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Array&lt;CurrentValue&gt;' !== 'string' ||
+        localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(currentValues || {}) : currentValues || '';
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    }
+  };
+};
+
+/**
+ * CurrentValuesApi - functional programming interface
+ * @export
+ */
+export const CurrentValuesApiFp = function(configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @summary Create a list of current values for a specified field.
+     * @param {Array<CurrentValue>} currentValues currentValues
+     * @param {string} field field
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST(
+      currentValues: Array<CurrentValue>,
+      field: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<CurrentValue>> {
+      const localVarFetchArgs = CurrentValuesApiFetchParamCreator(configuration).createUsingPOST(
+        currentValues,
+        field,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Retrieve current values based on a field id.
+     * @param {string} id id
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} size The number of elements to be returned
+     * @param {string} [query] query
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findCurrentValuesByFieldUsingGET(
+      id: string,
+      page: string,
+      size: string,
+      query?: string,
+      sort?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<CurrentValue> {
+      const localVarFetchArgs = CurrentValuesApiFetchParamCreator(configuration).findCurrentValuesByFieldUsingGET(
+        id,
+        page,
+        size,
+        query,
+        sort,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a list of default current values based on a workflow.
+     * @param {string} workflow workflow
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findDefaultsByWorkflowUsingGET(
+      workflow: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<CurrentValue>> {
+      const localVarFetchArgs = CurrentValuesApiFetchParamCreator(configuration).findDefaultsByWorkflowUsingGET(
+        workflow,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Retrieve the user value options for a particular user field.
+     * @param {string} field field
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} query query
+     * @param {string} size The number of elements to be returned
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findUsersByFieldUsingGET(
+      field: string,
+      page: string,
+      query: string,
+      size: string,
+      sort?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<PageOfCurrentValue> {
+      const localVarFetchArgs = CurrentValuesApiFetchParamCreator(configuration).findUsersByFieldUsingGET(
+        field,
+        page,
+        query,
+        size,
+        sort,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Clear default status from any existing field default values and update the input current value list to default status. The saved default values are returned after.
+     * @param {Array<CurrentValue>} currentValues currentValues
+     * @param {'true'} _default
+     * @param {string} field field
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateDefaultsUsingPATCH(
+      currentValues: Array<CurrentValue>,
+      _default: 'true',
+      field: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<CurrentValue>> {
+      const localVarFetchArgs = CurrentValuesApiFetchParamCreator(configuration).updateDefaultsUsingPATCH(
+        currentValues,
+        _default,
+        field,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    }
+  };
+};
+
+/**
+ * CurrentValuesApi - factory interface
+ * @export
+ */
+export const CurrentValuesApiFactory = function(configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+  return {
+    /**
+     *
+     * @summary Create a list of current values for a specified field.
+     * @param {Array<CurrentValue>} currentValues currentValues
+     * @param {string} field field
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST(currentValues: Array<CurrentValue>, field: string, options?: any) {
+      return CurrentValuesApiFp(configuration).createUsingPOST(currentValues, field, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Retrieve current values based on a field id.
+     * @param {string} id id
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} size The number of elements to be returned
+     * @param {string} [query] query
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findCurrentValuesByFieldUsingGET(
+      id: string,
+      page: string,
+      size: string,
+      query?: string,
+      sort?: string,
+      options?: any
+    ) {
+      return CurrentValuesApiFp(configuration).findCurrentValuesByFieldUsingGET(id, page, size, query, sort, options)(
+        fetch,
+        basePath
+      );
+    },
+    /**
+     *
+     * @summary Return a list of default current values based on a workflow.
+     * @param {string} workflow workflow
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findDefaultsByWorkflowUsingGET(workflow: string, options?: any) {
+      return CurrentValuesApiFp(configuration).findDefaultsByWorkflowUsingGET(workflow, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Retrieve the user value options for a particular user field.
+     * @param {string} field field
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} query query
+     * @param {string} size The number of elements to be returned
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findUsersByFieldUsingGET(field: string, page: string, query: string, size: string, sort?: string, options?: any) {
+      return CurrentValuesApiFp(configuration).findUsersByFieldUsingGET(field, page, query, size, sort, options)(
+        fetch,
+        basePath
+      );
+    },
+    /**
+     *
+     * @summary Clear default status from any existing field default values and update the input current value list to default status. The saved default values are returned after.
+     * @param {Array<CurrentValue>} currentValues currentValues
+     * @param {'true'} _default
+     * @param {string} field field
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateDefaultsUsingPATCH(currentValues: Array<CurrentValue>, _default: 'true', field: string, options?: any) {
+      return CurrentValuesApiFp(configuration).updateDefaultsUsingPATCH(currentValues, _default, field, options)(
+        fetch,
+        basePath
+      );
+    }
+  };
+};
+
+/**
+ * CurrentValuesApi - interface
+ * @export
+ * @interface CurrentValuesApi
+ */
+export interface CurrentValuesApiInterface {
+  /**
+   *
+   * @summary Create a list of current values for a specified field.
+   * @param {Array<CurrentValue>} currentValues currentValues
+   * @param {string} field field
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CurrentValuesApiInterface
+   */
+  createUsingPOST(currentValues: Array<CurrentValue>, field: string, options?: any): Promise<Array<CurrentValue>>;
+
+  /**
+   *
+   * @summary Retrieve current values based on a field id.
+   * @param {string} id id
+   * @param {string} page Results page wanting to be retrieved
+   * @param {string} size The number of elements to be returned
+   * @param {string} [query] query
+   * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CurrentValuesApiInterface
+   */
+  findCurrentValuesByFieldUsingGET(
+    id: string,
+    page: string,
+    size: string,
+    query?: string,
+    sort?: string,
+    options?: any
+  ): Promise<CurrentValue>;
+
+  /**
+   *
+   * @summary Return a list of default current values based on a workflow.
+   * @param {string} workflow workflow
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CurrentValuesApiInterface
+   */
+  findDefaultsByWorkflowUsingGET(workflow: string, options?: any): Promise<Array<CurrentValue>>;
+
+  /**
+   *
+   * @summary Retrieve the user value options for a particular user field.
+   * @param {string} field field
+   * @param {string} page Results page wanting to be retrieved
+   * @param {string} query query
+   * @param {string} size The number of elements to be returned
+   * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CurrentValuesApiInterface
+   */
+  findUsersByFieldUsingGET(
+    field: string,
+    page: string,
+    query: string,
+    size: string,
+    sort?: string,
+    options?: any
+  ): Promise<PageOfCurrentValue>;
+
+  /**
+   *
+   * @summary Clear default status from any existing field default values and update the input current value list to default status. The saved default values are returned after.
+   * @param {Array<CurrentValue>} currentValues currentValues
+   * @param {'true'} _default
+   * @param {string} field field
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CurrentValuesApiInterface
+   */
+  updateDefaultsUsingPATCH(
+    currentValues: Array<CurrentValue>,
+    _default: 'true',
+    field: string,
+    options?: any
+  ): Promise<Array<CurrentValue>>;
 }
 
 /**
@@ -9154,118 +9301,151 @@ export interface CurrentValuesApiInterface {
  * @extends {BaseAPI}
  */
 export class CurrentValuesApi extends BaseAPI implements CurrentValuesApiInterface {
-    /**
-     * 
-     * @summary Create a list of current values for a specified field.
-     * @param {Array<CurrentValue>} currentValues currentValues
-     * @param {string} field field
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CurrentValuesApi
-     */
-    public createUsingPOST(currentValues: Array<CurrentValue>, field: string, options?: any) {
-        return CurrentValuesApiFp(this.configuration).createUsingPOST(currentValues, field, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Create a list of current values for a specified field.
+   * @param {Array<CurrentValue>} currentValues currentValues
+   * @param {string} field field
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CurrentValuesApi
+   */
+  public createUsingPOST(currentValues: Array<CurrentValue>, field: string, options?: any) {
+    return CurrentValuesApiFp(this.configuration).createUsingPOST(currentValues, field, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * 
-     * @summary Retrieve current values based on a field id.
-     * @param {string} id id
-     * @param {string} page Results page wanting to be retrieved
-     * @param {string} size The number of elements to be returned
-     * @param {string} [query] query
-     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CurrentValuesApi
-     */
-    public findCurrentValuesByFieldUsingGET(id: string, page: string, size: string, query?: string, sort?: string, options?: any) {
-        return CurrentValuesApiFp(this.configuration).findCurrentValuesByFieldUsingGET(id, page, size, query, sort, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Retrieve current values based on a field id.
+   * @param {string} id id
+   * @param {string} page Results page wanting to be retrieved
+   * @param {string} size The number of elements to be returned
+   * @param {string} [query] query
+   * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CurrentValuesApi
+   */
+  public findCurrentValuesByFieldUsingGET(
+    id: string,
+    page: string,
+    size: string,
+    query?: string,
+    sort?: string,
+    options?: any
+  ) {
+    return CurrentValuesApiFp(this.configuration).findCurrentValuesByFieldUsingGET(
+      id,
+      page,
+      size,
+      query,
+      sort,
+      options
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a list of default current values based on a workflow.
-     * @param {string} workflow workflow
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CurrentValuesApi
-     */
-    public findDefaultsByWorkflowUsingGET(workflow: string, options?: any) {
-        return CurrentValuesApiFp(this.configuration).findDefaultsByWorkflowUsingGET(workflow, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a list of default current values based on a workflow.
+   * @param {string} workflow workflow
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CurrentValuesApi
+   */
+  public findDefaultsByWorkflowUsingGET(workflow: string, options?: any) {
+    return CurrentValuesApiFp(this.configuration).findDefaultsByWorkflowUsingGET(workflow, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * 
-     * @summary Retrieve the user value options for a particular user field.
-     * @param {string} field field
-     * @param {string} page Results page wanting to be retrieved
-     * @param {string} query query
-     * @param {string} size The number of elements to be returned
-     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CurrentValuesApi
-     */
-    public findUsersByFieldUsingGET(field: string, page: string, query: string, size: string, sort?: string, options?: any) {
-        return CurrentValuesApiFp(this.configuration).findUsersByFieldUsingGET(field, page, query, size, sort, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Retrieve the user value options for a particular user field.
+   * @param {string} field field
+   * @param {string} page Results page wanting to be retrieved
+   * @param {string} query query
+   * @param {string} size The number of elements to be returned
+   * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CurrentValuesApi
+   */
+  public findUsersByFieldUsingGET(
+    field: string,
+    page: string,
+    query: string,
+    size: string,
+    sort?: string,
+    options?: any
+  ) {
+    return CurrentValuesApiFp(this.configuration).findUsersByFieldUsingGET(field, page, query, size, sort, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * 
-     * @summary Clear default status from any existing field default values and update the input current value list to default status. The saved default values are returned after.
-     * @param {Array<CurrentValue>} currentValues currentValues
-     * @param {'true'} _default 
-     * @param {string} field field
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CurrentValuesApi
-     */
-    public updateDefaultsUsingPATCH(currentValues: Array<CurrentValue>, _default: 'true', field: string, options?: any) {
-        return CurrentValuesApiFp(this.configuration).updateDefaultsUsingPATCH(currentValues, _default, field, options)(this.fetch, this.basePath);
-    }
-
+  /**
+   *
+   * @summary Clear default status from any existing field default values and update the input current value list to default status. The saved default values are returned after.
+   * @param {Array<CurrentValue>} currentValues currentValues
+   * @param {'true'} _default
+   * @param {string} field field
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CurrentValuesApi
+   */
+  public updateDefaultsUsingPATCH(currentValues: Array<CurrentValue>, _default: 'true', field: string, options?: any) {
+    return CurrentValuesApiFp(this.configuration).updateDefaultsUsingPATCH(currentValues, _default, field, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 }
 
 /**
  * ExternalUsersApi - fetch parameter creator
  * @export
  */
-export const ExternalUsersApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a external user with no attached roles.
-         * @param {User} user user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST1(user: User, options: any = {}): FetchArgs {
-            // verify required parameter 'user' is not null or undefined
-            if (user === null || user === undefined) {
-                throw new RequiredError('user','Required parameter user was null or undefined when calling createUsingPOST1.');
-            }
-            const localVarPath = `/api/v1/users/external`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+export const ExternalUsersApiFetchParamCreator = function(configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @summary Create a external user with no attached roles.
+     * @param {User} user user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST1(user: User, options: any = {}): FetchArgs {
+      // verify required parameter 'user' is not null or undefined
+      if (user === null || user === undefined) {
+        throw new RequiredError('user', 'Required parameter user was null or undefined when calling createUsingPOST1.');
+      }
+      const localVarPath = `/api/v1/users/external`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"User" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(user || {}) : (user || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'User' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(user || {}) : user || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
     }
+  };
 };
 
 /**
@@ -9273,46 +9453,46 @@ export const ExternalUsersApiFetchParamCreator = function (configuration?: Confi
  * @export
  */
 export const ExternalUsersApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a external user with no attached roles.
-         * @param {User} user user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST1(user: User, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
-            const localVarFetchArgs = ExternalUsersApiFetchParamCreator(configuration).createUsingPOST1(user, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
+  return {
+    /**
+     *
+     * @summary Create a external user with no attached roles.
+     * @param {User} user user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST1(user: User, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
+      const localVarFetchArgs = ExternalUsersApiFetchParamCreator(configuration).createUsingPOST1(user, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
     }
+  };
 };
 
 /**
  * ExternalUsersApi - factory interface
  * @export
  */
-export const ExternalUsersApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         * 
-         * @summary Create a external user with no attached roles.
-         * @param {User} user user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST1(user: User, options?: any) {
-            return ExternalUsersApiFp(configuration).createUsingPOST1(user, options)(fetch, basePath);
-        },
-    };
+export const ExternalUsersApiFactory = function(configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+  return {
+    /**
+     *
+     * @summary Create a external user with no attached roles.
+     * @param {User} user user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST1(user: User, options?: any) {
+      return ExternalUsersApiFp(configuration).createUsingPOST1(user, options)(fetch, basePath);
+    }
+  };
 };
 
 /**
@@ -9321,16 +9501,15 @@ export const ExternalUsersApiFactory = function (configuration?: Configuration, 
  * @interface ExternalUsersApi
  */
 export interface ExternalUsersApiInterface {
-    /**
-     * 
-     * @summary Create a external user with no attached roles.
-     * @param {User} user user
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ExternalUsersApiInterface
-     */
-    createUsingPOST1(user: User, options?: any): Promise<User>;
-
+  /**
+   *
+   * @summary Create a external user with no attached roles.
+   * @param {User} user user
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ExternalUsersApiInterface
+   */
+  createUsingPOST1(user: User, options?: any): Promise<User>;
 }
 
 /**
@@ -9340,790 +9519,1013 @@ export interface ExternalUsersApiInterface {
  * @extends {BaseAPI}
  */
 export class ExternalUsersApi extends BaseAPI implements ExternalUsersApiInterface {
-    /**
-     * 
-     * @summary Create a external user with no attached roles.
-     * @param {User} user user
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ExternalUsersApi
-     */
-    public createUsingPOST1(user: User, options?: any) {
-        return ExternalUsersApiFp(this.configuration).createUsingPOST1(user, options)(this.fetch, this.basePath);
-    }
-
+  /**
+   *
+   * @summary Create a external user with no attached roles.
+   * @param {User} user user
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ExternalUsersApi
+   */
+  public createUsingPOST1(user: User, options?: any) {
+    return ExternalUsersApiFp(this.configuration).createUsingPOST1(user, options)(this.fetch, this.basePath);
+  }
 }
 
 /**
  * FieldsApi - fetch parameter creator
  * @export
  */
-export const FieldsApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a field.
-         * @param {Field} field field
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST2(field: Field, options: any = {}): FetchArgs {
-            // verify required parameter 'field' is not null or undefined
-            if (field === null || field === undefined) {
-                throw new RequiredError('field','Required parameter field was null or undefined when calling createUsingPOST2.');
-            }
-            const localVarPath = `/api/v1/fields`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Field" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(field || {}) : (field || "");
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Delete a field.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteUsingDELETE(id: string, options: any = {}): FetchArgs {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling deleteUsingDELETE.');
-            }
-            const localVarPath = `/api/v1/fields/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Returns whether a field is a field input to a calculation field.
-         * @param {string} fieldId fieldId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        fieldIsInputUsingGET(fieldId: string, options: any = {}): FetchArgs {
-            // verify required parameter 'fieldId' is not null or undefined
-            if (fieldId === null || fieldId === undefined) {
-                throw new RequiredError('fieldId','Required parameter fieldId was null or undefined when calling fieldIsInputUsingGET.');
-            }
-            const localVarPath = `/api/v1/fields/isInput/{fieldId}`
-                .replace(`{${"fieldId"}}`, encodeURIComponent(String(fieldId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a paginated list of all discrete fields along with their current values.
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {string} [workflowId] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByDiscreteWithValuesUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'page' is not null or undefined
-            if (page === null || page === undefined) {
-                throw new RequiredError('page','Required parameter page was null or undefined when calling findByDiscreteWithValuesUsingGET.');
-            }
-            // verify required parameter 'size' is not null or undefined
-            if (size === null || size === undefined) {
-                throw new RequiredError('size','Required parameter size was null or undefined when calling findByDiscreteWithValuesUsingGET.');
-            }
-            const localVarPath = `/api/v1/fields/discrete/values`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (archived !== undefined) {
-                localVarQueryParameter['archived'] = archived;
-            }
-
-            if (exclude !== undefined) {
-                localVarQueryParameter['exclude'] = exclude;
-            }
-
-            if (global !== undefined) {
-                localVarQueryParameter['global'] = global;
-            }
-
-            if (id !== undefined) {
-                localVarQueryParameter['id'] = id;
-            }
-
-            if (ids) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-            if (nodeId !== undefined) {
-                localVarQueryParameter['nodeId'] = nodeId;
-            }
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
-
-            if (processId !== undefined) {
-                localVarQueryParameter['processId'] = processId;
-            }
-
-            if (query !== undefined) {
-                localVarQueryParameter['query'] = query;
-            }
-
-            if (sectionId !== undefined) {
-                localVarQueryParameter['sectionId'] = sectionId;
-            }
-
-            if (size !== undefined) {
-                localVarQueryParameter['size'] = size;
-            }
-
-            if (sort !== undefined) {
-                localVarQueryParameter['sort'] = sort;
-            }
-
-            if (stepId !== undefined) {
-                localVarQueryParameter['stepId'] = stepId;
-            }
-
-            if (types) {
-                localVarQueryParameter['types'] = types;
-            }
-
-            if (withInputs !== undefined) {
-                localVarQueryParameter['withInputs'] = withInputs;
-            }
-
-            if (withValues !== undefined) {
-                localVarQueryParameter['withValues'] = withValues;
-            }
-
-            if (workflowId !== undefined) {
-                localVarQueryParameter['workflowId'] = workflowId;
-            }
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a paginated list of global fields.
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {string} [workflowId] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByGlobalUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'page' is not null or undefined
-            if (page === null || page === undefined) {
-                throw new RequiredError('page','Required parameter page was null or undefined when calling findByGlobalUsingGET.');
-            }
-            // verify required parameter 'size' is not null or undefined
-            if (size === null || size === undefined) {
-                throw new RequiredError('size','Required parameter size was null or undefined when calling findByGlobalUsingGET.');
-            }
-            const localVarPath = `/api/v1/fields/global`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (archived !== undefined) {
-                localVarQueryParameter['archived'] = archived;
-            }
-
-            if (exclude !== undefined) {
-                localVarQueryParameter['exclude'] = exclude;
-            }
-
-            if (global !== undefined) {
-                localVarQueryParameter['global'] = global;
-            }
-
-            if (id !== undefined) {
-                localVarQueryParameter['id'] = id;
-            }
-
-            if (ids) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-            if (nodeId !== undefined) {
-                localVarQueryParameter['nodeId'] = nodeId;
-            }
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
-
-            if (processId !== undefined) {
-                localVarQueryParameter['processId'] = processId;
-            }
-
-            if (query !== undefined) {
-                localVarQueryParameter['query'] = query;
-            }
-
-            if (sectionId !== undefined) {
-                localVarQueryParameter['sectionId'] = sectionId;
-            }
-
-            if (size !== undefined) {
-                localVarQueryParameter['size'] = size;
-            }
-
-            if (sort !== undefined) {
-                localVarQueryParameter['sort'] = sort;
-            }
-
-            if (stepId !== undefined) {
-                localVarQueryParameter['stepId'] = stepId;
-            }
-
-            if (types) {
-                localVarQueryParameter['types'] = types;
-            }
-
-            if (withInputs !== undefined) {
-                localVarQueryParameter['withInputs'] = withInputs;
-            }
-
-            if (withValues !== undefined) {
-                localVarQueryParameter['withValues'] = withValues;
-            }
-
-            if (workflowId !== undefined) {
-                localVarQueryParameter['workflowId'] = workflowId;
-            }
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Find a specific field.
-         * @param {string} id id
-         * @param {boolean} [archived] Retrieve archived values
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET(id: string, archived?: boolean, options: any = {}): FetchArgs {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling findByIdUsingGET.');
-            }
-            const localVarPath = `/api/v1/fields/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (archived !== undefined) {
-                localVarQueryParameter['archived'] = archived;
-            }
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of fields from a particular a workflow.
-         * @param {string} workflowId 
-         * @param {boolean} [archived] Return archived values.
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByWorkflowUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options: any = {}): FetchArgs {
-            // verify required parameter 'workflowId' is not null or undefined
-            if (workflowId === null || workflowId === undefined) {
-                throw new RequiredError('workflowId','Required parameter workflowId was null or undefined when calling findByWorkflowUsingGET.');
-            }
-            const localVarPath = `/api/v1/fields/workflow/{workflowId}/values`
-                .replace(`{${"workflowId"}}`, encodeURIComponent(String(workflowId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (archived !== undefined) {
-                localVarQueryParameter['archived'] = archived;
-            }
-
-            if (exclude !== undefined) {
-                localVarQueryParameter['exclude'] = exclude;
-            }
-
-            if (global !== undefined) {
-                localVarQueryParameter['global'] = global;
-            }
-
-            if (id !== undefined) {
-                localVarQueryParameter['id'] = id;
-            }
-
-            if (ids) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-            if (nodeId !== undefined) {
-                localVarQueryParameter['nodeId'] = nodeId;
-            }
-
-            if (processId !== undefined) {
-                localVarQueryParameter['processId'] = processId;
-            }
-
-            if (query !== undefined) {
-                localVarQueryParameter['query'] = query;
-            }
-
-            if (sectionId !== undefined) {
-                localVarQueryParameter['sectionId'] = sectionId;
-            }
-
-            if (stepId !== undefined) {
-                localVarQueryParameter['stepId'] = stepId;
-            }
-
-            if (types) {
-                localVarQueryParameter['types'] = types;
-            }
-
-            if (withInputs !== undefined) {
-                localVarQueryParameter['withInputs'] = withInputs;
-            }
-
-            if (withValues !== undefined) {
-                localVarQueryParameter['withValues'] = withValues;
-            }
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a paginated list of fields from a particular workflow.
-         * @param {string} page 
-         * @param {string} workflowId 
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByWorkflowUsingGET1(page: string, workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options: any = {}): FetchArgs {
-            // verify required parameter 'page' is not null or undefined
-            if (page === null || page === undefined) {
-                throw new RequiredError('page','Required parameter page was null or undefined when calling findByWorkflowUsingGET1.');
-            }
-            // verify required parameter 'workflowId' is not null or undefined
-            if (workflowId === null || workflowId === undefined) {
-                throw new RequiredError('workflowId','Required parameter workflowId was null or undefined when calling findByWorkflowUsingGET1.');
-            }
-            const localVarPath = `/api/v1/fields/workflow/{workflowId}`
-                .replace(`{${"workflowId"}}`, encodeURIComponent(String(workflowId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (archived !== undefined) {
-                localVarQueryParameter['archived'] = archived;
-            }
-
-            if (exclude !== undefined) {
-                localVarQueryParameter['exclude'] = exclude;
-            }
-
-            if (global !== undefined) {
-                localVarQueryParameter['global'] = global;
-            }
-
-            if (id !== undefined) {
-                localVarQueryParameter['id'] = id;
-            }
-
-            if (ids) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-            if (nodeId !== undefined) {
-                localVarQueryParameter['nodeId'] = nodeId;
-            }
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
-
-            if (processId !== undefined) {
-                localVarQueryParameter['processId'] = processId;
-            }
-
-            if (query !== undefined) {
-                localVarQueryParameter['query'] = query;
-            }
-
-            if (sectionId !== undefined) {
-                localVarQueryParameter['sectionId'] = sectionId;
-            }
-
-            if (stepId !== undefined) {
-                localVarQueryParameter['stepId'] = stepId;
-            }
-
-            if (types) {
-                localVarQueryParameter['types'] = types;
-            }
-
-            if (withInputs !== undefined) {
-                localVarQueryParameter['withInputs'] = withInputs;
-            }
-
-            if (withValues !== undefined) {
-                localVarQueryParameter['withValues'] = withValues;
-            }
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of all nested fields.
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {string} [workflowId] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findInputFieldsByRequestUsingGET(archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options: any = {}): FetchArgs {
-            const localVarPath = `/api/v1/fields/nested`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (archived !== undefined) {
-                localVarQueryParameter['archived'] = archived;
-            }
-
-            if (exclude !== undefined) {
-                localVarQueryParameter['exclude'] = exclude;
-            }
-
-            if (global !== undefined) {
-                localVarQueryParameter['global'] = global;
-            }
-
-            if (id !== undefined) {
-                localVarQueryParameter['id'] = id;
-            }
-
-            if (ids) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-            if (nodeId !== undefined) {
-                localVarQueryParameter['nodeId'] = nodeId;
-            }
-
-            if (processId !== undefined) {
-                localVarQueryParameter['processId'] = processId;
-            }
-
-            if (query !== undefined) {
-                localVarQueryParameter['query'] = query;
-            }
-
-            if (sectionId !== undefined) {
-                localVarQueryParameter['sectionId'] = sectionId;
-            }
-
-            if (stepId !== undefined) {
-                localVarQueryParameter['stepId'] = stepId;
-            }
-
-            if (types) {
-                localVarQueryParameter['types'] = types;
-            }
-
-            if (withInputs !== undefined) {
-                localVarQueryParameter['withInputs'] = withInputs;
-            }
-
-            if (withValues !== undefined) {
-                localVarQueryParameter['withValues'] = withValues;
-            }
-
-            if (workflowId !== undefined) {
-                localVarQueryParameter['workflowId'] = workflowId;
-            }
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a paginated list of user fields based on a workflow and global user fields.
-         * @param {string} workflowId 
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findUserFieldsByWorkflowOrGlobalUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options: any = {}): FetchArgs {
-            // verify required parameter 'workflowId' is not null or undefined
-            if (workflowId === null || workflowId === undefined) {
-                throw new RequiredError('workflowId','Required parameter workflowId was null or undefined when calling findUserFieldsByWorkflowOrGlobalUsingGET.');
-            }
-            const localVarPath = `/api/v1/fields/workflow/{workflowId}/users`
-                .replace(`{${"workflowId"}}`, encodeURIComponent(String(workflowId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (archived !== undefined) {
-                localVarQueryParameter['archived'] = archived;
-            }
-
-            if (exclude !== undefined) {
-                localVarQueryParameter['exclude'] = exclude;
-            }
-
-            if (global !== undefined) {
-                localVarQueryParameter['global'] = global;
-            }
-
-            if (id !== undefined) {
-                localVarQueryParameter['id'] = id;
-            }
-
-            if (ids) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-            if (nodeId !== undefined) {
-                localVarQueryParameter['nodeId'] = nodeId;
-            }
-
-            if (processId !== undefined) {
-                localVarQueryParameter['processId'] = processId;
-            }
-
-            if (query !== undefined) {
-                localVarQueryParameter['query'] = query;
-            }
-
-            if (sectionId !== undefined) {
-                localVarQueryParameter['sectionId'] = sectionId;
-            }
-
-            if (stepId !== undefined) {
-                localVarQueryParameter['stepId'] = stepId;
-            }
-
-            if (types) {
-                localVarQueryParameter['types'] = types;
-            }
-
-            if (withInputs !== undefined) {
-                localVarQueryParameter['withInputs'] = withInputs;
-            }
-
-            if (withValues !== undefined) {
-                localVarQueryParameter['withValues'] = withValues;
-            }
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of all field types.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        listFieldTypesUsingGET(options: any = {}): FetchArgs {
-            const localVarPath = `/api/v1/fields/types`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
+export const FieldsApiFetchParamCreator = function(configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @summary Create a field.
+     * @param {Field} field field
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST2(field: Field, options: any = {}): FetchArgs {
+      // verify required parameter 'field' is not null or undefined
+      if (field === null || field === undefined) {
+        throw new RequiredError(
+          'field',
+          'Required parameter field was null or undefined when calling createUsingPOST2.'
+        );
+      }
+      const localVarPath = `/api/v1/fields`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Field' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(field || {}) : field || '';
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Delete a field.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteUsingDELETE(id: string, options: any = {}): FetchArgs {
+      // verify required parameter 'id' is not null or undefined
+      if (id === null || id === undefined) {
+        throw new RequiredError('id', 'Required parameter id was null or undefined when calling deleteUsingDELETE.');
+      }
+      const localVarPath = `/api/v1/fields/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Returns whether a field is a field input to a calculation field.
+     * @param {string} fieldId fieldId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    fieldIsInputUsingGET(fieldId: string, options: any = {}): FetchArgs {
+      // verify required parameter 'fieldId' is not null or undefined
+      if (fieldId === null || fieldId === undefined) {
+        throw new RequiredError(
+          'fieldId',
+          'Required parameter fieldId was null or undefined when calling fieldIsInputUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/fields/isInput/{fieldId}`.replace(
+        `{${'fieldId'}}`,
+        encodeURIComponent(String(fieldId))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a paginated list of all discrete fields along with their current values.
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} size The number of elements to be returned
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {string} [workflowId]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByDiscreteWithValuesUsingGET(
+      page: string,
+      size: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      sort?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      workflowId?: string,
+      options: any = {}
+    ): FetchArgs {
+      // verify required parameter 'page' is not null or undefined
+      if (page === null || page === undefined) {
+        throw new RequiredError(
+          'page',
+          'Required parameter page was null or undefined when calling findByDiscreteWithValuesUsingGET.'
+        );
+      }
+      // verify required parameter 'size' is not null or undefined
+      if (size === null || size === undefined) {
+        throw new RequiredError(
+          'size',
+          'Required parameter size was null or undefined when calling findByDiscreteWithValuesUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/fields/discrete/values`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (archived !== undefined) {
+        localVarQueryParameter['archived'] = archived;
+      }
+
+      if (exclude !== undefined) {
+        localVarQueryParameter['exclude'] = exclude;
+      }
+
+      if (global !== undefined) {
+        localVarQueryParameter['global'] = global;
+      }
+
+      if (id !== undefined) {
+        localVarQueryParameter['id'] = id;
+      }
+
+      if (ids) {
+        localVarQueryParameter['ids'] = ids;
+      }
+
+      if (nodeId !== undefined) {
+        localVarQueryParameter['nodeId'] = nodeId;
+      }
+
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page;
+      }
+
+      if (processId !== undefined) {
+        localVarQueryParameter['processId'] = processId;
+      }
+
+      if (query !== undefined) {
+        localVarQueryParameter['query'] = query;
+      }
+
+      if (sectionId !== undefined) {
+        localVarQueryParameter['sectionId'] = sectionId;
+      }
+
+      if (size !== undefined) {
+        localVarQueryParameter['size'] = size;
+      }
+
+      if (sort !== undefined) {
+        localVarQueryParameter['sort'] = sort;
+      }
+
+      if (stepId !== undefined) {
+        localVarQueryParameter['stepId'] = stepId;
+      }
+
+      if (types) {
+        localVarQueryParameter['types'] = types;
+      }
+
+      if (withInputs !== undefined) {
+        localVarQueryParameter['withInputs'] = withInputs;
+      }
+
+      if (withValues !== undefined) {
+        localVarQueryParameter['withValues'] = withValues;
+      }
+
+      if (workflowId !== undefined) {
+        localVarQueryParameter['workflowId'] = workflowId;
+      }
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a paginated list of global fields.
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} size The number of elements to be returned
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {string} [workflowId]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByGlobalUsingGET(
+      page: string,
+      size: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      sort?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      workflowId?: string,
+      options: any = {}
+    ): FetchArgs {
+      // verify required parameter 'page' is not null or undefined
+      if (page === null || page === undefined) {
+        throw new RequiredError(
+          'page',
+          'Required parameter page was null or undefined when calling findByGlobalUsingGET.'
+        );
+      }
+      // verify required parameter 'size' is not null or undefined
+      if (size === null || size === undefined) {
+        throw new RequiredError(
+          'size',
+          'Required parameter size was null or undefined when calling findByGlobalUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/fields/global`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (archived !== undefined) {
+        localVarQueryParameter['archived'] = archived;
+      }
+
+      if (exclude !== undefined) {
+        localVarQueryParameter['exclude'] = exclude;
+      }
+
+      if (global !== undefined) {
+        localVarQueryParameter['global'] = global;
+      }
+
+      if (id !== undefined) {
+        localVarQueryParameter['id'] = id;
+      }
+
+      if (ids) {
+        localVarQueryParameter['ids'] = ids;
+      }
+
+      if (nodeId !== undefined) {
+        localVarQueryParameter['nodeId'] = nodeId;
+      }
+
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page;
+      }
+
+      if (processId !== undefined) {
+        localVarQueryParameter['processId'] = processId;
+      }
+
+      if (query !== undefined) {
+        localVarQueryParameter['query'] = query;
+      }
+
+      if (sectionId !== undefined) {
+        localVarQueryParameter['sectionId'] = sectionId;
+      }
+
+      if (size !== undefined) {
+        localVarQueryParameter['size'] = size;
+      }
+
+      if (sort !== undefined) {
+        localVarQueryParameter['sort'] = sort;
+      }
+
+      if (stepId !== undefined) {
+        localVarQueryParameter['stepId'] = stepId;
+      }
+
+      if (types) {
+        localVarQueryParameter['types'] = types;
+      }
+
+      if (withInputs !== undefined) {
+        localVarQueryParameter['withInputs'] = withInputs;
+      }
+
+      if (withValues !== undefined) {
+        localVarQueryParameter['withValues'] = withValues;
+      }
+
+      if (workflowId !== undefined) {
+        localVarQueryParameter['workflowId'] = workflowId;
+      }
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Find a specific field.
+     * @param {string} id id
+     * @param {boolean} [archived] Retrieve archived values
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET(id: string, archived?: boolean, options: any = {}): FetchArgs {
+      // verify required parameter 'id' is not null or undefined
+      if (id === null || id === undefined) {
+        throw new RequiredError('id', 'Required parameter id was null or undefined when calling findByIdUsingGET.');
+      }
+      const localVarPath = `/api/v1/fields/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (archived !== undefined) {
+        localVarQueryParameter['archived'] = archived;
+      }
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a list of fields from a particular a workflow.
+     * @param {string} workflowId
+     * @param {boolean} [archived] Return archived values.
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByWorkflowUsingGET(
+      workflowId: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      options: any = {}
+    ): FetchArgs {
+      // verify required parameter 'workflowId' is not null or undefined
+      if (workflowId === null || workflowId === undefined) {
+        throw new RequiredError(
+          'workflowId',
+          'Required parameter workflowId was null or undefined when calling findByWorkflowUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/fields/workflow/{workflowId}/values`.replace(
+        `{${'workflowId'}}`,
+        encodeURIComponent(String(workflowId))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (archived !== undefined) {
+        localVarQueryParameter['archived'] = archived;
+      }
+
+      if (exclude !== undefined) {
+        localVarQueryParameter['exclude'] = exclude;
+      }
+
+      if (global !== undefined) {
+        localVarQueryParameter['global'] = global;
+      }
+
+      if (id !== undefined) {
+        localVarQueryParameter['id'] = id;
+      }
+
+      if (ids) {
+        localVarQueryParameter['ids'] = ids;
+      }
+
+      if (nodeId !== undefined) {
+        localVarQueryParameter['nodeId'] = nodeId;
+      }
+
+      if (processId !== undefined) {
+        localVarQueryParameter['processId'] = processId;
+      }
+
+      if (query !== undefined) {
+        localVarQueryParameter['query'] = query;
+      }
+
+      if (sectionId !== undefined) {
+        localVarQueryParameter['sectionId'] = sectionId;
+      }
+
+      if (stepId !== undefined) {
+        localVarQueryParameter['stepId'] = stepId;
+      }
+
+      if (types) {
+        localVarQueryParameter['types'] = types;
+      }
+
+      if (withInputs !== undefined) {
+        localVarQueryParameter['withInputs'] = withInputs;
+      }
+
+      if (withValues !== undefined) {
+        localVarQueryParameter['withValues'] = withValues;
+      }
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a paginated list of fields from a particular workflow.
+     * @param {string} page
+     * @param {string} workflowId
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByWorkflowUsingGET1(
+      page: string,
+      workflowId: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      options: any = {}
+    ): FetchArgs {
+      // verify required parameter 'page' is not null or undefined
+      if (page === null || page === undefined) {
+        throw new RequiredError(
+          'page',
+          'Required parameter page was null or undefined when calling findByWorkflowUsingGET1.'
+        );
+      }
+      // verify required parameter 'workflowId' is not null or undefined
+      if (workflowId === null || workflowId === undefined) {
+        throw new RequiredError(
+          'workflowId',
+          'Required parameter workflowId was null or undefined when calling findByWorkflowUsingGET1.'
+        );
+      }
+      const localVarPath = `/api/v1/fields/workflow/{workflowId}`.replace(
+        `{${'workflowId'}}`,
+        encodeURIComponent(String(workflowId))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (archived !== undefined) {
+        localVarQueryParameter['archived'] = archived;
+      }
+
+      if (exclude !== undefined) {
+        localVarQueryParameter['exclude'] = exclude;
+      }
+
+      if (global !== undefined) {
+        localVarQueryParameter['global'] = global;
+      }
+
+      if (id !== undefined) {
+        localVarQueryParameter['id'] = id;
+      }
+
+      if (ids) {
+        localVarQueryParameter['ids'] = ids;
+      }
+
+      if (nodeId !== undefined) {
+        localVarQueryParameter['nodeId'] = nodeId;
+      }
+
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page;
+      }
+
+      if (processId !== undefined) {
+        localVarQueryParameter['processId'] = processId;
+      }
+
+      if (query !== undefined) {
+        localVarQueryParameter['query'] = query;
+      }
+
+      if (sectionId !== undefined) {
+        localVarQueryParameter['sectionId'] = sectionId;
+      }
+
+      if (stepId !== undefined) {
+        localVarQueryParameter['stepId'] = stepId;
+      }
+
+      if (types) {
+        localVarQueryParameter['types'] = types;
+      }
+
+      if (withInputs !== undefined) {
+        localVarQueryParameter['withInputs'] = withInputs;
+      }
+
+      if (withValues !== undefined) {
+        localVarQueryParameter['withValues'] = withValues;
+      }
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a list of all nested fields.
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {string} [workflowId]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findInputFieldsByRequestUsingGET(
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      workflowId?: string,
+      options: any = {}
+    ): FetchArgs {
+      const localVarPath = `/api/v1/fields/nested`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (archived !== undefined) {
+        localVarQueryParameter['archived'] = archived;
+      }
+
+      if (exclude !== undefined) {
+        localVarQueryParameter['exclude'] = exclude;
+      }
+
+      if (global !== undefined) {
+        localVarQueryParameter['global'] = global;
+      }
+
+      if (id !== undefined) {
+        localVarQueryParameter['id'] = id;
+      }
+
+      if (ids) {
+        localVarQueryParameter['ids'] = ids;
+      }
+
+      if (nodeId !== undefined) {
+        localVarQueryParameter['nodeId'] = nodeId;
+      }
+
+      if (processId !== undefined) {
+        localVarQueryParameter['processId'] = processId;
+      }
+
+      if (query !== undefined) {
+        localVarQueryParameter['query'] = query;
+      }
+
+      if (sectionId !== undefined) {
+        localVarQueryParameter['sectionId'] = sectionId;
+      }
+
+      if (stepId !== undefined) {
+        localVarQueryParameter['stepId'] = stepId;
+      }
+
+      if (types) {
+        localVarQueryParameter['types'] = types;
+      }
+
+      if (withInputs !== undefined) {
+        localVarQueryParameter['withInputs'] = withInputs;
+      }
+
+      if (withValues !== undefined) {
+        localVarQueryParameter['withValues'] = withValues;
+      }
+
+      if (workflowId !== undefined) {
+        localVarQueryParameter['workflowId'] = workflowId;
+      }
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a paginated list of user fields based on a workflow and global user fields.
+     * @param {string} workflowId
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findUserFieldsByWorkflowOrGlobalUsingGET(
+      workflowId: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      options: any = {}
+    ): FetchArgs {
+      // verify required parameter 'workflowId' is not null or undefined
+      if (workflowId === null || workflowId === undefined) {
+        throw new RequiredError(
+          'workflowId',
+          'Required parameter workflowId was null or undefined when calling findUserFieldsByWorkflowOrGlobalUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/fields/workflow/{workflowId}/users`.replace(
+        `{${'workflowId'}}`,
+        encodeURIComponent(String(workflowId))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (archived !== undefined) {
+        localVarQueryParameter['archived'] = archived;
+      }
+
+      if (exclude !== undefined) {
+        localVarQueryParameter['exclude'] = exclude;
+      }
+
+      if (global !== undefined) {
+        localVarQueryParameter['global'] = global;
+      }
+
+      if (id !== undefined) {
+        localVarQueryParameter['id'] = id;
+      }
+
+      if (ids) {
+        localVarQueryParameter['ids'] = ids;
+      }
+
+      if (nodeId !== undefined) {
+        localVarQueryParameter['nodeId'] = nodeId;
+      }
+
+      if (processId !== undefined) {
+        localVarQueryParameter['processId'] = processId;
+      }
+
+      if (query !== undefined) {
+        localVarQueryParameter['query'] = query;
+      }
+
+      if (sectionId !== undefined) {
+        localVarQueryParameter['sectionId'] = sectionId;
+      }
+
+      if (stepId !== undefined) {
+        localVarQueryParameter['stepId'] = stepId;
+      }
+
+      if (types) {
+        localVarQueryParameter['types'] = types;
+      }
+
+      if (withInputs !== undefined) {
+        localVarQueryParameter['withInputs'] = withInputs;
+      }
+
+      if (withValues !== undefined) {
+        localVarQueryParameter['withValues'] = withValues;
+      }
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a list of all field types.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    listFieldTypesUsingGET(options: any = {}): FetchArgs {
+      const localVarPath = `/api/v1/fields/types`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
     }
+  };
 };
 
 /**
@@ -10131,506 +10533,1090 @@ export const FieldsApiFetchParamCreator = function (configuration?: Configuratio
  * @export
  */
 export const FieldsApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a field.
-         * @param {Field} field field
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST2(field: Field, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Field> {
-            const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).createUsingPOST2(field, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Delete a field.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteUsingDELETE(id: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-            const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).deleteUsingDELETE(id, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response;
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Returns whether a field is a field input to a calculation field.
-         * @param {string} fieldId fieldId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        fieldIsInputUsingGET(fieldId: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<boolean> {
-            const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).fieldIsInputUsingGET(fieldId, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a paginated list of all discrete fields along with their current values.
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {string} [workflowId] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByDiscreteWithValuesUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<PageOfField> {
-            const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findByDiscreteWithValuesUsingGET(page, size, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, sort, stepId, types, withInputs, withValues, workflowId, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a paginated list of global fields.
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {string} [workflowId] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByGlobalUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<PageOfField> {
-            const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findByGlobalUsingGET(page, size, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, sort, stepId, types, withInputs, withValues, workflowId, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Find a specific field.
-         * @param {string} id id
-         * @param {boolean} [archived] Retrieve archived values
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET(id: string, archived?: boolean, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Field> {
-            const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findByIdUsingGET(id, archived, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of fields from a particular a workflow.
-         * @param {string} workflowId 
-         * @param {boolean} [archived] Return archived values.
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByWorkflowUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Field>> {
-            const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findByWorkflowUsingGET(workflowId, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a paginated list of fields from a particular workflow.
-         * @param {string} page 
-         * @param {string} workflowId 
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByWorkflowUsingGET1(page: string, workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<PageOfField> {
-            const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findByWorkflowUsingGET1(page, workflowId, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of all nested fields.
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {string} [workflowId] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findInputFieldsByRequestUsingGET(archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Field>> {
-            const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findInputFieldsByRequestUsingGET(archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, workflowId, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a paginated list of user fields based on a workflow and global user fields.
-         * @param {string} workflowId 
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findUserFieldsByWorkflowOrGlobalUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<PageOfField> {
-            const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findUserFieldsByWorkflowOrGlobalUsingGET(workflowId, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of all field types.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        listFieldTypesUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<string>> {
-            const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).listFieldTypesUsingGET(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
+  return {
+    /**
+     *
+     * @summary Create a field.
+     * @param {Field} field field
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST2(field: Field, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Field> {
+      const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).createUsingPOST2(field, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Delete a field.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteUsingDELETE(id: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+      const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).deleteUsingDELETE(id, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Returns whether a field is a field input to a calculation field.
+     * @param {string} fieldId fieldId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    fieldIsInputUsingGET(fieldId: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<boolean> {
+      const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).fieldIsInputUsingGET(fieldId, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a paginated list of all discrete fields along with their current values.
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} size The number of elements to be returned
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {string} [workflowId]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByDiscreteWithValuesUsingGET(
+      page: string,
+      size: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      sort?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      workflowId?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<PageOfField> {
+      const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findByDiscreteWithValuesUsingGET(
+        page,
+        size,
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        sort,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        workflowId,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a paginated list of global fields.
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} size The number of elements to be returned
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {string} [workflowId]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByGlobalUsingGET(
+      page: string,
+      size: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      sort?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      workflowId?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<PageOfField> {
+      const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findByGlobalUsingGET(
+        page,
+        size,
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        sort,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        workflowId,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Find a specific field.
+     * @param {string} id id
+     * @param {boolean} [archived] Retrieve archived values
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET(
+      id: string,
+      archived?: boolean,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Field> {
+      const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findByIdUsingGET(id, archived, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a list of fields from a particular a workflow.
+     * @param {string} workflowId
+     * @param {boolean} [archived] Return archived values.
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByWorkflowUsingGET(
+      workflowId: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Field>> {
+      const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findByWorkflowUsingGET(
+        workflowId,
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a paginated list of fields from a particular workflow.
+     * @param {string} page
+     * @param {string} workflowId
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByWorkflowUsingGET1(
+      page: string,
+      workflowId: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<PageOfField> {
+      const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findByWorkflowUsingGET1(
+        page,
+        workflowId,
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a list of all nested fields.
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {string} [workflowId]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findInputFieldsByRequestUsingGET(
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      workflowId?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Field>> {
+      const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findInputFieldsByRequestUsingGET(
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        workflowId,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a paginated list of user fields based on a workflow and global user fields.
+     * @param {string} workflowId
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findUserFieldsByWorkflowOrGlobalUsingGET(
+      workflowId: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<PageOfField> {
+      const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).findUserFieldsByWorkflowOrGlobalUsingGET(
+        workflowId,
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a list of all field types.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    listFieldTypesUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<string>> {
+      const localVarFetchArgs = FieldsApiFetchParamCreator(configuration).listFieldTypesUsingGET(options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
     }
+  };
 };
 
 /**
  * FieldsApi - factory interface
  * @export
  */
-export const FieldsApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         * 
-         * @summary Create a field.
-         * @param {Field} field field
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST2(field: Field, options?: any) {
-            return FieldsApiFp(configuration).createUsingPOST2(field, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Delete a field.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteUsingDELETE(id: string, options?: any) {
-            return FieldsApiFp(configuration).deleteUsingDELETE(id, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Returns whether a field is a field input to a calculation field.
-         * @param {string} fieldId fieldId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        fieldIsInputUsingGET(fieldId: string, options?: any) {
-            return FieldsApiFp(configuration).fieldIsInputUsingGET(fieldId, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a paginated list of all discrete fields along with their current values.
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {string} [workflowId] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByDiscreteWithValuesUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any) {
-            return FieldsApiFp(configuration).findByDiscreteWithValuesUsingGET(page, size, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, sort, stepId, types, withInputs, withValues, workflowId, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a paginated list of global fields.
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {string} [workflowId] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByGlobalUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any) {
-            return FieldsApiFp(configuration).findByGlobalUsingGET(page, size, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, sort, stepId, types, withInputs, withValues, workflowId, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Find a specific field.
-         * @param {string} id id
-         * @param {boolean} [archived] Retrieve archived values
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET(id: string, archived?: boolean, options?: any) {
-            return FieldsApiFp(configuration).findByIdUsingGET(id, archived, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a list of fields from a particular a workflow.
-         * @param {string} workflowId 
-         * @param {boolean} [archived] Return archived values.
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByWorkflowUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any) {
-            return FieldsApiFp(configuration).findByWorkflowUsingGET(workflowId, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a paginated list of fields from a particular workflow.
-         * @param {string} page 
-         * @param {string} workflowId 
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByWorkflowUsingGET1(page: string, workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any) {
-            return FieldsApiFp(configuration).findByWorkflowUsingGET1(page, workflowId, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a list of all nested fields.
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {string} [workflowId] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findInputFieldsByRequestUsingGET(archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any) {
-            return FieldsApiFp(configuration).findInputFieldsByRequestUsingGET(archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, workflowId, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a paginated list of user fields based on a workflow and global user fields.
-         * @param {string} workflowId 
-         * @param {boolean} [archived] 
-         * @param {boolean} [exclude] 
-         * @param {boolean} [global] 
-         * @param {string} [id] 
-         * @param {Array<string>} [ids] 
-         * @param {string} [nodeId] 
-         * @param {string} [processId] 
-         * @param {string} [query] 
-         * @param {string} [sectionId] 
-         * @param {string} [stepId] 
-         * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-         * @param {boolean} [withInputs] 
-         * @param {boolean} [withValues] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findUserFieldsByWorkflowOrGlobalUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any) {
-            return FieldsApiFp(configuration).findUserFieldsByWorkflowOrGlobalUsingGET(workflowId, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a list of all field types.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        listFieldTypesUsingGET(options?: any) {
-            return FieldsApiFp(configuration).listFieldTypesUsingGET(options)(fetch, basePath);
-        },
-    };
+export const FieldsApiFactory = function(configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+  return {
+    /**
+     *
+     * @summary Create a field.
+     * @param {Field} field field
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST2(field: Field, options?: any) {
+      return FieldsApiFp(configuration).createUsingPOST2(field, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Delete a field.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteUsingDELETE(id: string, options?: any) {
+      return FieldsApiFp(configuration).deleteUsingDELETE(id, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Returns whether a field is a field input to a calculation field.
+     * @param {string} fieldId fieldId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    fieldIsInputUsingGET(fieldId: string, options?: any) {
+      return FieldsApiFp(configuration).fieldIsInputUsingGET(fieldId, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a paginated list of all discrete fields along with their current values.
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} size The number of elements to be returned
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {string} [workflowId]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByDiscreteWithValuesUsingGET(
+      page: string,
+      size: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      sort?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      workflowId?: string,
+      options?: any
+    ) {
+      return FieldsApiFp(configuration).findByDiscreteWithValuesUsingGET(
+        page,
+        size,
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        sort,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        workflowId,
+        options
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a paginated list of global fields.
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} size The number of elements to be returned
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {string} [workflowId]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByGlobalUsingGET(
+      page: string,
+      size: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      sort?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      workflowId?: string,
+      options?: any
+    ) {
+      return FieldsApiFp(configuration).findByGlobalUsingGET(
+        page,
+        size,
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        sort,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        workflowId,
+        options
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Find a specific field.
+     * @param {string} id id
+     * @param {boolean} [archived] Retrieve archived values
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET(id: string, archived?: boolean, options?: any) {
+      return FieldsApiFp(configuration).findByIdUsingGET(id, archived, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a list of fields from a particular a workflow.
+     * @param {string} workflowId
+     * @param {boolean} [archived] Return archived values.
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByWorkflowUsingGET(
+      workflowId: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      options?: any
+    ) {
+      return FieldsApiFp(configuration).findByWorkflowUsingGET(
+        workflowId,
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        options
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a paginated list of fields from a particular workflow.
+     * @param {string} page
+     * @param {string} workflowId
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByWorkflowUsingGET1(
+      page: string,
+      workflowId: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      options?: any
+    ) {
+      return FieldsApiFp(configuration).findByWorkflowUsingGET1(
+        page,
+        workflowId,
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        options
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a list of all nested fields.
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {string} [workflowId]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findInputFieldsByRequestUsingGET(
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      workflowId?: string,
+      options?: any
+    ) {
+      return FieldsApiFp(configuration).findInputFieldsByRequestUsingGET(
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        workflowId,
+        options
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a paginated list of user fields based on a workflow and global user fields.
+     * @param {string} workflowId
+     * @param {boolean} [archived]
+     * @param {boolean} [exclude]
+     * @param {boolean} [global]
+     * @param {string} [id]
+     * @param {Array<string>} [ids]
+     * @param {string} [nodeId]
+     * @param {string} [processId]
+     * @param {string} [query]
+     * @param {string} [sectionId]
+     * @param {string} [stepId]
+     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+     * @param {boolean} [withInputs]
+     * @param {boolean} [withValues]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findUserFieldsByWorkflowOrGlobalUsingGET(
+      workflowId: string,
+      archived?: boolean,
+      exclude?: boolean,
+      global?: boolean,
+      id?: string,
+      ids?: Array<string>,
+      nodeId?: string,
+      processId?: string,
+      query?: string,
+      sectionId?: string,
+      stepId?: string,
+      types?: Array<
+        | 'TEXT'
+        | 'TEXT_AREA'
+        | 'DATE_PICKER'
+        | 'NUMBER'
+        | 'E_SIGNATURE'
+        | 'CHECKBOX'
+        | 'MULTI_SELECT'
+        | 'RADIO'
+        | 'SELECT'
+        | 'USER'
+        | 'ATTACHMENT'
+        | 'CALCULATION'
+        | 'DUE_DATE'
+      >,
+      withInputs?: boolean,
+      withValues?: boolean,
+      options?: any
+    ) {
+      return FieldsApiFp(configuration).findUserFieldsByWorkflowOrGlobalUsingGET(
+        workflowId,
+        archived,
+        exclude,
+        global,
+        id,
+        ids,
+        nodeId,
+        processId,
+        query,
+        sectionId,
+        stepId,
+        types,
+        withInputs,
+        withValues,
+        options
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a list of all field types.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    listFieldTypesUsingGET(options?: any) {
+      return FieldsApiFp(configuration).listFieldTypesUsingGET(options)(fetch, basePath);
+    }
+  };
 };
 
 /**
@@ -10639,201 +11625,387 @@ export const FieldsApiFactory = function (configuration?: Configuration, fetch?:
  * @interface FieldsApi
  */
 export interface FieldsApiInterface {
-    /**
-     * 
-     * @summary Create a field.
-     * @param {Field} field field
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApiInterface
-     */
-    createUsingPOST2(field: Field, options?: any): Promise<Field>;
+  /**
+   *
+   * @summary Create a field.
+   * @param {Field} field field
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApiInterface
+   */
+  createUsingPOST2(field: Field, options?: any): Promise<Field>;
 
-    /**
-     * 
-     * @summary Delete a field.
-     * @param {string} id id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApiInterface
-     */
-    deleteUsingDELETE(id: string, options?: any): Promise<{}>;
+  /**
+   *
+   * @summary Delete a field.
+   * @param {string} id id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApiInterface
+   */
+  deleteUsingDELETE(id: string, options?: any): Promise<{}>;
 
-    /**
-     * 
-     * @summary Returns whether a field is a field input to a calculation field.
-     * @param {string} fieldId fieldId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApiInterface
-     */
-    fieldIsInputUsingGET(fieldId: string, options?: any): Promise<boolean>;
+  /**
+   *
+   * @summary Returns whether a field is a field input to a calculation field.
+   * @param {string} fieldId fieldId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApiInterface
+   */
+  fieldIsInputUsingGET(fieldId: string, options?: any): Promise<boolean>;
 
-    /**
-     * 
-     * @summary Return a paginated list of all discrete fields along with their current values.
-     * @param {string} page Results page wanting to be retrieved
-     * @param {string} size The number of elements to be returned
-     * @param {boolean} [archived] 
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {string} [workflowId] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApiInterface
-     */
-    findByDiscreteWithValuesUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any): Promise<PageOfField>;
+  /**
+   *
+   * @summary Return a paginated list of all discrete fields along with their current values.
+   * @param {string} page Results page wanting to be retrieved
+   * @param {string} size The number of elements to be returned
+   * @param {boolean} [archived]
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {string} [workflowId]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApiInterface
+   */
+  findByDiscreteWithValuesUsingGET(
+    page: string,
+    size: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    sort?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    workflowId?: string,
+    options?: any
+  ): Promise<PageOfField>;
 
-    /**
-     * 
-     * @summary Return a paginated list of global fields.
-     * @param {string} page Results page wanting to be retrieved
-     * @param {string} size The number of elements to be returned
-     * @param {boolean} [archived] 
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {string} [workflowId] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApiInterface
-     */
-    findByGlobalUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any): Promise<PageOfField>;
+  /**
+   *
+   * @summary Return a paginated list of global fields.
+   * @param {string} page Results page wanting to be retrieved
+   * @param {string} size The number of elements to be returned
+   * @param {boolean} [archived]
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {string} [workflowId]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApiInterface
+   */
+  findByGlobalUsingGET(
+    page: string,
+    size: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    sort?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    workflowId?: string,
+    options?: any
+  ): Promise<PageOfField>;
 
-    /**
-     * 
-     * @summary Find a specific field.
-     * @param {string} id id
-     * @param {boolean} [archived] Retrieve archived values
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApiInterface
-     */
-    findByIdUsingGET(id: string, archived?: boolean, options?: any): Promise<Field>;
+  /**
+   *
+   * @summary Find a specific field.
+   * @param {string} id id
+   * @param {boolean} [archived] Retrieve archived values
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApiInterface
+   */
+  findByIdUsingGET(id: string, archived?: boolean, options?: any): Promise<Field>;
 
-    /**
-     * 
-     * @summary Return a list of fields from a particular a workflow.
-     * @param {string} workflowId 
-     * @param {boolean} [archived] Return archived values.
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApiInterface
-     */
-    findByWorkflowUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any): Promise<Array<Field>>;
+  /**
+   *
+   * @summary Return a list of fields from a particular a workflow.
+   * @param {string} workflowId
+   * @param {boolean} [archived] Return archived values.
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApiInterface
+   */
+  findByWorkflowUsingGET(
+    workflowId: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    options?: any
+  ): Promise<Array<Field>>;
 
-    /**
-     * 
-     * @summary Return a paginated list of fields from a particular workflow.
-     * @param {string} page 
-     * @param {string} workflowId 
-     * @param {boolean} [archived] 
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApiInterface
-     */
-    findByWorkflowUsingGET1(page: string, workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any): Promise<PageOfField>;
+  /**
+   *
+   * @summary Return a paginated list of fields from a particular workflow.
+   * @param {string} page
+   * @param {string} workflowId
+   * @param {boolean} [archived]
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApiInterface
+   */
+  findByWorkflowUsingGET1(
+    page: string,
+    workflowId: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    options?: any
+  ): Promise<PageOfField>;
 
-    /**
-     * 
-     * @summary Return a list of all nested fields.
-     * @param {boolean} [archived] 
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {string} [workflowId] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApiInterface
-     */
-    findInputFieldsByRequestUsingGET(archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any): Promise<Array<Field>>;
+  /**
+   *
+   * @summary Return a list of all nested fields.
+   * @param {boolean} [archived]
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {string} [workflowId]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApiInterface
+   */
+  findInputFieldsByRequestUsingGET(
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    workflowId?: string,
+    options?: any
+  ): Promise<Array<Field>>;
 
-    /**
-     * 
-     * @summary Return a paginated list of user fields based on a workflow and global user fields.
-     * @param {string} workflowId 
-     * @param {boolean} [archived] 
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApiInterface
-     */
-    findUserFieldsByWorkflowOrGlobalUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any): Promise<PageOfField>;
+  /**
+   *
+   * @summary Return a paginated list of user fields based on a workflow and global user fields.
+   * @param {string} workflowId
+   * @param {boolean} [archived]
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApiInterface
+   */
+  findUserFieldsByWorkflowOrGlobalUsingGET(
+    workflowId: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    options?: any
+  ): Promise<PageOfField>;
 
-    /**
-     * 
-     * @summary Return a list of all field types.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApiInterface
-     */
-    listFieldTypesUsingGET(options?: any): Promise<Array<string>>;
-
+  /**
+   *
+   * @summary Return a list of all field types.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApiInterface
+   */
+  listFieldTypesUsingGET(options?: any): Promise<Array<string>>;
 }
 
 /**
@@ -10843,958 +12015,1360 @@ export interface FieldsApiInterface {
  * @extends {BaseAPI}
  */
 export class FieldsApi extends BaseAPI implements FieldsApiInterface {
-    /**
-     * 
-     * @summary Create a field.
-     * @param {Field} field field
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApi
-     */
-    public createUsingPOST2(field: Field, options?: any) {
-        return FieldsApiFp(this.configuration).createUsingPOST2(field, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Create a field.
+   * @param {Field} field field
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApi
+   */
+  public createUsingPOST2(field: Field, options?: any) {
+    return FieldsApiFp(this.configuration).createUsingPOST2(field, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Delete a field.
-     * @param {string} id id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApi
-     */
-    public deleteUsingDELETE(id: string, options?: any) {
-        return FieldsApiFp(this.configuration).deleteUsingDELETE(id, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Delete a field.
+   * @param {string} id id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApi
+   */
+  public deleteUsingDELETE(id: string, options?: any) {
+    return FieldsApiFp(this.configuration).deleteUsingDELETE(id, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Returns whether a field is a field input to a calculation field.
-     * @param {string} fieldId fieldId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApi
-     */
-    public fieldIsInputUsingGET(fieldId: string, options?: any) {
-        return FieldsApiFp(this.configuration).fieldIsInputUsingGET(fieldId, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Returns whether a field is a field input to a calculation field.
+   * @param {string} fieldId fieldId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApi
+   */
+  public fieldIsInputUsingGET(fieldId: string, options?: any) {
+    return FieldsApiFp(this.configuration).fieldIsInputUsingGET(fieldId, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a paginated list of all discrete fields along with their current values.
-     * @param {string} page Results page wanting to be retrieved
-     * @param {string} size The number of elements to be returned
-     * @param {boolean} [archived] 
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {string} [workflowId] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApi
-     */
-    public findByDiscreteWithValuesUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any) {
-        return FieldsApiFp(this.configuration).findByDiscreteWithValuesUsingGET(page, size, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, sort, stepId, types, withInputs, withValues, workflowId, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a paginated list of all discrete fields along with their current values.
+   * @param {string} page Results page wanting to be retrieved
+   * @param {string} size The number of elements to be returned
+   * @param {boolean} [archived]
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {string} [workflowId]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApi
+   */
+  public findByDiscreteWithValuesUsingGET(
+    page: string,
+    size: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    sort?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    workflowId?: string,
+    options?: any
+  ) {
+    return FieldsApiFp(this.configuration).findByDiscreteWithValuesUsingGET(
+      page,
+      size,
+      archived,
+      exclude,
+      global,
+      id,
+      ids,
+      nodeId,
+      processId,
+      query,
+      sectionId,
+      sort,
+      stepId,
+      types,
+      withInputs,
+      withValues,
+      workflowId,
+      options
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a paginated list of global fields.
-     * @param {string} page Results page wanting to be retrieved
-     * @param {string} size The number of elements to be returned
-     * @param {boolean} [archived] 
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {string} [workflowId] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApi
-     */
-    public findByGlobalUsingGET(page: string, size: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, sort?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any) {
-        return FieldsApiFp(this.configuration).findByGlobalUsingGET(page, size, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, sort, stepId, types, withInputs, withValues, workflowId, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a paginated list of global fields.
+   * @param {string} page Results page wanting to be retrieved
+   * @param {string} size The number of elements to be returned
+   * @param {boolean} [archived]
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {string} [workflowId]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApi
+   */
+  public findByGlobalUsingGET(
+    page: string,
+    size: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    sort?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    workflowId?: string,
+    options?: any
+  ) {
+    return FieldsApiFp(this.configuration).findByGlobalUsingGET(
+      page,
+      size,
+      archived,
+      exclude,
+      global,
+      id,
+      ids,
+      nodeId,
+      processId,
+      query,
+      sectionId,
+      sort,
+      stepId,
+      types,
+      withInputs,
+      withValues,
+      workflowId,
+      options
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Find a specific field.
-     * @param {string} id id
-     * @param {boolean} [archived] Retrieve archived values
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApi
-     */
-    public findByIdUsingGET(id: string, archived?: boolean, options?: any) {
-        return FieldsApiFp(this.configuration).findByIdUsingGET(id, archived, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Find a specific field.
+   * @param {string} id id
+   * @param {boolean} [archived] Retrieve archived values
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApi
+   */
+  public findByIdUsingGET(id: string, archived?: boolean, options?: any) {
+    return FieldsApiFp(this.configuration).findByIdUsingGET(id, archived, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a list of fields from a particular a workflow.
-     * @param {string} workflowId 
-     * @param {boolean} [archived] Return archived values.
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApi
-     */
-    public findByWorkflowUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any) {
-        return FieldsApiFp(this.configuration).findByWorkflowUsingGET(workflowId, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a list of fields from a particular a workflow.
+   * @param {string} workflowId
+   * @param {boolean} [archived] Return archived values.
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApi
+   */
+  public findByWorkflowUsingGET(
+    workflowId: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    options?: any
+  ) {
+    return FieldsApiFp(this.configuration).findByWorkflowUsingGET(
+      workflowId,
+      archived,
+      exclude,
+      global,
+      id,
+      ids,
+      nodeId,
+      processId,
+      query,
+      sectionId,
+      stepId,
+      types,
+      withInputs,
+      withValues,
+      options
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a paginated list of fields from a particular workflow.
-     * @param {string} page 
-     * @param {string} workflowId 
-     * @param {boolean} [archived] 
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApi
-     */
-    public findByWorkflowUsingGET1(page: string, workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any) {
-        return FieldsApiFp(this.configuration).findByWorkflowUsingGET1(page, workflowId, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a paginated list of fields from a particular workflow.
+   * @param {string} page
+   * @param {string} workflowId
+   * @param {boolean} [archived]
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApi
+   */
+  public findByWorkflowUsingGET1(
+    page: string,
+    workflowId: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    options?: any
+  ) {
+    return FieldsApiFp(this.configuration).findByWorkflowUsingGET1(
+      page,
+      workflowId,
+      archived,
+      exclude,
+      global,
+      id,
+      ids,
+      nodeId,
+      processId,
+      query,
+      sectionId,
+      stepId,
+      types,
+      withInputs,
+      withValues,
+      options
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a list of all nested fields.
-     * @param {boolean} [archived] 
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {string} [workflowId] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApi
-     */
-    public findInputFieldsByRequestUsingGET(archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, workflowId?: string, options?: any) {
-        return FieldsApiFp(this.configuration).findInputFieldsByRequestUsingGET(archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, workflowId, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a list of all nested fields.
+   * @param {boolean} [archived]
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {string} [workflowId]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApi
+   */
+  public findInputFieldsByRequestUsingGET(
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    workflowId?: string,
+    options?: any
+  ) {
+    return FieldsApiFp(this.configuration).findInputFieldsByRequestUsingGET(
+      archived,
+      exclude,
+      global,
+      id,
+      ids,
+      nodeId,
+      processId,
+      query,
+      sectionId,
+      stepId,
+      types,
+      withInputs,
+      withValues,
+      workflowId,
+      options
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a paginated list of user fields based on a workflow and global user fields.
-     * @param {string} workflowId 
-     * @param {boolean} [archived] 
-     * @param {boolean} [exclude] 
-     * @param {boolean} [global] 
-     * @param {string} [id] 
-     * @param {Array<string>} [ids] 
-     * @param {string} [nodeId] 
-     * @param {string} [processId] 
-     * @param {string} [query] 
-     * @param {string} [sectionId] 
-     * @param {string} [stepId] 
-     * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types] 
-     * @param {boolean} [withInputs] 
-     * @param {boolean} [withValues] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApi
-     */
-    public findUserFieldsByWorkflowOrGlobalUsingGET(workflowId: string, archived?: boolean, exclude?: boolean, global?: boolean, id?: string, ids?: Array<string>, nodeId?: string, processId?: string, query?: string, sectionId?: string, stepId?: string, types?: Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>, withInputs?: boolean, withValues?: boolean, options?: any) {
-        return FieldsApiFp(this.configuration).findUserFieldsByWorkflowOrGlobalUsingGET(workflowId, archived, exclude, global, id, ids, nodeId, processId, query, sectionId, stepId, types, withInputs, withValues, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a paginated list of user fields based on a workflow and global user fields.
+   * @param {string} workflowId
+   * @param {boolean} [archived]
+   * @param {boolean} [exclude]
+   * @param {boolean} [global]
+   * @param {string} [id]
+   * @param {Array<string>} [ids]
+   * @param {string} [nodeId]
+   * @param {string} [processId]
+   * @param {string} [query]
+   * @param {string} [sectionId]
+   * @param {string} [stepId]
+   * @param {Array<'TEXT' | 'TEXT_AREA' | 'DATE_PICKER' | 'NUMBER' | 'E_SIGNATURE' | 'CHECKBOX' | 'MULTI_SELECT' | 'RADIO' | 'SELECT' | 'USER' | 'ATTACHMENT' | 'CALCULATION' | 'DUE_DATE'>} [types]
+   * @param {boolean} [withInputs]
+   * @param {boolean} [withValues]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApi
+   */
+  public findUserFieldsByWorkflowOrGlobalUsingGET(
+    workflowId: string,
+    archived?: boolean,
+    exclude?: boolean,
+    global?: boolean,
+    id?: string,
+    ids?: Array<string>,
+    nodeId?: string,
+    processId?: string,
+    query?: string,
+    sectionId?: string,
+    stepId?: string,
+    types?: Array<
+      | 'TEXT'
+      | 'TEXT_AREA'
+      | 'DATE_PICKER'
+      | 'NUMBER'
+      | 'E_SIGNATURE'
+      | 'CHECKBOX'
+      | 'MULTI_SELECT'
+      | 'RADIO'
+      | 'SELECT'
+      | 'USER'
+      | 'ATTACHMENT'
+      | 'CALCULATION'
+      | 'DUE_DATE'
+    >,
+    withInputs?: boolean,
+    withValues?: boolean,
+    options?: any
+  ) {
+    return FieldsApiFp(this.configuration).findUserFieldsByWorkflowOrGlobalUsingGET(
+      workflowId,
+      archived,
+      exclude,
+      global,
+      id,
+      ids,
+      nodeId,
+      processId,
+      query,
+      sectionId,
+      stepId,
+      types,
+      withInputs,
+      withValues,
+      options
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a list of all field types.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FieldsApi
-     */
-    public listFieldTypesUsingGET(options?: any) {
-        return FieldsApiFp(this.configuration).listFieldTypesUsingGET(options)(this.fetch, this.basePath);
-    }
-
+  /**
+   *
+   * @summary Return a list of all field types.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FieldsApi
+   */
+  public listFieldTypesUsingGET(options?: any) {
+    return FieldsApiFp(this.configuration).listFieldTypesUsingGET(options)(this.fetch, this.basePath);
+  }
 }
 
 /**
  * RecordsApi - fetch parameter creator
  * @export
  */
-export const RecordsApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * The child may already exist or it may need to be created.
-         * @summary Add a child record relationship to the record represented by the path variable.
-         * @param {Record} child child
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createChildUsingPOST(child: Record, record: string, layout?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'child' is not null or undefined
-            if (child === null || child === undefined) {
-                throw new RequiredError('child','Required parameter child was null or undefined when calling createChildUsingPOST.');
-            }
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling createChildUsingPOST.');
-            }
-            const localVarPath = `/api/v1/assignments/{record}/child`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+export const RecordsApiFetchParamCreator = function(configuration?: Configuration) {
+  return {
+    /**
+     * The child may already exist or it may need to be created.
+     * @summary Add a child record relationship to the record represented by the path variable.
+     * @param {Record} child child
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createChildUsingPOST(child: Record, record: string, layout?: string, options: any = {}): FetchArgs {
+      // verify required parameter 'child' is not null or undefined
+      if (child === null || child === undefined) {
+        throw new RequiredError(
+          'child',
+          'Required parameter child was null or undefined when calling createChildUsingPOST.'
+        );
+      }
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling createChildUsingPOST.'
+        );
+      }
+      const localVarPath = `/api/v1/assignments/{record}/child`.replace(
+        `{${'record'}}`,
+        encodeURIComponent(String(record))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (layout !== undefined) {
-                localVarQueryParameter['layout'] = layout;
-            }
+      if (layout !== undefined) {
+        localVarQueryParameter['layout'] = layout;
+      }
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(child || {}) : (child || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(child || {}) : child || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * The child may already exist or it may need to be created.
-         * @summary Add a child record relationship to the record represented by the path variable.
-         * @param {Record} child child
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createChildUsingPOST1(child: Record, record: string, layout?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'child' is not null or undefined
-            if (child === null || child === undefined) {
-                throw new RequiredError('child','Required parameter child was null or undefined when calling createChildUsingPOST1.');
-            }
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling createChildUsingPOST1.');
-            }
-            const localVarPath = `/api/v1/records/{record}/child`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * The child may already exist or it may need to be created.
+     * @summary Add a child record relationship to the record represented by the path variable.
+     * @param {Record} child child
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createChildUsingPOST1(child: Record, record: string, layout?: string, options: any = {}): FetchArgs {
+      // verify required parameter 'child' is not null or undefined
+      if (child === null || child === undefined) {
+        throw new RequiredError(
+          'child',
+          'Required parameter child was null or undefined when calling createChildUsingPOST1.'
+        );
+      }
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling createChildUsingPOST1.'
+        );
+      }
+      const localVarPath = `/api/v1/records/{record}/child`.replace(
+        `{${'record'}}`,
+        encodeURIComponent(String(record))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (layout !== undefined) {
-                localVarQueryParameter['layout'] = layout;
-            }
+      if (layout !== undefined) {
+        localVarQueryParameter['layout'] = layout;
+      }
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(child || {}) : (child || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(child || {}) : child || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * The parent may already exist or it may need to be created.
-         * @summary Add a parent record relationship to the record represented by the path variable.
-         * @param {Record} parent parent
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createParentUsingPOST(parent: Record, record: string, layout?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'parent' is not null or undefined
-            if (parent === null || parent === undefined) {
-                throw new RequiredError('parent','Required parameter parent was null or undefined when calling createParentUsingPOST.');
-            }
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling createParentUsingPOST.');
-            }
-            const localVarPath = `/api/v1/assignments/{record}/parent`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * The parent may already exist or it may need to be created.
+     * @summary Add a parent record relationship to the record represented by the path variable.
+     * @param {Record} parent parent
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createParentUsingPOST(parent: Record, record: string, layout?: string, options: any = {}): FetchArgs {
+      // verify required parameter 'parent' is not null or undefined
+      if (parent === null || parent === undefined) {
+        throw new RequiredError(
+          'parent',
+          'Required parameter parent was null or undefined when calling createParentUsingPOST.'
+        );
+      }
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling createParentUsingPOST.'
+        );
+      }
+      const localVarPath = `/api/v1/assignments/{record}/parent`.replace(
+        `{${'record'}}`,
+        encodeURIComponent(String(record))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (layout !== undefined) {
-                localVarQueryParameter['layout'] = layout;
-            }
+      if (layout !== undefined) {
+        localVarQueryParameter['layout'] = layout;
+      }
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(parent || {}) : (parent || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(parent || {}) : parent || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * The parent may already exist or it may need to be created.
-         * @summary Add a parent record relationship to the record represented by the path variable.
-         * @param {Record} parent parent
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createParentUsingPOST1(parent: Record, record: string, layout?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'parent' is not null or undefined
-            if (parent === null || parent === undefined) {
-                throw new RequiredError('parent','Required parameter parent was null or undefined when calling createParentUsingPOST1.');
-            }
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling createParentUsingPOST1.');
-            }
-            const localVarPath = `/api/v1/records/{record}/parent`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * The parent may already exist or it may need to be created.
+     * @summary Add a parent record relationship to the record represented by the path variable.
+     * @param {Record} parent parent
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createParentUsingPOST1(parent: Record, record: string, layout?: string, options: any = {}): FetchArgs {
+      // verify required parameter 'parent' is not null or undefined
+      if (parent === null || parent === undefined) {
+        throw new RequiredError(
+          'parent',
+          'Required parameter parent was null or undefined when calling createParentUsingPOST1.'
+        );
+      }
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling createParentUsingPOST1.'
+        );
+      }
+      const localVarPath = `/api/v1/records/{record}/parent`.replace(
+        `{${'record'}}`,
+        encodeURIComponent(String(record))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (layout !== undefined) {
-                localVarQueryParameter['layout'] = layout;
-            }
+      if (layout !== undefined) {
+        localVarQueryParameter['layout'] = layout;
+      }
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(parent || {}) : (parent || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(parent || {}) : parent || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Public assignments must included value map(s). Returns the saved public record.
-         * @summary Create a public record.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createPublicUsingPOST(record: Record, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling createPublicUsingPOST.');
-            }
-            const localVarPath = `/api/v1/assignments/public`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * Public assignments must included value map(s). Returns the saved public record.
+     * @summary Create a public record.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createPublicUsingPOST(record: Record, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling createPublicUsingPOST.'
+        );
+      }
+      const localVarPath = `/api/v1/assignments/public`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(record || {}) : (record || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(record || {}) : record || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Public assignments must included value map(s). Returns the saved public record.
-         * @summary Create a public record.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createPublicUsingPOST1(record: Record, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling createPublicUsingPOST1.');
-            }
-            const localVarPath = `/api/v1/records/public`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * Public assignments must included value map(s). Returns the saved public record.
+     * @summary Create a public record.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createPublicUsingPOST1(record: Record, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling createPublicUsingPOST1.'
+        );
+      }
+      const localVarPath = `/api/v1/records/public`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(record || {}) : (record || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(record || {}) : record || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * The record has a status of IN_PROGRESS. The returned object is the newly created record.
-         * @summary Create an record that is assigned to the creator.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createRecordUsingPOST(record: Record, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling createRecordUsingPOST.');
-            }
-            const localVarPath = `/api/v1/assignments`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * The record has a status of IN_PROGRESS. The returned object is the newly created record.
+     * @summary Create an record that is assigned to the creator.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createRecordUsingPOST(record: Record, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling createRecordUsingPOST.'
+        );
+      }
+      const localVarPath = `/api/v1/assignments`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(record || {}) : (record || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(record || {}) : record || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * The record has a status of IN_PROGRESS. The returned object is the newly created record.
-         * @summary Create an record that is assigned to the creator.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createRecordUsingPOST1(record: Record, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling createRecordUsingPOST1.');
-            }
-            const localVarPath = `/api/v1/records`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * The record has a status of IN_PROGRESS. The returned object is the newly created record.
+     * @summary Create an record that is assigned to the creator.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createRecordUsingPOST1(record: Record, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling createRecordUsingPOST1.'
+        );
+      }
+      const localVarPath = `/api/v1/records`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(record || {}) : (record || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(record || {}) : record || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Delete mapping between two assignments.
-         * @param {string} record record
-         * @param {string} [map] Assignment ID to delete mapping with
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteMappingUsingDELETE(record: string, map?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling deleteMappingUsingDELETE.');
-            }
-            const localVarPath = `/api/v1/assignments/{record}`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Delete mapping between two assignments.
+     * @param {string} record record
+     * @param {string} [map] Assignment ID to delete mapping with
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteMappingUsingDELETE(record: string, map?: string, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling deleteMappingUsingDELETE.'
+        );
+      }
+      const localVarPath = `/api/v1/assignments/{record}`.replace(`{${'record'}}`, encodeURIComponent(String(record)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (map !== undefined) {
-                localVarQueryParameter['map'] = map;
-            }
+      if (map !== undefined) {
+        localVarQueryParameter['map'] = map;
+      }
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Delete an record.
-         * @param {string} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteUsingDELETE2(record: string, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling deleteUsingDELETE2.');
-            }
-            const localVarPath = `/api/v1/records/{record}`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Delete an record.
+     * @param {string} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteUsingDELETE2(record: string, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling deleteUsingDELETE2.'
+        );
+      }
+      const localVarPath = `/api/v1/records/{record}`.replace(`{${'record'}}`, encodeURIComponent(String(record)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return all assignments that are greater than the minimum updated time.
-         * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordByMinUpdatedUsingGET(minUpdated?: string, options: any = {}): FetchArgs {
-            const localVarPath = `/api/v1/assignments`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return all assignments that are greater than the minimum updated time.
+     * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordByMinUpdatedUsingGET(minUpdated?: string, options: any = {}): FetchArgs {
+      const localVarPath = `/api/v1/assignments`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (minUpdated !== undefined) {
-                localVarQueryParameter['minUpdated'] = minUpdated;
-            }
+      if (minUpdated !== undefined) {
+        localVarQueryParameter['minUpdated'] = minUpdated;
+      }
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return children assignments that are greater than the minimum updated time.
-         * @param {'true'} hasChild 
-         * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordChildrenByLastUpdatedUsingGET1(hasChild: 'true', minUpdated?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'hasChild' is not null or undefined
-            if (hasChild === null || hasChild === undefined) {
-                throw new RequiredError('hasChild','Required parameter hasChild was null or undefined when calling getRecordChildrenByLastUpdatedUsingGET1.');
-            }
-            const localVarPath = `/api/v1/records`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return children assignments that are greater than the minimum updated time.
+     * @param {'true'} hasChild
+     * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordChildrenByLastUpdatedUsingGET1(hasChild: 'true', minUpdated?: string, options: any = {}): FetchArgs {
+      // verify required parameter 'hasChild' is not null or undefined
+      if (hasChild === null || hasChild === undefined) {
+        throw new RequiredError(
+          'hasChild',
+          'Required parameter hasChild was null or undefined when calling getRecordChildrenByLastUpdatedUsingGET1.'
+        );
+      }
+      const localVarPath = `/api/v1/records`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (hasChild !== undefined) {
-                localVarQueryParameter['hasChild'] = hasChild;
-            }
+      if (hasChild !== undefined) {
+        localVarQueryParameter['hasChild'] = hasChild;
+      }
 
-            if (minUpdated !== undefined) {
-                localVarQueryParameter['minUpdated'] = minUpdated;
-            }
+      if (minUpdated !== undefined) {
+        localVarQueryParameter['minUpdated'] = minUpdated;
+      }
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
-         * @summary Open and then return the record.
-         * @param {string} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordUsingGET(record: string, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling getRecordUsingGET.');
-            }
-            const localVarPath = `/api/v1/assignments/{record}`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
+     * @summary Open and then return the record.
+     * @param {string} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordUsingGET(record: string, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling getRecordUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/assignments/{record}`.replace(`{${'record'}}`, encodeURIComponent(String(record)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
-         * @summary Open and then return the record.
-         * @param {string} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordUsingGET1(record: string, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling getRecordUsingGET1.');
-            }
-            const localVarPath = `/api/v1/records/{record}`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
+     * @summary Open and then return the record.
+     * @param {string} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordUsingGET1(record: string, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling getRecordUsingGET1.'
+        );
+      }
+      const localVarPath = `/api/v1/records/{record}`.replace(`{${'record'}}`, encodeURIComponent(String(record)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {string} redirect redirect
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        redirectRecordUsingPUT(record: string, record2: Record, redirect: string, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling redirectRecordUsingPUT.');
-            }
-            // verify required parameter 'record2' is not null or undefined
-            if (record2 === null || record2 === undefined) {
-                throw new RequiredError('record2','Required parameter record2 was null or undefined when calling redirectRecordUsingPUT.');
-            }
-            // verify required parameter 'redirect' is not null or undefined
-            if (redirect === null || redirect === undefined) {
-                throw new RequiredError('redirect','Required parameter redirect was null or undefined when calling redirectRecordUsingPUT.');
-            }
-            const localVarPath = `/api/v1/assignments/{record}/redirect/{redirect}`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)))
-                .replace(`{${"redirect"}}`, encodeURIComponent(String(redirect)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {string} redirect redirect
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    redirectRecordUsingPUT(record: string, record2: Record, redirect: string, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling redirectRecordUsingPUT.'
+        );
+      }
+      // verify required parameter 'record2' is not null or undefined
+      if (record2 === null || record2 === undefined) {
+        throw new RequiredError(
+          'record2',
+          'Required parameter record2 was null or undefined when calling redirectRecordUsingPUT.'
+        );
+      }
+      // verify required parameter 'redirect' is not null or undefined
+      if (redirect === null || redirect === undefined) {
+        throw new RequiredError(
+          'redirect',
+          'Required parameter redirect was null or undefined when calling redirectRecordUsingPUT.'
+        );
+      }
+      const localVarPath = `/api/v1/assignments/{record}/redirect/{redirect}`
+        .replace(`{${'record'}}`, encodeURIComponent(String(record)))
+        .replace(`{${'redirect'}}`, encodeURIComponent(String(redirect)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(record2 || {}) : (record2 || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(record2 || {}) : record2 || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {string} redirect redirect
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        redirectRecordUsingPUT1(record: string, record2: Record, redirect: string, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling redirectRecordUsingPUT1.');
-            }
-            // verify required parameter 'record2' is not null or undefined
-            if (record2 === null || record2 === undefined) {
-                throw new RequiredError('record2','Required parameter record2 was null or undefined when calling redirectRecordUsingPUT1.');
-            }
-            // verify required parameter 'redirect' is not null or undefined
-            if (redirect === null || redirect === undefined) {
-                throw new RequiredError('redirect','Required parameter redirect was null or undefined when calling redirectRecordUsingPUT1.');
-            }
-            const localVarPath = `/api/v1/records/{record}/redirect/{redirect}`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)))
-                .replace(`{${"redirect"}}`, encodeURIComponent(String(redirect)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {string} redirect redirect
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    redirectRecordUsingPUT1(record: string, record2: Record, redirect: string, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling redirectRecordUsingPUT1.'
+        );
+      }
+      // verify required parameter 'record2' is not null or undefined
+      if (record2 === null || record2 === undefined) {
+        throw new RequiredError(
+          'record2',
+          'Required parameter record2 was null or undefined when calling redirectRecordUsingPUT1.'
+        );
+      }
+      // verify required parameter 'redirect' is not null or undefined
+      if (redirect === null || redirect === undefined) {
+        throw new RequiredError(
+          'redirect',
+          'Required parameter redirect was null or undefined when calling redirectRecordUsingPUT1.'
+        );
+      }
+      const localVarPath = `/api/v1/records/{record}/redirect/{redirect}`
+        .replace(`{${'record'}}`, encodeURIComponent(String(record)))
+        .replace(`{${'redirect'}}`, encodeURIComponent(String(redirect)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(record2 || {}) : (record2 || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(record2 || {}) : record2 || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        submitRecordUsingPUT(record: string, record2: Record, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling submitRecordUsingPUT.');
-            }
-            // verify required parameter 'record2' is not null or undefined
-            if (record2 === null || record2 === undefined) {
-                throw new RequiredError('record2','Required parameter record2 was null or undefined when calling submitRecordUsingPUT.');
-            }
-            const localVarPath = `/api/v1/assignments/{record}/progress`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    submitRecordUsingPUT(record: string, record2: Record, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling submitRecordUsingPUT.'
+        );
+      }
+      // verify required parameter 'record2' is not null or undefined
+      if (record2 === null || record2 === undefined) {
+        throw new RequiredError(
+          'record2',
+          'Required parameter record2 was null or undefined when calling submitRecordUsingPUT.'
+        );
+      }
+      const localVarPath = `/api/v1/assignments/{record}/progress`.replace(
+        `{${'record'}}`,
+        encodeURIComponent(String(record))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(record2 || {}) : (record2 || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(record2 || {}) : record2 || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        submitRecordUsingPUT1(record: string, record2: Record, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling submitRecordUsingPUT1.');
-            }
-            // verify required parameter 'record2' is not null or undefined
-            if (record2 === null || record2 === undefined) {
-                throw new RequiredError('record2','Required parameter record2 was null or undefined when calling submitRecordUsingPUT1.');
-            }
-            const localVarPath = `/api/v1/records/{record}/progress`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    submitRecordUsingPUT1(record: string, record2: Record, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling submitRecordUsingPUT1.'
+        );
+      }
+      // verify required parameter 'record2' is not null or undefined
+      if (record2 === null || record2 === undefined) {
+        throw new RequiredError(
+          'record2',
+          'Required parameter record2 was null or undefined when calling submitRecordUsingPUT1.'
+        );
+      }
+      const localVarPath = `/api/v1/records/{record}/progress`.replace(
+        `{${'record'}}`,
+        encodeURIComponent(String(record))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(record2 || {}) : (record2 || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(record2 || {}) : record2 || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the updated record.
-         * @summary Updates the record, but does not progress it to the next node.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateRecordUsingPUT(record: string, record2: Record, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling updateRecordUsingPUT.');
-            }
-            // verify required parameter 'record2' is not null or undefined
-            if (record2 === null || record2 === undefined) {
-                throw new RequiredError('record2','Required parameter record2 was null or undefined when calling updateRecordUsingPUT.');
-            }
-            const localVarPath = `/api/v1/assignments/{record}`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * Returns the updated record.
+     * @summary Updates the record, but does not progress it to the next node.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateRecordUsingPUT(record: string, record2: Record, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling updateRecordUsingPUT.'
+        );
+      }
+      // verify required parameter 'record2' is not null or undefined
+      if (record2 === null || record2 === undefined) {
+        throw new RequiredError(
+          'record2',
+          'Required parameter record2 was null or undefined when calling updateRecordUsingPUT.'
+        );
+      }
+      const localVarPath = `/api/v1/assignments/{record}`.replace(`{${'record'}}`, encodeURIComponent(String(record)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(record2 || {}) : (record2 || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(record2 || {}) : record2 || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the updated record.
-         * @summary Updates the record, but does not progress it to the next node.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateRecordUsingPUT1(record: string, record2: Record, options: any = {}): FetchArgs {
-            // verify required parameter 'record' is not null or undefined
-            if (record === null || record === undefined) {
-                throw new RequiredError('record','Required parameter record was null or undefined when calling updateRecordUsingPUT1.');
-            }
-            // verify required parameter 'record2' is not null or undefined
-            if (record2 === null || record2 === undefined) {
-                throw new RequiredError('record2','Required parameter record2 was null or undefined when calling updateRecordUsingPUT1.');
-            }
-            const localVarPath = `/api/v1/records/{record}`
-                .replace(`{${"record"}}`, encodeURIComponent(String(record)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     * Returns the updated record.
+     * @summary Updates the record, but does not progress it to the next node.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateRecordUsingPUT1(record: string, record2: Record, options: any = {}): FetchArgs {
+      // verify required parameter 'record' is not null or undefined
+      if (record === null || record === undefined) {
+        throw new RequiredError(
+          'record',
+          'Required parameter record was null or undefined when calling updateRecordUsingPUT1.'
+        );
+      }
+      // verify required parameter 'record2' is not null or undefined
+      if (record2 === null || record2 === undefined) {
+        throw new RequiredError(
+          'record2',
+          'Required parameter record2 was null or undefined when calling updateRecordUsingPUT1.'
+        );
+      }
+      const localVarPath = `/api/v1/records/{record}`.replace(`{${'record'}}`, encodeURIComponent(String(record)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Record" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(record2 || {}) : (record2 || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Record' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(record2 || {}) : record2 || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
     }
+  };
 };
 
 /**
@@ -11802,633 +13376,750 @@ export const RecordsApiFetchParamCreator = function (configuration?: Configurati
  * @export
  */
 export const RecordsApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * The child may already exist or it may need to be created.
-         * @summary Add a child record relationship to the record represented by the path variable.
-         * @param {Record} child child
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createChildUsingPOST(child: Record, record: string, layout?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<FilteredRecord> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createChildUsingPOST(child, record, layout, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * The child may already exist or it may need to be created.
-         * @summary Add a child record relationship to the record represented by the path variable.
-         * @param {Record} child child
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createChildUsingPOST1(child: Record, record: string, layout?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<FilteredRecord> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createChildUsingPOST1(child, record, layout, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * The parent may already exist or it may need to be created.
-         * @summary Add a parent record relationship to the record represented by the path variable.
-         * @param {Record} parent parent
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createParentUsingPOST(parent: Record, record: string, layout?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<FilteredRecord> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createParentUsingPOST(parent, record, layout, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * The parent may already exist or it may need to be created.
-         * @summary Add a parent record relationship to the record represented by the path variable.
-         * @param {Record} parent parent
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createParentUsingPOST1(parent: Record, record: string, layout?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<FilteredRecord> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createParentUsingPOST1(parent, record, layout, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * Public assignments must included value map(s). Returns the saved public record.
-         * @summary Create a public record.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createPublicUsingPOST(record: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createPublicUsingPOST(record, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * Public assignments must included value map(s). Returns the saved public record.
-         * @summary Create a public record.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createPublicUsingPOST1(record: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createPublicUsingPOST1(record, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * The record has a status of IN_PROGRESS. The returned object is the newly created record.
-         * @summary Create an record that is assigned to the creator.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createRecordUsingPOST(record: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createRecordUsingPOST(record, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * The record has a status of IN_PROGRESS. The returned object is the newly created record.
-         * @summary Create an record that is assigned to the creator.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createRecordUsingPOST1(record: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createRecordUsingPOST1(record, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Delete mapping between two assignments.
-         * @param {string} record record
-         * @param {string} [map] Assignment ID to delete mapping with
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteMappingUsingDELETE(record: string, map?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).deleteMappingUsingDELETE(record, map, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response;
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Delete an record.
-         * @param {string} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteUsingDELETE2(record: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).deleteUsingDELETE2(record, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response;
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return all assignments that are greater than the minimum updated time.
-         * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordByMinUpdatedUsingGET(minUpdated?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Record>> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).getRecordByMinUpdatedUsingGET(minUpdated, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return children assignments that are greater than the minimum updated time.
-         * @param {'true'} hasChild 
-         * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordChildrenByLastUpdatedUsingGET1(hasChild: 'true', minUpdated?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Record>> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).getRecordChildrenByLastUpdatedUsingGET1(hasChild, minUpdated, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
-         * @summary Open and then return the record.
-         * @param {string} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordUsingGET(record: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).getRecordUsingGET(record, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
-         * @summary Open and then return the record.
-         * @param {string} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordUsingGET1(record: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).getRecordUsingGET1(record, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {string} redirect redirect
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        redirectRecordUsingPUT(record: string, record2: Record, redirect: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).redirectRecordUsingPUT(record, record2, redirect, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {string} redirect redirect
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        redirectRecordUsingPUT1(record: string, record2: Record, redirect: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).redirectRecordUsingPUT1(record, record2, redirect, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        submitRecordUsingPUT(record: string, record2: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).submitRecordUsingPUT(record, record2, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        submitRecordUsingPUT1(record: string, record2: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).submitRecordUsingPUT1(record, record2, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * Returns the updated record.
-         * @summary Updates the record, but does not progress it to the next node.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateRecordUsingPUT(record: string, record2: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).updateRecordUsingPUT(record, record2, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * Returns the updated record.
-         * @summary Updates the record, but does not progress it to the next node.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateRecordUsingPUT1(record: string, record2: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
-            const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).updateRecordUsingPUT1(record, record2, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
+  return {
+    /**
+     * The child may already exist or it may need to be created.
+     * @summary Add a child record relationship to the record represented by the path variable.
+     * @param {Record} child child
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createChildUsingPOST(
+      child: Record,
+      record: string,
+      layout?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<FilteredRecord> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createChildUsingPOST(
+        child,
+        record,
+        layout,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * The child may already exist or it may need to be created.
+     * @summary Add a child record relationship to the record represented by the path variable.
+     * @param {Record} child child
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createChildUsingPOST1(
+      child: Record,
+      record: string,
+      layout?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<FilteredRecord> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createChildUsingPOST1(
+        child,
+        record,
+        layout,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * The parent may already exist or it may need to be created.
+     * @summary Add a parent record relationship to the record represented by the path variable.
+     * @param {Record} parent parent
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createParentUsingPOST(
+      parent: Record,
+      record: string,
+      layout?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<FilteredRecord> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createParentUsingPOST(
+        parent,
+        record,
+        layout,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * The parent may already exist or it may need to be created.
+     * @summary Add a parent record relationship to the record represented by the path variable.
+     * @param {Record} parent parent
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createParentUsingPOST1(
+      parent: Record,
+      record: string,
+      layout?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<FilteredRecord> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createParentUsingPOST1(
+        parent,
+        record,
+        layout,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * Public assignments must included value map(s). Returns the saved public record.
+     * @summary Create a public record.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createPublicUsingPOST(record: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createPublicUsingPOST(record, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * Public assignments must included value map(s). Returns the saved public record.
+     * @summary Create a public record.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createPublicUsingPOST1(record: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createPublicUsingPOST1(record, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * The record has a status of IN_PROGRESS. The returned object is the newly created record.
+     * @summary Create an record that is assigned to the creator.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createRecordUsingPOST(record: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createRecordUsingPOST(record, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * The record has a status of IN_PROGRESS. The returned object is the newly created record.
+     * @summary Create an record that is assigned to the creator.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createRecordUsingPOST1(record: Record, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).createRecordUsingPOST1(record, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Delete mapping between two assignments.
+     * @param {string} record record
+     * @param {string} [map] Assignment ID to delete mapping with
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteMappingUsingDELETE(
+      record: string,
+      map?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).deleteMappingUsingDELETE(
+        record,
+        map,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Delete an record.
+     * @param {string} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteUsingDELETE2(record: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).deleteUsingDELETE2(record, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return all assignments that are greater than the minimum updated time.
+     * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordByMinUpdatedUsingGET(
+      minUpdated?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Record>> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).getRecordByMinUpdatedUsingGET(
+        minUpdated,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return children assignments that are greater than the minimum updated time.
+     * @param {'true'} hasChild
+     * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordChildrenByLastUpdatedUsingGET1(
+      hasChild: 'true',
+      minUpdated?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Record>> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).getRecordChildrenByLastUpdatedUsingGET1(
+        hasChild,
+        minUpdated,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
+     * @summary Open and then return the record.
+     * @param {string} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordUsingGET(record: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).getRecordUsingGET(record, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
+     * @summary Open and then return the record.
+     * @param {string} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordUsingGET1(record: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).getRecordUsingGET1(record, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {string} redirect redirect
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    redirectRecordUsingPUT(
+      record: string,
+      record2: Record,
+      redirect: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).redirectRecordUsingPUT(
+        record,
+        record2,
+        redirect,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {string} redirect redirect
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    redirectRecordUsingPUT1(
+      record: string,
+      record2: Record,
+      redirect: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).redirectRecordUsingPUT1(
+        record,
+        record2,
+        redirect,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    submitRecordUsingPUT(
+      record: string,
+      record2: Record,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).submitRecordUsingPUT(
+        record,
+        record2,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    submitRecordUsingPUT1(
+      record: string,
+      record2: Record,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).submitRecordUsingPUT1(
+        record,
+        record2,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * Returns the updated record.
+     * @summary Updates the record, but does not progress it to the next node.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateRecordUsingPUT(
+      record: string,
+      record2: Record,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).updateRecordUsingPUT(
+        record,
+        record2,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     * Returns the updated record.
+     * @summary Updates the record, but does not progress it to the next node.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateRecordUsingPUT1(
+      record: string,
+      record2: Record,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Record> {
+      const localVarFetchArgs = RecordsApiFetchParamCreator(configuration).updateRecordUsingPUT1(
+        record,
+        record2,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
     }
+  };
 };
 
 /**
  * RecordsApi - factory interface
  * @export
  */
-export const RecordsApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         * The child may already exist or it may need to be created.
-         * @summary Add a child record relationship to the record represented by the path variable.
-         * @param {Record} child child
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createChildUsingPOST(child: Record, record: string, layout?: string, options?: any) {
-            return RecordsApiFp(configuration).createChildUsingPOST(child, record, layout, options)(fetch, basePath);
-        },
-        /**
-         * The child may already exist or it may need to be created.
-         * @summary Add a child record relationship to the record represented by the path variable.
-         * @param {Record} child child
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createChildUsingPOST1(child: Record, record: string, layout?: string, options?: any) {
-            return RecordsApiFp(configuration).createChildUsingPOST1(child, record, layout, options)(fetch, basePath);
-        },
-        /**
-         * The parent may already exist or it may need to be created.
-         * @summary Add a parent record relationship to the record represented by the path variable.
-         * @param {Record} parent parent
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createParentUsingPOST(parent: Record, record: string, layout?: string, options?: any) {
-            return RecordsApiFp(configuration).createParentUsingPOST(parent, record, layout, options)(fetch, basePath);
-        },
-        /**
-         * The parent may already exist or it may need to be created.
-         * @summary Add a parent record relationship to the record represented by the path variable.
-         * @param {Record} parent parent
-         * @param {string} record record
-         * @param {string} [layout] Layout ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createParentUsingPOST1(parent: Record, record: string, layout?: string, options?: any) {
-            return RecordsApiFp(configuration).createParentUsingPOST1(parent, record, layout, options)(fetch, basePath);
-        },
-        /**
-         * Public assignments must included value map(s). Returns the saved public record.
-         * @summary Create a public record.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createPublicUsingPOST(record: Record, options?: any) {
-            return RecordsApiFp(configuration).createPublicUsingPOST(record, options)(fetch, basePath);
-        },
-        /**
-         * Public assignments must included value map(s). Returns the saved public record.
-         * @summary Create a public record.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createPublicUsingPOST1(record: Record, options?: any) {
-            return RecordsApiFp(configuration).createPublicUsingPOST1(record, options)(fetch, basePath);
-        },
-        /**
-         * The record has a status of IN_PROGRESS. The returned object is the newly created record.
-         * @summary Create an record that is assigned to the creator.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createRecordUsingPOST(record: Record, options?: any) {
-            return RecordsApiFp(configuration).createRecordUsingPOST(record, options)(fetch, basePath);
-        },
-        /**
-         * The record has a status of IN_PROGRESS. The returned object is the newly created record.
-         * @summary Create an record that is assigned to the creator.
-         * @param {Record} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createRecordUsingPOST1(record: Record, options?: any) {
-            return RecordsApiFp(configuration).createRecordUsingPOST1(record, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Delete mapping between two assignments.
-         * @param {string} record record
-         * @param {string} [map] Assignment ID to delete mapping with
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteMappingUsingDELETE(record: string, map?: string, options?: any) {
-            return RecordsApiFp(configuration).deleteMappingUsingDELETE(record, map, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Delete an record.
-         * @param {string} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteUsingDELETE2(record: string, options?: any) {
-            return RecordsApiFp(configuration).deleteUsingDELETE2(record, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return all assignments that are greater than the minimum updated time.
-         * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordByMinUpdatedUsingGET(minUpdated?: string, options?: any) {
-            return RecordsApiFp(configuration).getRecordByMinUpdatedUsingGET(minUpdated, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return children assignments that are greater than the minimum updated time.
-         * @param {'true'} hasChild 
-         * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordChildrenByLastUpdatedUsingGET1(hasChild: 'true', minUpdated?: string, options?: any) {
-            return RecordsApiFp(configuration).getRecordChildrenByLastUpdatedUsingGET1(hasChild, minUpdated, options)(fetch, basePath);
-        },
-        /**
-         * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
-         * @summary Open and then return the record.
-         * @param {string} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordUsingGET(record: string, options?: any) {
-            return RecordsApiFp(configuration).getRecordUsingGET(record, options)(fetch, basePath);
-        },
-        /**
-         * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
-         * @summary Open and then return the record.
-         * @param {string} record record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRecordUsingGET1(record: string, options?: any) {
-            return RecordsApiFp(configuration).getRecordUsingGET1(record, options)(fetch, basePath);
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {string} redirect redirect
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        redirectRecordUsingPUT(record: string, record2: Record, redirect: string, options?: any) {
-            return RecordsApiFp(configuration).redirectRecordUsingPUT(record, record2, redirect, options)(fetch, basePath);
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {string} redirect redirect
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        redirectRecordUsingPUT1(record: string, record2: Record, redirect: string, options?: any) {
-            return RecordsApiFp(configuration).redirectRecordUsingPUT1(record, record2, redirect, options)(fetch, basePath);
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        submitRecordUsingPUT(record: string, record2: Record, options?: any) {
-            return RecordsApiFp(configuration).submitRecordUsingPUT(record, record2, options)(fetch, basePath);
-        },
-        /**
-         * Returns the saved record.
-         * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        submitRecordUsingPUT1(record: string, record2: Record, options?: any) {
-            return RecordsApiFp(configuration).submitRecordUsingPUT1(record, record2, options)(fetch, basePath);
-        },
-        /**
-         * Returns the updated record.
-         * @summary Updates the record, but does not progress it to the next node.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateRecordUsingPUT(record: string, record2: Record, options?: any) {
-            return RecordsApiFp(configuration).updateRecordUsingPUT(record, record2, options)(fetch, basePath);
-        },
-        /**
-         * Returns the updated record.
-         * @summary Updates the record, but does not progress it to the next node.
-         * @param {string} record record
-         * @param {Record} record2 record
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateRecordUsingPUT1(record: string, record2: Record, options?: any) {
-            return RecordsApiFp(configuration).updateRecordUsingPUT1(record, record2, options)(fetch, basePath);
-        },
-    };
+export const RecordsApiFactory = function(configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+  return {
+    /**
+     * The child may already exist or it may need to be created.
+     * @summary Add a child record relationship to the record represented by the path variable.
+     * @param {Record} child child
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createChildUsingPOST(child: Record, record: string, layout?: string, options?: any) {
+      return RecordsApiFp(configuration).createChildUsingPOST(child, record, layout, options)(fetch, basePath);
+    },
+    /**
+     * The child may already exist or it may need to be created.
+     * @summary Add a child record relationship to the record represented by the path variable.
+     * @param {Record} child child
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createChildUsingPOST1(child: Record, record: string, layout?: string, options?: any) {
+      return RecordsApiFp(configuration).createChildUsingPOST1(child, record, layout, options)(fetch, basePath);
+    },
+    /**
+     * The parent may already exist or it may need to be created.
+     * @summary Add a parent record relationship to the record represented by the path variable.
+     * @param {Record} parent parent
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createParentUsingPOST(parent: Record, record: string, layout?: string, options?: any) {
+      return RecordsApiFp(configuration).createParentUsingPOST(parent, record, layout, options)(fetch, basePath);
+    },
+    /**
+     * The parent may already exist or it may need to be created.
+     * @summary Add a parent record relationship to the record represented by the path variable.
+     * @param {Record} parent parent
+     * @param {string} record record
+     * @param {string} [layout] Layout ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createParentUsingPOST1(parent: Record, record: string, layout?: string, options?: any) {
+      return RecordsApiFp(configuration).createParentUsingPOST1(parent, record, layout, options)(fetch, basePath);
+    },
+    /**
+     * Public assignments must included value map(s). Returns the saved public record.
+     * @summary Create a public record.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createPublicUsingPOST(record: Record, options?: any) {
+      return RecordsApiFp(configuration).createPublicUsingPOST(record, options)(fetch, basePath);
+    },
+    /**
+     * Public assignments must included value map(s). Returns the saved public record.
+     * @summary Create a public record.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createPublicUsingPOST1(record: Record, options?: any) {
+      return RecordsApiFp(configuration).createPublicUsingPOST1(record, options)(fetch, basePath);
+    },
+    /**
+     * The record has a status of IN_PROGRESS. The returned object is the newly created record.
+     * @summary Create an record that is assigned to the creator.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createRecordUsingPOST(record: Record, options?: any) {
+      return RecordsApiFp(configuration).createRecordUsingPOST(record, options)(fetch, basePath);
+    },
+    /**
+     * The record has a status of IN_PROGRESS. The returned object is the newly created record.
+     * @summary Create an record that is assigned to the creator.
+     * @param {Record} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createRecordUsingPOST1(record: Record, options?: any) {
+      return RecordsApiFp(configuration).createRecordUsingPOST1(record, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Delete mapping between two assignments.
+     * @param {string} record record
+     * @param {string} [map] Assignment ID to delete mapping with
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteMappingUsingDELETE(record: string, map?: string, options?: any) {
+      return RecordsApiFp(configuration).deleteMappingUsingDELETE(record, map, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Delete an record.
+     * @param {string} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteUsingDELETE2(record: string, options?: any) {
+      return RecordsApiFp(configuration).deleteUsingDELETE2(record, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return all assignments that are greater than the minimum updated time.
+     * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordByMinUpdatedUsingGET(minUpdated?: string, options?: any) {
+      return RecordsApiFp(configuration).getRecordByMinUpdatedUsingGET(minUpdated, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return children assignments that are greater than the minimum updated time.
+     * @param {'true'} hasChild
+     * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordChildrenByLastUpdatedUsingGET1(hasChild: 'true', minUpdated?: string, options?: any) {
+      return RecordsApiFp(configuration).getRecordChildrenByLastUpdatedUsingGET1(hasChild, minUpdated, options)(
+        fetch,
+        basePath
+      );
+    },
+    /**
+     * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
+     * @summary Open and then return the record.
+     * @param {string} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordUsingGET(record: string, options?: any) {
+      return RecordsApiFp(configuration).getRecordUsingGET(record, options)(fetch, basePath);
+    },
+    /**
+     * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
+     * @summary Open and then return the record.
+     * @param {string} record record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecordUsingGET1(record: string, options?: any) {
+      return RecordsApiFp(configuration).getRecordUsingGET1(record, options)(fetch, basePath);
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {string} redirect redirect
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    redirectRecordUsingPUT(record: string, record2: Record, redirect: string, options?: any) {
+      return RecordsApiFp(configuration).redirectRecordUsingPUT(record, record2, redirect, options)(fetch, basePath);
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {string} redirect redirect
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    redirectRecordUsingPUT1(record: string, record2: Record, redirect: string, options?: any) {
+      return RecordsApiFp(configuration).redirectRecordUsingPUT1(record, record2, redirect, options)(fetch, basePath);
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    submitRecordUsingPUT(record: string, record2: Record, options?: any) {
+      return RecordsApiFp(configuration).submitRecordUsingPUT(record, record2, options)(fetch, basePath);
+    },
+    /**
+     * Returns the saved record.
+     * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    submitRecordUsingPUT1(record: string, record2: Record, options?: any) {
+      return RecordsApiFp(configuration).submitRecordUsingPUT1(record, record2, options)(fetch, basePath);
+    },
+    /**
+     * Returns the updated record.
+     * @summary Updates the record, but does not progress it to the next node.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateRecordUsingPUT(record: string, record2: Record, options?: any) {
+      return RecordsApiFp(configuration).updateRecordUsingPUT(record, record2, options)(fetch, basePath);
+    },
+    /**
+     * Returns the updated record.
+     * @summary Updates the record, but does not progress it to the next node.
+     * @param {string} record record
+     * @param {Record} record2 record
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateRecordUsingPUT1(record: string, record2: Record, options?: any) {
+      return RecordsApiFp(configuration).updateRecordUsingPUT1(record, record2, options)(fetch, basePath);
+    }
+  };
 };
 
 /**
@@ -12437,224 +14128,223 @@ export const RecordsApiFactory = function (configuration?: Configuration, fetch?
  * @interface RecordsApi
  */
 export interface RecordsApiInterface {
-    /**
-     * The child may already exist or it may need to be created.
-     * @summary Add a child record relationship to the record represented by the path variable.
-     * @param {Record} child child
-     * @param {string} record record
-     * @param {string} [layout] Layout ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    createChildUsingPOST(child: Record, record: string, layout?: string, options?: any): Promise<FilteredRecord>;
+  /**
+   * The child may already exist or it may need to be created.
+   * @summary Add a child record relationship to the record represented by the path variable.
+   * @param {Record} child child
+   * @param {string} record record
+   * @param {string} [layout] Layout ID
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  createChildUsingPOST(child: Record, record: string, layout?: string, options?: any): Promise<FilteredRecord>;
 
-    /**
-     * The child may already exist or it may need to be created.
-     * @summary Add a child record relationship to the record represented by the path variable.
-     * @param {Record} child child
-     * @param {string} record record
-     * @param {string} [layout] Layout ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    createChildUsingPOST1(child: Record, record: string, layout?: string, options?: any): Promise<FilteredRecord>;
+  /**
+   * The child may already exist or it may need to be created.
+   * @summary Add a child record relationship to the record represented by the path variable.
+   * @param {Record} child child
+   * @param {string} record record
+   * @param {string} [layout] Layout ID
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  createChildUsingPOST1(child: Record, record: string, layout?: string, options?: any): Promise<FilteredRecord>;
 
-    /**
-     * The parent may already exist or it may need to be created.
-     * @summary Add a parent record relationship to the record represented by the path variable.
-     * @param {Record} parent parent
-     * @param {string} record record
-     * @param {string} [layout] Layout ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    createParentUsingPOST(parent: Record, record: string, layout?: string, options?: any): Promise<FilteredRecord>;
+  /**
+   * The parent may already exist or it may need to be created.
+   * @summary Add a parent record relationship to the record represented by the path variable.
+   * @param {Record} parent parent
+   * @param {string} record record
+   * @param {string} [layout] Layout ID
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  createParentUsingPOST(parent: Record, record: string, layout?: string, options?: any): Promise<FilteredRecord>;
 
-    /**
-     * The parent may already exist or it may need to be created.
-     * @summary Add a parent record relationship to the record represented by the path variable.
-     * @param {Record} parent parent
-     * @param {string} record record
-     * @param {string} [layout] Layout ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    createParentUsingPOST1(parent: Record, record: string, layout?: string, options?: any): Promise<FilteredRecord>;
+  /**
+   * The parent may already exist or it may need to be created.
+   * @summary Add a parent record relationship to the record represented by the path variable.
+   * @param {Record} parent parent
+   * @param {string} record record
+   * @param {string} [layout] Layout ID
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  createParentUsingPOST1(parent: Record, record: string, layout?: string, options?: any): Promise<FilteredRecord>;
 
-    /**
-     * Public assignments must included value map(s). Returns the saved public record.
-     * @summary Create a public record.
-     * @param {Record} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    createPublicUsingPOST(record: Record, options?: any): Promise<Record>;
+  /**
+   * Public assignments must included value map(s). Returns the saved public record.
+   * @summary Create a public record.
+   * @param {Record} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  createPublicUsingPOST(record: Record, options?: any): Promise<Record>;
 
-    /**
-     * Public assignments must included value map(s). Returns the saved public record.
-     * @summary Create a public record.
-     * @param {Record} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    createPublicUsingPOST1(record: Record, options?: any): Promise<Record>;
+  /**
+   * Public assignments must included value map(s). Returns the saved public record.
+   * @summary Create a public record.
+   * @param {Record} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  createPublicUsingPOST1(record: Record, options?: any): Promise<Record>;
 
-    /**
-     * The record has a status of IN_PROGRESS. The returned object is the newly created record.
-     * @summary Create an record that is assigned to the creator.
-     * @param {Record} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    createRecordUsingPOST(record: Record, options?: any): Promise<Record>;
+  /**
+   * The record has a status of IN_PROGRESS. The returned object is the newly created record.
+   * @summary Create an record that is assigned to the creator.
+   * @param {Record} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  createRecordUsingPOST(record: Record, options?: any): Promise<Record>;
 
-    /**
-     * The record has a status of IN_PROGRESS. The returned object is the newly created record.
-     * @summary Create an record that is assigned to the creator.
-     * @param {Record} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    createRecordUsingPOST1(record: Record, options?: any): Promise<Record>;
+  /**
+   * The record has a status of IN_PROGRESS. The returned object is the newly created record.
+   * @summary Create an record that is assigned to the creator.
+   * @param {Record} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  createRecordUsingPOST1(record: Record, options?: any): Promise<Record>;
 
-    /**
-     * 
-     * @summary Delete mapping between two assignments.
-     * @param {string} record record
-     * @param {string} [map] Assignment ID to delete mapping with
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    deleteMappingUsingDELETE(record: string, map?: string, options?: any): Promise<{}>;
+  /**
+   *
+   * @summary Delete mapping between two assignments.
+   * @param {string} record record
+   * @param {string} [map] Assignment ID to delete mapping with
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  deleteMappingUsingDELETE(record: string, map?: string, options?: any): Promise<{}>;
 
-    /**
-     * 
-     * @summary Delete an record.
-     * @param {string} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    deleteUsingDELETE2(record: string, options?: any): Promise<{}>;
+  /**
+   *
+   * @summary Delete an record.
+   * @param {string} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  deleteUsingDELETE2(record: string, options?: any): Promise<{}>;
 
-    /**
-     * 
-     * @summary Return all assignments that are greater than the minimum updated time.
-     * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    getRecordByMinUpdatedUsingGET(minUpdated?: string, options?: any): Promise<Array<Record>>;
+  /**
+   *
+   * @summary Return all assignments that are greater than the minimum updated time.
+   * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  getRecordByMinUpdatedUsingGET(minUpdated?: string, options?: any): Promise<Array<Record>>;
 
-    /**
-     * 
-     * @summary Return children assignments that are greater than the minimum updated time.
-     * @param {'true'} hasChild 
-     * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    getRecordChildrenByLastUpdatedUsingGET1(hasChild: 'true', minUpdated?: string, options?: any): Promise<Array<Record>>;
+  /**
+   *
+   * @summary Return children assignments that are greater than the minimum updated time.
+   * @param {'true'} hasChild
+   * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  getRecordChildrenByLastUpdatedUsingGET1(hasChild: 'true', minUpdated?: string, options?: any): Promise<Array<Record>>;
 
-    /**
-     * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
-     * @summary Open and then return the record.
-     * @param {string} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    getRecordUsingGET(record: string, options?: any): Promise<Record>;
+  /**
+   * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
+   * @summary Open and then return the record.
+   * @param {string} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  getRecordUsingGET(record: string, options?: any): Promise<Record>;
 
-    /**
-     * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
-     * @summary Open and then return the record.
-     * @param {string} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    getRecordUsingGET1(record: string, options?: any): Promise<Record>;
+  /**
+   * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
+   * @summary Open and then return the record.
+   * @param {string} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  getRecordUsingGET1(record: string, options?: any): Promise<Record>;
 
-    /**
-     * Returns the saved record.
-     * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {string} redirect redirect
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    redirectRecordUsingPUT(record: string, record2: Record, redirect: string, options?: any): Promise<Record>;
+  /**
+   * Returns the saved record.
+   * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {string} redirect redirect
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  redirectRecordUsingPUT(record: string, record2: Record, redirect: string, options?: any): Promise<Record>;
 
-    /**
-     * Returns the saved record.
-     * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {string} redirect redirect
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    redirectRecordUsingPUT1(record: string, record2: Record, redirect: string, options?: any): Promise<Record>;
+  /**
+   * Returns the saved record.
+   * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {string} redirect redirect
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  redirectRecordUsingPUT1(record: string, record2: Record, redirect: string, options?: any): Promise<Record>;
 
-    /**
-     * Returns the saved record.
-     * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    submitRecordUsingPUT(record: string, record2: Record, options?: any): Promise<Record>;
+  /**
+   * Returns the saved record.
+   * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  submitRecordUsingPUT(record: string, record2: Record, options?: any): Promise<Record>;
 
-    /**
-     * Returns the saved record.
-     * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    submitRecordUsingPUT1(record: string, record2: Record, options?: any): Promise<Record>;
+  /**
+   * Returns the saved record.
+   * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  submitRecordUsingPUT1(record: string, record2: Record, options?: any): Promise<Record>;
 
-    /**
-     * Returns the updated record.
-     * @summary Updates the record, but does not progress it to the next node.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    updateRecordUsingPUT(record: string, record2: Record, options?: any): Promise<Record>;
+  /**
+   * Returns the updated record.
+   * @summary Updates the record, but does not progress it to the next node.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  updateRecordUsingPUT(record: string, record2: Record, options?: any): Promise<Record>;
 
-    /**
-     * Returns the updated record.
-     * @summary Updates the record, but does not progress it to the next node.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApiInterface
-     */
-    updateRecordUsingPUT1(record: string, record2: Record, options?: any): Promise<Record>;
-
+  /**
+   * Returns the updated record.
+   * @summary Updates the record, but does not progress it to the next node.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApiInterface
+   */
+  updateRecordUsingPUT1(record: string, record2: Record, options?: any): Promise<Record>;
 }
 
 /**
@@ -12664,351 +14354,375 @@ export interface RecordsApiInterface {
  * @extends {BaseAPI}
  */
 export class RecordsApi extends BaseAPI implements RecordsApiInterface {
-    /**
-     * The child may already exist or it may need to be created.
-     * @summary Add a child record relationship to the record represented by the path variable.
-     * @param {Record} child child
-     * @param {string} record record
-     * @param {string} [layout] Layout ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public createChildUsingPOST(child: Record, record: string, layout?: string, options?: any) {
-        return RecordsApiFp(this.configuration).createChildUsingPOST(child, record, layout, options)(this.fetch, this.basePath);
-    }
+  /**
+   * The child may already exist or it may need to be created.
+   * @summary Add a child record relationship to the record represented by the path variable.
+   * @param {Record} child child
+   * @param {string} record record
+   * @param {string} [layout] Layout ID
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public createChildUsingPOST(child: Record, record: string, layout?: string, options?: any) {
+    return RecordsApiFp(this.configuration).createChildUsingPOST(child, record, layout, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * The child may already exist or it may need to be created.
-     * @summary Add a child record relationship to the record represented by the path variable.
-     * @param {Record} child child
-     * @param {string} record record
-     * @param {string} [layout] Layout ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public createChildUsingPOST1(child: Record, record: string, layout?: string, options?: any) {
-        return RecordsApiFp(this.configuration).createChildUsingPOST1(child, record, layout, options)(this.fetch, this.basePath);
-    }
+  /**
+   * The child may already exist or it may need to be created.
+   * @summary Add a child record relationship to the record represented by the path variable.
+   * @param {Record} child child
+   * @param {string} record record
+   * @param {string} [layout] Layout ID
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public createChildUsingPOST1(child: Record, record: string, layout?: string, options?: any) {
+    return RecordsApiFp(this.configuration).createChildUsingPOST1(child, record, layout, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * The parent may already exist or it may need to be created.
-     * @summary Add a parent record relationship to the record represented by the path variable.
-     * @param {Record} parent parent
-     * @param {string} record record
-     * @param {string} [layout] Layout ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public createParentUsingPOST(parent: Record, record: string, layout?: string, options?: any) {
-        return RecordsApiFp(this.configuration).createParentUsingPOST(parent, record, layout, options)(this.fetch, this.basePath);
-    }
+  /**
+   * The parent may already exist or it may need to be created.
+   * @summary Add a parent record relationship to the record represented by the path variable.
+   * @param {Record} parent parent
+   * @param {string} record record
+   * @param {string} [layout] Layout ID
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public createParentUsingPOST(parent: Record, record: string, layout?: string, options?: any) {
+    return RecordsApiFp(this.configuration).createParentUsingPOST(parent, record, layout, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * The parent may already exist or it may need to be created.
-     * @summary Add a parent record relationship to the record represented by the path variable.
-     * @param {Record} parent parent
-     * @param {string} record record
-     * @param {string} [layout] Layout ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public createParentUsingPOST1(parent: Record, record: string, layout?: string, options?: any) {
-        return RecordsApiFp(this.configuration).createParentUsingPOST1(parent, record, layout, options)(this.fetch, this.basePath);
-    }
+  /**
+   * The parent may already exist or it may need to be created.
+   * @summary Add a parent record relationship to the record represented by the path variable.
+   * @param {Record} parent parent
+   * @param {string} record record
+   * @param {string} [layout] Layout ID
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public createParentUsingPOST1(parent: Record, record: string, layout?: string, options?: any) {
+    return RecordsApiFp(this.configuration).createParentUsingPOST1(parent, record, layout, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * Public assignments must included value map(s). Returns the saved public record.
-     * @summary Create a public record.
-     * @param {Record} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public createPublicUsingPOST(record: Record, options?: any) {
-        return RecordsApiFp(this.configuration).createPublicUsingPOST(record, options)(this.fetch, this.basePath);
-    }
+  /**
+   * Public assignments must included value map(s). Returns the saved public record.
+   * @summary Create a public record.
+   * @param {Record} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public createPublicUsingPOST(record: Record, options?: any) {
+    return RecordsApiFp(this.configuration).createPublicUsingPOST(record, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * Public assignments must included value map(s). Returns the saved public record.
-     * @summary Create a public record.
-     * @param {Record} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public createPublicUsingPOST1(record: Record, options?: any) {
-        return RecordsApiFp(this.configuration).createPublicUsingPOST1(record, options)(this.fetch, this.basePath);
-    }
+  /**
+   * Public assignments must included value map(s). Returns the saved public record.
+   * @summary Create a public record.
+   * @param {Record} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public createPublicUsingPOST1(record: Record, options?: any) {
+    return RecordsApiFp(this.configuration).createPublicUsingPOST1(record, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * The record has a status of IN_PROGRESS. The returned object is the newly created record.
-     * @summary Create an record that is assigned to the creator.
-     * @param {Record} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public createRecordUsingPOST(record: Record, options?: any) {
-        return RecordsApiFp(this.configuration).createRecordUsingPOST(record, options)(this.fetch, this.basePath);
-    }
+  /**
+   * The record has a status of IN_PROGRESS. The returned object is the newly created record.
+   * @summary Create an record that is assigned to the creator.
+   * @param {Record} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public createRecordUsingPOST(record: Record, options?: any) {
+    return RecordsApiFp(this.configuration).createRecordUsingPOST(record, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * The record has a status of IN_PROGRESS. The returned object is the newly created record.
-     * @summary Create an record that is assigned to the creator.
-     * @param {Record} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public createRecordUsingPOST1(record: Record, options?: any) {
-        return RecordsApiFp(this.configuration).createRecordUsingPOST1(record, options)(this.fetch, this.basePath);
-    }
+  /**
+   * The record has a status of IN_PROGRESS. The returned object is the newly created record.
+   * @summary Create an record that is assigned to the creator.
+   * @param {Record} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public createRecordUsingPOST1(record: Record, options?: any) {
+    return RecordsApiFp(this.configuration).createRecordUsingPOST1(record, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Delete mapping between two assignments.
-     * @param {string} record record
-     * @param {string} [map] Assignment ID to delete mapping with
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public deleteMappingUsingDELETE(record: string, map?: string, options?: any) {
-        return RecordsApiFp(this.configuration).deleteMappingUsingDELETE(record, map, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Delete mapping between two assignments.
+   * @param {string} record record
+   * @param {string} [map] Assignment ID to delete mapping with
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public deleteMappingUsingDELETE(record: string, map?: string, options?: any) {
+    return RecordsApiFp(this.configuration).deleteMappingUsingDELETE(record, map, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Delete an record.
-     * @param {string} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public deleteUsingDELETE2(record: string, options?: any) {
-        return RecordsApiFp(this.configuration).deleteUsingDELETE2(record, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Delete an record.
+   * @param {string} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public deleteUsingDELETE2(record: string, options?: any) {
+    return RecordsApiFp(this.configuration).deleteUsingDELETE2(record, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return all assignments that are greater than the minimum updated time.
-     * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public getRecordByMinUpdatedUsingGET(minUpdated?: string, options?: any) {
-        return RecordsApiFp(this.configuration).getRecordByMinUpdatedUsingGET(minUpdated, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return all assignments that are greater than the minimum updated time.
+   * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public getRecordByMinUpdatedUsingGET(minUpdated?: string, options?: any) {
+    return RecordsApiFp(this.configuration).getRecordByMinUpdatedUsingGET(minUpdated, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * 
-     * @summary Return children assignments that are greater than the minimum updated time.
-     * @param {'true'} hasChild 
-     * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public getRecordChildrenByLastUpdatedUsingGET1(hasChild: 'true', minUpdated?: string, options?: any) {
-        return RecordsApiFp(this.configuration).getRecordChildrenByLastUpdatedUsingGET1(hasChild, minUpdated, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return children assignments that are greater than the minimum updated time.
+   * @param {'true'} hasChild
+   * @param {string} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public getRecordChildrenByLastUpdatedUsingGET1(hasChild: 'true', minUpdated?: string, options?: any) {
+    return RecordsApiFp(this.configuration).getRecordChildrenByLastUpdatedUsingGET1(hasChild, minUpdated, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
-     * @summary Open and then return the record.
-     * @param {string} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public getRecordUsingGET(record: string, options?: any) {
-        return RecordsApiFp(this.configuration).getRecordUsingGET(record, options)(this.fetch, this.basePath);
-    }
+  /**
+   * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
+   * @summary Open and then return the record.
+   * @param {string} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public getRecordUsingGET(record: string, options?: any) {
+    return RecordsApiFp(this.configuration).getRecordUsingGET(record, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
-     * @summary Open and then return the record.
-     * @param {string} record record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public getRecordUsingGET1(record: string, options?: any) {
-        return RecordsApiFp(this.configuration).getRecordUsingGET1(record, options)(this.fetch, this.basePath);
-    }
+  /**
+   * Assignment active date is updated to current time if the record is assigned to the principal user. This will transition the record's status from not started to in progress.
+   * @summary Open and then return the record.
+   * @param {string} record record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public getRecordUsingGET1(record: string, options?: any) {
+    return RecordsApiFp(this.configuration).getRecordUsingGET1(record, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * Returns the saved record.
-     * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {string} redirect redirect
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public redirectRecordUsingPUT(record: string, record2: Record, redirect: string, options?: any) {
-        return RecordsApiFp(this.configuration).redirectRecordUsingPUT(record, record2, redirect, options)(this.fetch, this.basePath);
-    }
+  /**
+   * Returns the saved record.
+   * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {string} redirect redirect
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public redirectRecordUsingPUT(record: string, record2: Record, redirect: string, options?: any) {
+    return RecordsApiFp(this.configuration).redirectRecordUsingPUT(record, record2, redirect, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * Returns the saved record.
-     * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {string} redirect redirect
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public redirectRecordUsingPUT1(record: string, record2: Record, redirect: string, options?: any) {
-        return RecordsApiFp(this.configuration).redirectRecordUsingPUT1(record, record2, redirect, options)(this.fetch, this.basePath);
-    }
+  /**
+   * Returns the saved record.
+   * @summary Updates the record, redirects it to the appropriate node, and optionally assigns it to another user. Redirects don't trigger record validation.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {string} redirect redirect
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public redirectRecordUsingPUT1(record: string, record2: Record, redirect: string, options?: any) {
+    return RecordsApiFp(this.configuration).redirectRecordUsingPUT1(record, record2, redirect, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * Returns the saved record.
-     * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public submitRecordUsingPUT(record: string, record2: Record, options?: any) {
-        return RecordsApiFp(this.configuration).submitRecordUsingPUT(record, record2, options)(this.fetch, this.basePath);
-    }
+  /**
+   * Returns the saved record.
+   * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public submitRecordUsingPUT(record: string, record2: Record, options?: any) {
+    return RecordsApiFp(this.configuration).submitRecordUsingPUT(record, record2, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * Returns the saved record.
-     * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public submitRecordUsingPUT1(record: string, record2: Record, options?: any) {
-        return RecordsApiFp(this.configuration).submitRecordUsingPUT1(record, record2, options)(this.fetch, this.basePath);
-    }
+  /**
+   * Returns the saved record.
+   * @summary Updates the record, progresses it to the appropriate node, and optionally assigns it to another user.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public submitRecordUsingPUT1(record: string, record2: Record, options?: any) {
+    return RecordsApiFp(this.configuration).submitRecordUsingPUT1(record, record2, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * Returns the updated record.
-     * @summary Updates the record, but does not progress it to the next node.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public updateRecordUsingPUT(record: string, record2: Record, options?: any) {
-        return RecordsApiFp(this.configuration).updateRecordUsingPUT(record, record2, options)(this.fetch, this.basePath);
-    }
+  /**
+   * Returns the updated record.
+   * @summary Updates the record, but does not progress it to the next node.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public updateRecordUsingPUT(record: string, record2: Record, options?: any) {
+    return RecordsApiFp(this.configuration).updateRecordUsingPUT(record, record2, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * Returns the updated record.
-     * @summary Updates the record, but does not progress it to the next node.
-     * @param {string} record record
-     * @param {Record} record2 record
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RecordsApi
-     */
-    public updateRecordUsingPUT1(record: string, record2: Record, options?: any) {
-        return RecordsApiFp(this.configuration).updateRecordUsingPUT1(record, record2, options)(this.fetch, this.basePath);
-    }
-
+  /**
+   * Returns the updated record.
+   * @summary Updates the record, but does not progress it to the next node.
+   * @param {string} record record
+   * @param {Record} record2 record
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RecordsApi
+   */
+  public updateRecordUsingPUT1(record: string, record2: Record, options?: any) {
+    return RecordsApiFp(this.configuration).updateRecordUsingPUT1(record, record2, options)(this.fetch, this.basePath);
+  }
 }
 
 /**
  * RolesApi - fetch parameter creator
  * @export
  */
-export const RolesApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a new role.
-         * @param {Role} role role
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST3(role: Role, options: any = {}): FetchArgs {
-            // verify required parameter 'role' is not null or undefined
-            if (role === null || role === undefined) {
-                throw new RequiredError('role','Required parameter role was null or undefined when calling createUsingPOST3.');
-            }
-            const localVarPath = `/api/v1/roles`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+export const RolesApiFetchParamCreator = function(configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @summary Create a new role.
+     * @param {Role} role role
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST3(role: Role, options: any = {}): FetchArgs {
+      // verify required parameter 'role' is not null or undefined
+      if (role === null || role === undefined) {
+        throw new RequiredError('role', 'Required parameter role was null or undefined when calling createUsingPOST3.');
+      }
+      const localVarPath = `/api/v1/roles`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Role" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(role || {}) : (role || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'Role' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(role || {}) : role || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return all roles that are active and unlocked.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET(options: any = {}): FetchArgs {
-            const localVarPath = `/api/v1/roles`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return all roles that are active and unlocked.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET(options: any = {}): FetchArgs {
+      const localVarPath = `/api/v1/roles`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of roles that are active and associated to the logged in principal user.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByUserUsingGET(options: any = {}): FetchArgs {
-            const localVarPath = `/api/v1/roles/user`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a list of roles that are active and associated to the logged in principal user.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByUserUsingGET(options: any = {}): FetchArgs {
+      const localVarPath = `/api/v1/roles/user`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
     }
+  };
 };
 
 /**
@@ -13016,100 +14730,100 @@ export const RolesApiFetchParamCreator = function (configuration?: Configuration
  * @export
  */
 export const RolesApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a new role.
-         * @param {Role} role role
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST3(role: Role, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Role> {
-            const localVarFetchArgs = RolesApiFetchParamCreator(configuration).createUsingPOST3(role, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return all roles that are active and unlocked.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Role>> {
-            const localVarFetchArgs = RolesApiFetchParamCreator(configuration).findAllUsingGET(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of roles that are active and associated to the logged in principal user.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByUserUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Role>> {
-            const localVarFetchArgs = RolesApiFetchParamCreator(configuration).findByUserUsingGET(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
+  return {
+    /**
+     *
+     * @summary Create a new role.
+     * @param {Role} role role
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST3(role: Role, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Role> {
+      const localVarFetchArgs = RolesApiFetchParamCreator(configuration).createUsingPOST3(role, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return all roles that are active and unlocked.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Role>> {
+      const localVarFetchArgs = RolesApiFetchParamCreator(configuration).findAllUsingGET(options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a list of roles that are active and associated to the logged in principal user.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByUserUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Role>> {
+      const localVarFetchArgs = RolesApiFetchParamCreator(configuration).findByUserUsingGET(options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
     }
+  };
 };
 
 /**
  * RolesApi - factory interface
  * @export
  */
-export const RolesApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         * 
-         * @summary Create a new role.
-         * @param {Role} role role
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST3(role: Role, options?: any) {
-            return RolesApiFp(configuration).createUsingPOST3(role, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return all roles that are active and unlocked.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET(options?: any) {
-            return RolesApiFp(configuration).findAllUsingGET(options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a list of roles that are active and associated to the logged in principal user.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByUserUsingGET(options?: any) {
-            return RolesApiFp(configuration).findByUserUsingGET(options)(fetch, basePath);
-        },
-    };
+export const RolesApiFactory = function(configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+  return {
+    /**
+     *
+     * @summary Create a new role.
+     * @param {Role} role role
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST3(role: Role, options?: any) {
+      return RolesApiFp(configuration).createUsingPOST3(role, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return all roles that are active and unlocked.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET(options?: any) {
+      return RolesApiFp(configuration).findAllUsingGET(options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a list of roles that are active and associated to the logged in principal user.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByUserUsingGET(options?: any) {
+      return RolesApiFp(configuration).findByUserUsingGET(options)(fetch, basePath);
+    }
+  };
 };
 
 /**
@@ -13118,34 +14832,33 @@ export const RolesApiFactory = function (configuration?: Configuration, fetch?: 
  * @interface RolesApi
  */
 export interface RolesApiInterface {
-    /**
-     * 
-     * @summary Create a new role.
-     * @param {Role} role role
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApiInterface
-     */
-    createUsingPOST3(role: Role, options?: any): Promise<Role>;
+  /**
+   *
+   * @summary Create a new role.
+   * @param {Role} role role
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApiInterface
+   */
+  createUsingPOST3(role: Role, options?: any): Promise<Role>;
 
-    /**
-     * 
-     * @summary Return all roles that are active and unlocked.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApiInterface
-     */
-    findAllUsingGET(options?: any): Promise<Array<Role>>;
+  /**
+   *
+   * @summary Return all roles that are active and unlocked.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApiInterface
+   */
+  findAllUsingGET(options?: any): Promise<Array<Role>>;
 
-    /**
-     * 
-     * @summary Return a list of roles that are active and associated to the logged in principal user.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApiInterface
-     */
-    findByUserUsingGET(options?: any): Promise<Array<Role>>;
-
+  /**
+   *
+   * @summary Return a list of roles that are active and associated to the logged in principal user.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApiInterface
+   */
+  findByUserUsingGET(options?: any): Promise<Array<Role>>;
 }
 
 /**
@@ -13155,153 +14868,150 @@ export interface RolesApiInterface {
  * @extends {BaseAPI}
  */
 export class RolesApi extends BaseAPI implements RolesApiInterface {
-    /**
-     * 
-     * @summary Create a new role.
-     * @param {Role} role role
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApi
-     */
-    public createUsingPOST3(role: Role, options?: any) {
-        return RolesApiFp(this.configuration).createUsingPOST3(role, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Create a new role.
+   * @param {Role} role role
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApi
+   */
+  public createUsingPOST3(role: Role, options?: any) {
+    return RolesApiFp(this.configuration).createUsingPOST3(role, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return all roles that are active and unlocked.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApi
-     */
-    public findAllUsingGET(options?: any) {
-        return RolesApiFp(this.configuration).findAllUsingGET(options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return all roles that are active and unlocked.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApi
+   */
+  public findAllUsingGET(options?: any) {
+    return RolesApiFp(this.configuration).findAllUsingGET(options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a list of roles that are active and associated to the logged in principal user.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApi
-     */
-    public findByUserUsingGET(options?: any) {
-        return RolesApiFp(this.configuration).findByUserUsingGET(options)(this.fetch, this.basePath);
-    }
-
+  /**
+   *
+   * @summary Return a list of roles that are active and associated to the logged in principal user.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApi
+   */
+  public findByUserUsingGET(options?: any) {
+    return RolesApiFp(this.configuration).findByUserUsingGET(options)(this.fetch, this.basePath);
+  }
 }
 
 /**
  * StepsApi - fetch parameter creator
  * @export
  */
-export const StepsApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Return a list of all nodes that are active and attached to a workflow.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET1(options: any = {}): FetchArgs {
-            const localVarPath = `/api/v1/nodes`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+export const StepsApiFetchParamCreator = function(configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @summary Return a list of all nodes that are active and attached to a workflow.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET1(options: any = {}): FetchArgs {
+      const localVarPath = `/api/v1/nodes`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of all nodes that are active and attached to a workflow.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET2(options: any = {}): FetchArgs {
-            const localVarPath = `/api/v1/steps`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a list of all nodes that are active and attached to a workflow.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET2(options: any = {}): FetchArgs {
+      const localVarPath = `/api/v1/steps`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Find a specific node.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET1(id: string, options: any = {}): FetchArgs {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling findByIdUsingGET1.');
-            }
-            const localVarPath = `/api/v1/nodes/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Find a specific node.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET1(id: string, options: any = {}): FetchArgs {
+      // verify required parameter 'id' is not null or undefined
+      if (id === null || id === undefined) {
+        throw new RequiredError('id', 'Required parameter id was null or undefined when calling findByIdUsingGET1.');
+      }
+      const localVarPath = `/api/v1/nodes/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Find a specific node.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET2(id: string, options: any = {}): FetchArgs {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling findByIdUsingGET2.');
-            }
-            const localVarPath = `/api/v1/steps/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Find a specific node.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET2(id: string, options: any = {}): FetchArgs {
+      // verify required parameter 'id' is not null or undefined
+      if (id === null || id === undefined) {
+        throw new RequiredError('id', 'Required parameter id was null or undefined when calling findByIdUsingGET2.');
+      }
+      const localVarPath = `/api/v1/steps/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
     }
+  };
 };
 
 /**
@@ -13309,129 +15019,129 @@ export const StepsApiFetchParamCreator = function (configuration?: Configuration
  * @export
  */
 export const StepsApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Return a list of all nodes that are active and attached to a workflow.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET1(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Step>> {
-            const localVarFetchArgs = StepsApiFetchParamCreator(configuration).findAllUsingGET1(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of all nodes that are active and attached to a workflow.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET2(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Step>> {
-            const localVarFetchArgs = StepsApiFetchParamCreator(configuration).findAllUsingGET2(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Find a specific node.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET1(id: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Step> {
-            const localVarFetchArgs = StepsApiFetchParamCreator(configuration).findByIdUsingGET1(id, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Find a specific node.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET2(id: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Step> {
-            const localVarFetchArgs = StepsApiFetchParamCreator(configuration).findByIdUsingGET2(id, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
+  return {
+    /**
+     *
+     * @summary Return a list of all nodes that are active and attached to a workflow.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET1(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Step>> {
+      const localVarFetchArgs = StepsApiFetchParamCreator(configuration).findAllUsingGET1(options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a list of all nodes that are active and attached to a workflow.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET2(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Step>> {
+      const localVarFetchArgs = StepsApiFetchParamCreator(configuration).findAllUsingGET2(options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Find a specific node.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET1(id: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Step> {
+      const localVarFetchArgs = StepsApiFetchParamCreator(configuration).findByIdUsingGET1(id, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Find a specific node.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET2(id: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Step> {
+      const localVarFetchArgs = StepsApiFetchParamCreator(configuration).findByIdUsingGET2(id, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
     }
+  };
 };
 
 /**
  * StepsApi - factory interface
  * @export
  */
-export const StepsApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         * 
-         * @summary Return a list of all nodes that are active and attached to a workflow.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET1(options?: any) {
-            return StepsApiFp(configuration).findAllUsingGET1(options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a list of all nodes that are active and attached to a workflow.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET2(options?: any) {
-            return StepsApiFp(configuration).findAllUsingGET2(options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Find a specific node.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET1(id: string, options?: any) {
-            return StepsApiFp(configuration).findByIdUsingGET1(id, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Find a specific node.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET2(id: string, options?: any) {
-            return StepsApiFp(configuration).findByIdUsingGET2(id, options)(fetch, basePath);
-        },
-    };
+export const StepsApiFactory = function(configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+  return {
+    /**
+     *
+     * @summary Return a list of all nodes that are active and attached to a workflow.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET1(options?: any) {
+      return StepsApiFp(configuration).findAllUsingGET1(options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a list of all nodes that are active and attached to a workflow.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET2(options?: any) {
+      return StepsApiFp(configuration).findAllUsingGET2(options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Find a specific node.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET1(id: string, options?: any) {
+      return StepsApiFp(configuration).findByIdUsingGET1(id, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Find a specific node.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET2(id: string, options?: any) {
+      return StepsApiFp(configuration).findByIdUsingGET2(id, options)(fetch, basePath);
+    }
+  };
 };
 
 /**
@@ -13440,44 +15150,43 @@ export const StepsApiFactory = function (configuration?: Configuration, fetch?: 
  * @interface StepsApi
  */
 export interface StepsApiInterface {
-    /**
-     * 
-     * @summary Return a list of all nodes that are active and attached to a workflow.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StepsApiInterface
-     */
-    findAllUsingGET1(options?: any): Promise<Array<Step>>;
+  /**
+   *
+   * @summary Return a list of all nodes that are active and attached to a workflow.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StepsApiInterface
+   */
+  findAllUsingGET1(options?: any): Promise<Array<Step>>;
 
-    /**
-     * 
-     * @summary Return a list of all nodes that are active and attached to a workflow.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StepsApiInterface
-     */
-    findAllUsingGET2(options?: any): Promise<Array<Step>>;
+  /**
+   *
+   * @summary Return a list of all nodes that are active and attached to a workflow.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StepsApiInterface
+   */
+  findAllUsingGET2(options?: any): Promise<Array<Step>>;
 
-    /**
-     * 
-     * @summary Find a specific node.
-     * @param {string} id id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StepsApiInterface
-     */
-    findByIdUsingGET1(id: string, options?: any): Promise<Step>;
+  /**
+   *
+   * @summary Find a specific node.
+   * @param {string} id id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StepsApiInterface
+   */
+  findByIdUsingGET1(id: string, options?: any): Promise<Step>;
 
-    /**
-     * 
-     * @summary Find a specific node.
-     * @param {string} id id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StepsApiInterface
-     */
-    findByIdUsingGET2(id: string, options?: any): Promise<Step>;
-
+  /**
+   *
+   * @summary Find a specific node.
+   * @param {string} id id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StepsApiInterface
+   */
+  findByIdUsingGET2(id: string, options?: any): Promise<Step>;
 }
 
 /**
@@ -13487,215 +15196,216 @@ export interface StepsApiInterface {
  * @extends {BaseAPI}
  */
 export class StepsApi extends BaseAPI implements StepsApiInterface {
-    /**
-     * 
-     * @summary Return a list of all nodes that are active and attached to a workflow.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StepsApi
-     */
-    public findAllUsingGET1(options?: any) {
-        return StepsApiFp(this.configuration).findAllUsingGET1(options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a list of all nodes that are active and attached to a workflow.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StepsApi
+   */
+  public findAllUsingGET1(options?: any) {
+    return StepsApiFp(this.configuration).findAllUsingGET1(options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a list of all nodes that are active and attached to a workflow.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StepsApi
-     */
-    public findAllUsingGET2(options?: any) {
-        return StepsApiFp(this.configuration).findAllUsingGET2(options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a list of all nodes that are active and attached to a workflow.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StepsApi
+   */
+  public findAllUsingGET2(options?: any) {
+    return StepsApiFp(this.configuration).findAllUsingGET2(options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Find a specific node.
-     * @param {string} id id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StepsApi
-     */
-    public findByIdUsingGET1(id: string, options?: any) {
-        return StepsApiFp(this.configuration).findByIdUsingGET1(id, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Find a specific node.
+   * @param {string} id id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StepsApi
+   */
+  public findByIdUsingGET1(id: string, options?: any) {
+    return StepsApiFp(this.configuration).findByIdUsingGET1(id, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Find a specific node.
-     * @param {string} id id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof StepsApi
-     */
-    public findByIdUsingGET2(id: string, options?: any) {
-        return StepsApiFp(this.configuration).findByIdUsingGET2(id, options)(this.fetch, this.basePath);
-    }
-
+  /**
+   *
+   * @summary Find a specific node.
+   * @param {string} id id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof StepsApi
+   */
+  public findByIdUsingGET2(id: string, options?: any) {
+    return StepsApiFp(this.configuration).findByIdUsingGET2(id, options)(this.fetch, this.basePath);
+  }
 }
 
 /**
  * UsersApi - fetch parameter creator
  * @export
  */
-export const UsersApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a user with no attached roles.
-         * @param {User} user user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST4(user: User, options: any = {}): FetchArgs {
-            // verify required parameter 'user' is not null or undefined
-            if (user === null || user === undefined) {
-                throw new RequiredError('user','Required parameter user was null or undefined when calling createUsingPOST4.');
-            }
-            const localVarPath = `/api/v1/users`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+export const UsersApiFetchParamCreator = function(configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @summary Create a user with no attached roles.
+     * @param {User} user user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST4(user: User, options: any = {}): FetchArgs {
+      // verify required parameter 'user' is not null or undefined
+      if (user === null || user === undefined) {
+        throw new RequiredError('user', 'Required parameter user was null or undefined when calling createUsingPOST4.');
+      }
+      const localVarPath = `/api/v1/users`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"User" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(user || {}) : (user || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'User' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(user || {}) : user || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Disable a user. User making the request must have admin privileges.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        disableUserUsingPUT(id: string, options: any = {}): FetchArgs {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling disableUserUsingPUT.');
-            }
-            const localVarPath = `/api/v1/users/disable/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Disable a user. User making the request must have admin privileges.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    disableUserUsingPUT(id: string, options: any = {}): FetchArgs {
+      // verify required parameter 'id' is not null or undefined
+      if (id === null || id === undefined) {
+        throw new RequiredError('id', 'Required parameter id was null or undefined when calling disableUserUsingPUT.');
+      }
+      const localVarPath = `/api/v1/users/disable/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Enable a user to be active. User making the request must have admin privileges.
-         * @param {string} id id
-         * @param {string} [sendEmail] sendEmail
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        enableUserUsingPUT(id: string, sendEmail?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling enableUserUsingPUT.');
-            }
-            const localVarPath = `/api/v1/users/enable/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Enable a user to be active. User making the request must have admin privileges.
+     * @param {string} id id
+     * @param {string} [sendEmail] sendEmail
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    enableUserUsingPUT(id: string, sendEmail?: string, options: any = {}): FetchArgs {
+      // verify required parameter 'id' is not null or undefined
+      if (id === null || id === undefined) {
+        throw new RequiredError('id', 'Required parameter id was null or undefined when calling enableUserUsingPUT.');
+      }
+      const localVarPath = `/api/v1/users/enable/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (sendEmail !== undefined) {
-                localVarQueryParameter['sendEmail'] = sendEmail;
-            }
+      if (sendEmail !== undefined) {
+        localVarQueryParameter['sendEmail'] = sendEmail;
+      }
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Find all users regardless of status.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET3(options: any = {}): FetchArgs {
-            const localVarPath = `/api/v1/users`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Find all users regardless of status.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET3(options: any = {}): FetchArgs {
+      const localVarPath = `/api/v1/users`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary importUsers
-         * @param {any} file file
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        importUsersUsingPOST(file: any, options: any = {}): FetchArgs {
-            // verify required parameter 'file' is not null or undefined
-            if (file === null || file === undefined) {
-                throw new RequiredError('file','Required parameter file was null or undefined when calling importUsersUsingPOST.');
-            }
-            const localVarPath = `/api/v1/users/import`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-            const localVarFormParams = new url.URLSearchParams();
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary importUsers
+     * @param {any} file file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    importUsersUsingPOST(file: any, options: any = {}): FetchArgs {
+      // verify required parameter 'file' is not null or undefined
+      if (file === null || file === undefined) {
+        throw new RequiredError(
+          'file',
+          'Required parameter file was null or undefined when calling importUsersUsingPOST.'
+        );
+      }
+      const localVarPath = `/api/v1/users/import`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+      const localVarFormParams = new url.URLSearchParams();
 
-            if (file !== undefined) {
-                localVarFormParams.set('file', file as any);
-            }
+      if (file !== undefined) {
+        localVarFormParams.set('file', file as any);
+      }
 
-            localVarHeaderParameter['Content-Type'] = 'application/x-www-form-urlencoded';
+      localVarHeaderParameter['Content-Type'] = 'application/x-www-form-urlencoded';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            localVarRequestOptions.body = localVarFormParams.toString();
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarRequestOptions.body = localVarFormParams.toString();
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
     }
+  };
 };
 
 /**
@@ -13703,162 +15413,166 @@ export const UsersApiFetchParamCreator = function (configuration?: Configuration
  * @export
  */
 export const UsersApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a user with no attached roles.
-         * @param {User} user user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST4(user: User, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
-            const localVarFetchArgs = UsersApiFetchParamCreator(configuration).createUsingPOST4(user, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Disable a user. User making the request must have admin privileges.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        disableUserUsingPUT(id: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-            const localVarFetchArgs = UsersApiFetchParamCreator(configuration).disableUserUsingPUT(id, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response;
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Enable a user to be active. User making the request must have admin privileges.
-         * @param {string} id id
-         * @param {string} [sendEmail] sendEmail
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        enableUserUsingPUT(id: string, sendEmail?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-            const localVarFetchArgs = UsersApiFetchParamCreator(configuration).enableUserUsingPUT(id, sendEmail, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response;
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Find all users regardless of status.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET3(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<User>> {
-            const localVarFetchArgs = UsersApiFetchParamCreator(configuration).findAllUsingGET3(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary importUsers
-         * @param {any} file file
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        importUsersUsingPOST(file: any, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ImportRequest> {
-            const localVarFetchArgs = UsersApiFetchParamCreator(configuration).importUsersUsingPOST(file, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
+  return {
+    /**
+     *
+     * @summary Create a user with no attached roles.
+     * @param {User} user user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST4(user: User, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
+      const localVarFetchArgs = UsersApiFetchParamCreator(configuration).createUsingPOST4(user, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Disable a user. User making the request must have admin privileges.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    disableUserUsingPUT(id: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+      const localVarFetchArgs = UsersApiFetchParamCreator(configuration).disableUserUsingPUT(id, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Enable a user to be active. User making the request must have admin privileges.
+     * @param {string} id id
+     * @param {string} [sendEmail] sendEmail
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    enableUserUsingPUT(
+      id: string,
+      sendEmail?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+      const localVarFetchArgs = UsersApiFetchParamCreator(configuration).enableUserUsingPUT(id, sendEmail, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Find all users regardless of status.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET3(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<User>> {
+      const localVarFetchArgs = UsersApiFetchParamCreator(configuration).findAllUsingGET3(options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary importUsers
+     * @param {any} file file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    importUsersUsingPOST(file: any, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ImportRequest> {
+      const localVarFetchArgs = UsersApiFetchParamCreator(configuration).importUsersUsingPOST(file, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
     }
+  };
 };
 
 /**
  * UsersApi - factory interface
  * @export
  */
-export const UsersApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         * 
-         * @summary Create a user with no attached roles.
-         * @param {User} user user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUsingPOST4(user: User, options?: any) {
-            return UsersApiFp(configuration).createUsingPOST4(user, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Disable a user. User making the request must have admin privileges.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        disableUserUsingPUT(id: string, options?: any) {
-            return UsersApiFp(configuration).disableUserUsingPUT(id, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Enable a user to be active. User making the request must have admin privileges.
-         * @param {string} id id
-         * @param {string} [sendEmail] sendEmail
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        enableUserUsingPUT(id: string, sendEmail?: string, options?: any) {
-            return UsersApiFp(configuration).enableUserUsingPUT(id, sendEmail, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Find all users regardless of status.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET3(options?: any) {
-            return UsersApiFp(configuration).findAllUsingGET3(options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary importUsers
-         * @param {any} file file
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        importUsersUsingPOST(file: any, options?: any) {
-            return UsersApiFp(configuration).importUsersUsingPOST(file, options)(fetch, basePath);
-        },
-    };
+export const UsersApiFactory = function(configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+  return {
+    /**
+     *
+     * @summary Create a user with no attached roles.
+     * @param {User} user user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUsingPOST4(user: User, options?: any) {
+      return UsersApiFp(configuration).createUsingPOST4(user, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Disable a user. User making the request must have admin privileges.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    disableUserUsingPUT(id: string, options?: any) {
+      return UsersApiFp(configuration).disableUserUsingPUT(id, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Enable a user to be active. User making the request must have admin privileges.
+     * @param {string} id id
+     * @param {string} [sendEmail] sendEmail
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    enableUserUsingPUT(id: string, sendEmail?: string, options?: any) {
+      return UsersApiFp(configuration).enableUserUsingPUT(id, sendEmail, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Find all users regardless of status.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET3(options?: any) {
+      return UsersApiFp(configuration).findAllUsingGET3(options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary importUsers
+     * @param {any} file file
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    importUsersUsingPOST(file: any, options?: any) {
+      return UsersApiFp(configuration).importUsersUsingPOST(file, options)(fetch, basePath);
+    }
+  };
 };
 
 /**
@@ -13867,56 +15581,55 @@ export const UsersApiFactory = function (configuration?: Configuration, fetch?: 
  * @interface UsersApi
  */
 export interface UsersApiInterface {
-    /**
-     * 
-     * @summary Create a user with no attached roles.
-     * @param {User} user user
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApiInterface
-     */
-    createUsingPOST4(user: User, options?: any): Promise<User>;
+  /**
+   *
+   * @summary Create a user with no attached roles.
+   * @param {User} user user
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApiInterface
+   */
+  createUsingPOST4(user: User, options?: any): Promise<User>;
 
-    /**
-     * 
-     * @summary Disable a user. User making the request must have admin privileges.
-     * @param {string} id id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApiInterface
-     */
-    disableUserUsingPUT(id: string, options?: any): Promise<{}>;
+  /**
+   *
+   * @summary Disable a user. User making the request must have admin privileges.
+   * @param {string} id id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApiInterface
+   */
+  disableUserUsingPUT(id: string, options?: any): Promise<{}>;
 
-    /**
-     * 
-     * @summary Enable a user to be active. User making the request must have admin privileges.
-     * @param {string} id id
-     * @param {string} [sendEmail] sendEmail
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApiInterface
-     */
-    enableUserUsingPUT(id: string, sendEmail?: string, options?: any): Promise<{}>;
+  /**
+   *
+   * @summary Enable a user to be active. User making the request must have admin privileges.
+   * @param {string} id id
+   * @param {string} [sendEmail] sendEmail
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApiInterface
+   */
+  enableUserUsingPUT(id: string, sendEmail?: string, options?: any): Promise<{}>;
 
-    /**
-     * 
-     * @summary Find all users regardless of status.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApiInterface
-     */
-    findAllUsingGET3(options?: any): Promise<Array<User>>;
+  /**
+   *
+   * @summary Find all users regardless of status.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApiInterface
+   */
+  findAllUsingGET3(options?: any): Promise<Array<User>>;
 
-    /**
-     * 
-     * @summary importUsers
-     * @param {any} file file
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApiInterface
-     */
-    importUsersUsingPOST(file: any, options?: any): Promise<ImportRequest>;
-
+  /**
+   *
+   * @summary importUsers
+   * @param {any} file file
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApiInterface
+   */
+  importUsersUsingPOST(file: any, options?: any): Promise<ImportRequest>;
 }
 
 /**
@@ -13926,145 +15639,153 @@ export interface UsersApiInterface {
  * @extends {BaseAPI}
  */
 export class UsersApi extends BaseAPI implements UsersApiInterface {
-    /**
-     * 
-     * @summary Create a user with no attached roles.
-     * @param {User} user user
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApi
-     */
-    public createUsingPOST4(user: User, options?: any) {
-        return UsersApiFp(this.configuration).createUsingPOST4(user, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Create a user with no attached roles.
+   * @param {User} user user
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApi
+   */
+  public createUsingPOST4(user: User, options?: any) {
+    return UsersApiFp(this.configuration).createUsingPOST4(user, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Disable a user. User making the request must have admin privileges.
-     * @param {string} id id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApi
-     */
-    public disableUserUsingPUT(id: string, options?: any) {
-        return UsersApiFp(this.configuration).disableUserUsingPUT(id, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Disable a user. User making the request must have admin privileges.
+   * @param {string} id id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApi
+   */
+  public disableUserUsingPUT(id: string, options?: any) {
+    return UsersApiFp(this.configuration).disableUserUsingPUT(id, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Enable a user to be active. User making the request must have admin privileges.
-     * @param {string} id id
-     * @param {string} [sendEmail] sendEmail
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApi
-     */
-    public enableUserUsingPUT(id: string, sendEmail?: string, options?: any) {
-        return UsersApiFp(this.configuration).enableUserUsingPUT(id, sendEmail, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Enable a user to be active. User making the request must have admin privileges.
+   * @param {string} id id
+   * @param {string} [sendEmail] sendEmail
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApi
+   */
+  public enableUserUsingPUT(id: string, sendEmail?: string, options?: any) {
+    return UsersApiFp(this.configuration).enableUserUsingPUT(id, sendEmail, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Find all users regardless of status.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApi
-     */
-    public findAllUsingGET3(options?: any) {
-        return UsersApiFp(this.configuration).findAllUsingGET3(options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Find all users regardless of status.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApi
+   */
+  public findAllUsingGET3(options?: any) {
+    return UsersApiFp(this.configuration).findAllUsingGET3(options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary importUsers
-     * @param {any} file file
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApi
-     */
-    public importUsersUsingPOST(file: any, options?: any) {
-        return UsersApiFp(this.configuration).importUsersUsingPOST(file, options)(this.fetch, this.basePath);
-    }
-
+  /**
+   *
+   * @summary importUsers
+   * @param {any} file file
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApi
+   */
+  public importUsersUsingPOST(file: any, options?: any) {
+    return UsersApiFp(this.configuration).importUsersUsingPOST(file, options)(this.fetch, this.basePath);
+  }
 }
 
 /**
  * ValueMapsApi - fetch parameter creator
  * @export
  */
-export const ValueMapsApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a value map and associate it to a record.
-         * @param {ValueMap} currentValueMap currentValueMap
-         * @param {string} [assignment] assignment
-         * @param {string} [record] Assignment ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createValueMapUsingPOST(currentValueMap: ValueMap, assignment?: string, record?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'currentValueMap' is not null or undefined
-            if (currentValueMap === null || currentValueMap === undefined) {
-                throw new RequiredError('currentValueMap','Required parameter currentValueMap was null or undefined when calling createValueMapUsingPOST.');
-            }
-            const localVarPath = `/api/v1/valueMaps`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+export const ValueMapsApiFetchParamCreator = function(configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @summary Create a value map and associate it to a record.
+     * @param {ValueMap} currentValueMap currentValueMap
+     * @param {string} [assignment] assignment
+     * @param {string} [record] Assignment ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createValueMapUsingPOST(
+      currentValueMap: ValueMap,
+      assignment?: string,
+      record?: string,
+      options: any = {}
+    ): FetchArgs {
+      // verify required parameter 'currentValueMap' is not null or undefined
+      if (currentValueMap === null || currentValueMap === undefined) {
+        throw new RequiredError(
+          'currentValueMap',
+          'Required parameter currentValueMap was null or undefined when calling createValueMapUsingPOST.'
+        );
+      }
+      const localVarPath = `/api/v1/valueMaps`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (assignment !== undefined) {
-                localVarQueryParameter['assignment'] = assignment;
-            }
+      if (assignment !== undefined) {
+        localVarQueryParameter['assignment'] = assignment;
+      }
 
-            if (record !== undefined) {
-                localVarQueryParameter['record'] = record;
-            }
+      if (record !== undefined) {
+        localVarQueryParameter['record'] = record;
+      }
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"ValueMap" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(currentValueMap || {}) : (currentValueMap || "");
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      const needsSerialization =
+        <any>'ValueMap' !== 'string' || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization ? JSON.stringify(currentValueMap || {}) : currentValueMap || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of value maps that are greater than the minimum updated time.
-         * @param {number} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getValueMapsByMinUpdatedUsingGET(minUpdated?: number, options: any = {}): FetchArgs {
-            const localVarPath = `/api/v1/valueMaps`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a list of value maps that are greater than the minimum updated time.
+     * @param {number} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getValueMapsByMinUpdatedUsingGET(minUpdated?: number, options: any = {}): FetchArgs {
+      const localVarPath = `/api/v1/valueMaps`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (minUpdated !== undefined) {
-                localVarQueryParameter['minUpdated'] = minUpdated;
-            }
+      if (minUpdated !== undefined) {
+        localVarQueryParameter['minUpdated'] = minUpdated;
+      }
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
     }
+  };
 };
 
 /**
@@ -14072,79 +15793,98 @@ export const ValueMapsApiFetchParamCreator = function (configuration?: Configura
  * @export
  */
 export const ValueMapsApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a value map and associate it to a record.
-         * @param {ValueMap} currentValueMap currentValueMap
-         * @param {string} [assignment] assignment
-         * @param {string} [record] Assignment ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createValueMapUsingPOST(currentValueMap: ValueMap, assignment?: string, record?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ValueMap> {
-            const localVarFetchArgs = ValueMapsApiFetchParamCreator(configuration).createValueMapUsingPOST(currentValueMap, assignment, record, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of value maps that are greater than the minimum updated time.
-         * @param {number} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getValueMapsByMinUpdatedUsingGET(minUpdated?: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<ValueMap>> {
-            const localVarFetchArgs = ValueMapsApiFetchParamCreator(configuration).getValueMapsByMinUpdatedUsingGET(minUpdated, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
+  return {
+    /**
+     *
+     * @summary Create a value map and associate it to a record.
+     * @param {ValueMap} currentValueMap currentValueMap
+     * @param {string} [assignment] assignment
+     * @param {string} [record] Assignment ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createValueMapUsingPOST(
+      currentValueMap: ValueMap,
+      assignment?: string,
+      record?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<ValueMap> {
+      const localVarFetchArgs = ValueMapsApiFetchParamCreator(configuration).createValueMapUsingPOST(
+        currentValueMap,
+        assignment,
+        record,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a list of value maps that are greater than the minimum updated time.
+     * @param {number} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getValueMapsByMinUpdatedUsingGET(
+      minUpdated?: number,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<ValueMap>> {
+      const localVarFetchArgs = ValueMapsApiFetchParamCreator(configuration).getValueMapsByMinUpdatedUsingGET(
+        minUpdated,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
     }
+  };
 };
 
 /**
  * ValueMapsApi - factory interface
  * @export
  */
-export const ValueMapsApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         * 
-         * @summary Create a value map and associate it to a record.
-         * @param {ValueMap} currentValueMap currentValueMap
-         * @param {string} [assignment] assignment
-         * @param {string} [record] Assignment ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createValueMapUsingPOST(currentValueMap: ValueMap, assignment?: string, record?: string, options?: any) {
-            return ValueMapsApiFp(configuration).createValueMapUsingPOST(currentValueMap, assignment, record, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a list of value maps that are greater than the minimum updated time.
-         * @param {number} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getValueMapsByMinUpdatedUsingGET(minUpdated?: number, options?: any) {
-            return ValueMapsApiFp(configuration).getValueMapsByMinUpdatedUsingGET(minUpdated, options)(fetch, basePath);
-        },
-    };
+export const ValueMapsApiFactory = function(configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+  return {
+    /**
+     *
+     * @summary Create a value map and associate it to a record.
+     * @param {ValueMap} currentValueMap currentValueMap
+     * @param {string} [assignment] assignment
+     * @param {string} [record] Assignment ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createValueMapUsingPOST(currentValueMap: ValueMap, assignment?: string, record?: string, options?: any) {
+      return ValueMapsApiFp(configuration).createValueMapUsingPOST(currentValueMap, assignment, record, options)(
+        fetch,
+        basePath
+      );
+    },
+    /**
+     *
+     * @summary Return a list of value maps that are greater than the minimum updated time.
+     * @param {number} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getValueMapsByMinUpdatedUsingGET(minUpdated?: number, options?: any) {
+      return ValueMapsApiFp(configuration).getValueMapsByMinUpdatedUsingGET(minUpdated, options)(fetch, basePath);
+    }
+  };
 };
 
 /**
@@ -14153,28 +15893,32 @@ export const ValueMapsApiFactory = function (configuration?: Configuration, fetc
  * @interface ValueMapsApi
  */
 export interface ValueMapsApiInterface {
-    /**
-     * 
-     * @summary Create a value map and associate it to a record.
-     * @param {ValueMap} currentValueMap currentValueMap
-     * @param {string} [assignment] assignment
-     * @param {string} [record] Assignment ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ValueMapsApiInterface
-     */
-    createValueMapUsingPOST(currentValueMap: ValueMap, assignment?: string, record?: string, options?: any): Promise<ValueMap>;
+  /**
+   *
+   * @summary Create a value map and associate it to a record.
+   * @param {ValueMap} currentValueMap currentValueMap
+   * @param {string} [assignment] assignment
+   * @param {string} [record] Assignment ID
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ValueMapsApiInterface
+   */
+  createValueMapUsingPOST(
+    currentValueMap: ValueMap,
+    assignment?: string,
+    record?: string,
+    options?: any
+  ): Promise<ValueMap>;
 
-    /**
-     * 
-     * @summary Return a list of value maps that are greater than the minimum updated time.
-     * @param {number} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ValueMapsApiInterface
-     */
-    getValueMapsByMinUpdatedUsingGET(minUpdated?: number, options?: any): Promise<Array<ValueMap>>;
-
+  /**
+   *
+   * @summary Return a list of value maps that are greater than the minimum updated time.
+   * @param {number} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ValueMapsApiInterface
+   */
+  getValueMapsByMinUpdatedUsingGET(minUpdated?: number, options?: any): Promise<Array<ValueMap>>;
 }
 
 /**
@@ -14184,239 +15928,268 @@ export interface ValueMapsApiInterface {
  * @extends {BaseAPI}
  */
 export class ValueMapsApi extends BaseAPI implements ValueMapsApiInterface {
-    /**
-     * 
-     * @summary Create a value map and associate it to a record.
-     * @param {ValueMap} currentValueMap currentValueMap
-     * @param {string} [assignment] assignment
-     * @param {string} [record] Assignment ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ValueMapsApi
-     */
-    public createValueMapUsingPOST(currentValueMap: ValueMap, assignment?: string, record?: string, options?: any) {
-        return ValueMapsApiFp(this.configuration).createValueMapUsingPOST(currentValueMap, assignment, record, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Create a value map and associate it to a record.
+   * @param {ValueMap} currentValueMap currentValueMap
+   * @param {string} [assignment] assignment
+   * @param {string} [record] Assignment ID
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ValueMapsApi
+   */
+  public createValueMapUsingPOST(currentValueMap: ValueMap, assignment?: string, record?: string, options?: any) {
+    return ValueMapsApiFp(this.configuration).createValueMapUsingPOST(currentValueMap, assignment, record, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * 
-     * @summary Return a list of value maps that are greater than the minimum updated time.
-     * @param {number} [minUpdated] Minimum updated time value. The value is a unix timestamp.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ValueMapsApi
-     */
-    public getValueMapsByMinUpdatedUsingGET(minUpdated?: number, options?: any) {
-        return ValueMapsApiFp(this.configuration).getValueMapsByMinUpdatedUsingGET(minUpdated, options)(this.fetch, this.basePath);
-    }
-
+  /**
+   *
+   * @summary Return a list of value maps that are greater than the minimum updated time.
+   * @param {number} [minUpdated] Minimum updated time value. The value is a unix timestamp.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ValueMapsApi
+   */
+  public getValueMapsByMinUpdatedUsingGET(minUpdated?: number, options?: any) {
+    return ValueMapsApiFp(this.configuration).getValueMapsByMinUpdatedUsingGET(minUpdated, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 }
 
 /**
  * WorkflowsApi - fetch parameter creator
  * @export
  */
-export const WorkflowsApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * If the distinct parameter is passed as true, then this list will filter to distinct relative workflows.If the distinct parameter is omitted or passed as false, then relative workflows will be repeated if there are multiple paths to the relative.
-         * @summary Identify all paths from a particular workflow to relative workflows. 
-         * @param {string} workflow workflow
-         * @param {boolean} [distinct] distinct
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllRelativesUsingGET(workflow: string, distinct?: boolean, options: any = {}): FetchArgs {
-            // verify required parameter 'workflow' is not null or undefined
-            if (workflow === null || workflow === undefined) {
-                throw new RequiredError('workflow','Required parameter workflow was null or undefined when calling findAllRelativesUsingGET.');
-            }
-            const localVarPath = `/api/v1/workflows/relatives`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+export const WorkflowsApiFetchParamCreator = function(configuration?: Configuration) {
+  return {
+    /**
+     * If the distinct parameter is passed as true, then this list will filter to distinct relative workflows.If the distinct parameter is omitted or passed as false, then relative workflows will be repeated if there are multiple paths to the relative.
+     * @summary Identify all paths from a particular workflow to relative workflows.
+     * @param {string} workflow workflow
+     * @param {boolean} [distinct] distinct
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllRelativesUsingGET(workflow: string, distinct?: boolean, options: any = {}): FetchArgs {
+      // verify required parameter 'workflow' is not null or undefined
+      if (workflow === null || workflow === undefined) {
+        throw new RequiredError(
+          'workflow',
+          'Required parameter workflow was null or undefined when calling findAllRelativesUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/workflows/relatives`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (distinct !== undefined) {
-                localVarQueryParameter['distinct'] = distinct;
-            }
+      if (distinct !== undefined) {
+        localVarQueryParameter['distinct'] = distinct;
+      }
 
-            if (workflow !== undefined) {
-                localVarQueryParameter['workflow'] = workflow;
-            }
+      if (workflow !== undefined) {
+        localVarQueryParameter['workflow'] = workflow;
+      }
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of all workflows that are active throughout all processes.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET4(options: any = {}): FetchArgs {
-            const localVarPath = `/api/v1/workflows`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a list of all workflows that are active throughout all processes.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET4(options: any = {}): FetchArgs {
+      const localVarPath = `/api/v1/workflows`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Find a specific workflow.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET3(id: string, options: any = {}): FetchArgs {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling findByIdUsingGET3.');
-            }
-            const localVarPath = `/api/v1/workflows/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Find a specific workflow.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET3(id: string, options: any = {}): FetchArgs {
+      // verify required parameter 'id' is not null or undefined
+      if (id === null || id === undefined) {
+        throw new RequiredError('id', 'Required parameter id was null or undefined when calling findByIdUsingGET3.');
+      }
+      const localVarPath = `/api/v1/workflows/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a workflow that contains a specific node.
-         * @param {string} nodeId nodeId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByNodeUsingGET(nodeId: string, options: any = {}): FetchArgs {
-            // verify required parameter 'nodeId' is not null or undefined
-            if (nodeId === null || nodeId === undefined) {
-                throw new RequiredError('nodeId','Required parameter nodeId was null or undefined when calling findByNodeUsingGET.');
-            }
-            const localVarPath = `/api/v1/workflows/node/{nodeId}`
-                .replace(`{${"nodeId"}}`, encodeURIComponent(String(nodeId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a workflow that contains a specific node.
+     * @param {string} nodeId nodeId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByNodeUsingGET(nodeId: string, options: any = {}): FetchArgs {
+      // verify required parameter 'nodeId' is not null or undefined
+      if (nodeId === null || nodeId === undefined) {
+        throw new RequiredError(
+          'nodeId',
+          'Required parameter nodeId was null or undefined when calling findByNodeUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/workflows/node/{nodeId}`.replace(
+        `{${'nodeId'}}`,
+        encodeURIComponent(String(nodeId))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of all workflows that are active throughout all processes.
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {string} [query] query
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByQueryWithProcessUsingGET(page: string, size: string, query?: string, sort?: string, options: any = {}): FetchArgs {
-            // verify required parameter 'page' is not null or undefined
-            if (page === null || page === undefined) {
-                throw new RequiredError('page','Required parameter page was null or undefined when calling findByQueryWithProcessUsingGET.');
-            }
-            // verify required parameter 'size' is not null or undefined
-            if (size === null || size === undefined) {
-                throw new RequiredError('size','Required parameter size was null or undefined when calling findByQueryWithProcessUsingGET.');
-            }
-            const localVarPath = `/api/v1/workflows/process`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a list of all workflows that are active throughout all processes.
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} size The number of elements to be returned
+     * @param {string} [query] query
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByQueryWithProcessUsingGET(
+      page: string,
+      size: string,
+      query?: string,
+      sort?: string,
+      options: any = {}
+    ): FetchArgs {
+      // verify required parameter 'page' is not null or undefined
+      if (page === null || page === undefined) {
+        throw new RequiredError(
+          'page',
+          'Required parameter page was null or undefined when calling findByQueryWithProcessUsingGET.'
+        );
+      }
+      // verify required parameter 'size' is not null or undefined
+      if (size === null || size === undefined) {
+        throw new RequiredError(
+          'size',
+          'Required parameter size was null or undefined when calling findByQueryWithProcessUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/workflows/process`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page;
+      }
 
-            if (query !== undefined) {
-                localVarQueryParameter['query'] = query;
-            }
+      if (query !== undefined) {
+        localVarQueryParameter['query'] = query;
+      }
 
-            if (size !== undefined) {
-                localVarQueryParameter['size'] = size;
-            }
+      if (size !== undefined) {
+        localVarQueryParameter['size'] = size;
+      }
 
-            if (sort !== undefined) {
-                localVarQueryParameter['sort'] = sort;
-            }
+      if (sort !== undefined) {
+        localVarQueryParameter['sort'] = sort;
+      }
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Return a workflow that contains a specific step.
-         * @param {string} stepId stepId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByStepUsingGET(stepId: string, options: any = {}): FetchArgs {
-            // verify required parameter 'stepId' is not null or undefined
-            if (stepId === null || stepId === undefined) {
-                throw new RequiredError('stepId','Required parameter stepId was null or undefined when calling findByStepUsingGET.');
-            }
-            const localVarPath = `/api/v1/workflows/step/{stepId}`
-                .replace(`{${"stepId"}}`, encodeURIComponent(String(stepId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
+    },
+    /**
+     *
+     * @summary Return a workflow that contains a specific step.
+     * @param {string} stepId stepId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByStepUsingGET(stepId: string, options: any = {}): FetchArgs {
+      // verify required parameter 'stepId' is not null or undefined
+      if (stepId === null || stepId === undefined) {
+        throw new RequiredError(
+          'stepId',
+          'Required parameter stepId was null or undefined when calling findByStepUsingGET.'
+        );
+      }
+      const localVarPath = `/api/v1/workflows/step/{stepId}`.replace(
+        `{${'stepId'}}`,
+        encodeURIComponent(String(stepId))
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions
+      };
     }
+  };
 };
 
 /**
@@ -14424,197 +16197,220 @@ export const WorkflowsApiFetchParamCreator = function (configuration?: Configura
  * @export
  */
 export const WorkflowsApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * If the distinct parameter is passed as true, then this list will filter to distinct relative workflows.If the distinct parameter is omitted or passed as false, then relative workflows will be repeated if there are multiple paths to the relative.
-         * @summary Identify all paths from a particular workflow to relative workflows. 
-         * @param {string} workflow workflow
-         * @param {boolean} [distinct] distinct
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllRelativesUsingGET(workflow: string, distinct?: boolean, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<WorkflowResult>> {
-            const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findAllRelativesUsingGET(workflow, distinct, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of all workflows that are active throughout all processes.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET4(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Workflow>> {
-            const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findAllUsingGET4(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Find a specific workflow.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET3(id: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Workflow> {
-            const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findByIdUsingGET3(id, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a workflow that contains a specific node.
-         * @param {string} nodeId nodeId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByNodeUsingGET(nodeId: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Workflow> {
-            const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findByNodeUsingGET(nodeId, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a list of all workflows that are active throughout all processes.
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {string} [query] query
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByQueryWithProcessUsingGET(page: string, size: string, query?: string, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Workflow>> {
-            const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findByQueryWithProcessUsingGET(page, size, query, sort, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @summary Return a workflow that contains a specific step.
-         * @param {string} stepId stepId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByStepUsingGET(stepId: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Workflow> {
-            const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findByStepUsingGET(stepId, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
+  return {
+    /**
+     * If the distinct parameter is passed as true, then this list will filter to distinct relative workflows.If the distinct parameter is omitted or passed as false, then relative workflows will be repeated if there are multiple paths to the relative.
+     * @summary Identify all paths from a particular workflow to relative workflows.
+     * @param {string} workflow workflow
+     * @param {boolean} [distinct] distinct
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllRelativesUsingGET(
+      workflow: string,
+      distinct?: boolean,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<WorkflowResult>> {
+      const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findAllRelativesUsingGET(
+        workflow,
+        distinct,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a list of all workflows that are active throughout all processes.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET4(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Workflow>> {
+      const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findAllUsingGET4(options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Find a specific workflow.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET3(id: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Workflow> {
+      const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findByIdUsingGET3(id, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a workflow that contains a specific node.
+     * @param {string} nodeId nodeId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByNodeUsingGET(nodeId: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Workflow> {
+      const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findByNodeUsingGET(nodeId, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a list of all workflows that are active throughout all processes.
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} size The number of elements to be returned
+     * @param {string} [query] query
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByQueryWithProcessUsingGET(
+      page: string,
+      size: string,
+      query?: string,
+      sort?: string,
+      options?: any
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Workflow>> {
+      const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findByQueryWithProcessUsingGET(
+        page,
+        size,
+        query,
+        sort,
+        options
+      );
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Return a workflow that contains a specific step.
+     * @param {string} stepId stepId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByStepUsingGET(stepId: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Workflow> {
+      const localVarFetchArgs = WorkflowsApiFetchParamCreator(configuration).findByStepUsingGET(stepId, options);
+      return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+        return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
     }
+  };
 };
 
 /**
  * WorkflowsApi - factory interface
  * @export
  */
-export const WorkflowsApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         * If the distinct parameter is passed as true, then this list will filter to distinct relative workflows.If the distinct parameter is omitted or passed as false, then relative workflows will be repeated if there are multiple paths to the relative.
-         * @summary Identify all paths from a particular workflow to relative workflows. 
-         * @param {string} workflow workflow
-         * @param {boolean} [distinct] distinct
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllRelativesUsingGET(workflow: string, distinct?: boolean, options?: any) {
-            return WorkflowsApiFp(configuration).findAllRelativesUsingGET(workflow, distinct, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a list of all workflows that are active throughout all processes.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findAllUsingGET4(options?: any) {
-            return WorkflowsApiFp(configuration).findAllUsingGET4(options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Find a specific workflow.
-         * @param {string} id id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByIdUsingGET3(id: string, options?: any) {
-            return WorkflowsApiFp(configuration).findByIdUsingGET3(id, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a workflow that contains a specific node.
-         * @param {string} nodeId nodeId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByNodeUsingGET(nodeId: string, options?: any) {
-            return WorkflowsApiFp(configuration).findByNodeUsingGET(nodeId, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a list of all workflows that are active throughout all processes.
-         * @param {string} page Results page wanting to be retrieved
-         * @param {string} size The number of elements to be returned
-         * @param {string} [query] query
-         * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByQueryWithProcessUsingGET(page: string, size: string, query?: string, sort?: string, options?: any) {
-            return WorkflowsApiFp(configuration).findByQueryWithProcessUsingGET(page, size, query, sort, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @summary Return a workflow that contains a specific step.
-         * @param {string} stepId stepId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findByStepUsingGET(stepId: string, options?: any) {
-            return WorkflowsApiFp(configuration).findByStepUsingGET(stepId, options)(fetch, basePath);
-        },
-    };
+export const WorkflowsApiFactory = function(configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+  return {
+    /**
+     * If the distinct parameter is passed as true, then this list will filter to distinct relative workflows.If the distinct parameter is omitted or passed as false, then relative workflows will be repeated if there are multiple paths to the relative.
+     * @summary Identify all paths from a particular workflow to relative workflows.
+     * @param {string} workflow workflow
+     * @param {boolean} [distinct] distinct
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllRelativesUsingGET(workflow: string, distinct?: boolean, options?: any) {
+      return WorkflowsApiFp(configuration).findAllRelativesUsingGET(workflow, distinct, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a list of all workflows that are active throughout all processes.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUsingGET4(options?: any) {
+      return WorkflowsApiFp(configuration).findAllUsingGET4(options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Find a specific workflow.
+     * @param {string} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByIdUsingGET3(id: string, options?: any) {
+      return WorkflowsApiFp(configuration).findByIdUsingGET3(id, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a workflow that contains a specific node.
+     * @param {string} nodeId nodeId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByNodeUsingGET(nodeId: string, options?: any) {
+      return WorkflowsApiFp(configuration).findByNodeUsingGET(nodeId, options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Return a list of all workflows that are active throughout all processes.
+     * @param {string} page Results page wanting to be retrieved
+     * @param {string} size The number of elements to be returned
+     * @param {string} [query] query
+     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByQueryWithProcessUsingGET(page: string, size: string, query?: string, sort?: string, options?: any) {
+      return WorkflowsApiFp(configuration).findByQueryWithProcessUsingGET(page, size, query, sort, options)(
+        fetch,
+        basePath
+      );
+    },
+    /**
+     *
+     * @summary Return a workflow that contains a specific step.
+     * @param {string} stepId stepId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findByStepUsingGET(stepId: string, options?: any) {
+      return WorkflowsApiFp(configuration).findByStepUsingGET(stepId, options)(fetch, basePath);
+    }
+  };
 };
 
 /**
@@ -14623,69 +16419,74 @@ export const WorkflowsApiFactory = function (configuration?: Configuration, fetc
  * @interface WorkflowsApi
  */
 export interface WorkflowsApiInterface {
-    /**
-     * If the distinct parameter is passed as true, then this list will filter to distinct relative workflows.If the distinct parameter is omitted or passed as false, then relative workflows will be repeated if there are multiple paths to the relative.
-     * @summary Identify all paths from a particular workflow to relative workflows. 
-     * @param {string} workflow workflow
-     * @param {boolean} [distinct] distinct
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApiInterface
-     */
-    findAllRelativesUsingGET(workflow: string, distinct?: boolean, options?: any): Promise<Array<WorkflowResult>>;
+  /**
+   * If the distinct parameter is passed as true, then this list will filter to distinct relative workflows.If the distinct parameter is omitted or passed as false, then relative workflows will be repeated if there are multiple paths to the relative.
+   * @summary Identify all paths from a particular workflow to relative workflows.
+   * @param {string} workflow workflow
+   * @param {boolean} [distinct] distinct
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApiInterface
+   */
+  findAllRelativesUsingGET(workflow: string, distinct?: boolean, options?: any): Promise<Array<WorkflowResult>>;
 
-    /**
-     * 
-     * @summary Return a list of all workflows that are active throughout all processes.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApiInterface
-     */
-    findAllUsingGET4(options?: any): Promise<Array<Workflow>>;
+  /**
+   *
+   * @summary Return a list of all workflows that are active throughout all processes.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApiInterface
+   */
+  findAllUsingGET4(options?: any): Promise<Array<Workflow>>;
 
-    /**
-     * 
-     * @summary Find a specific workflow.
-     * @param {string} id id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApiInterface
-     */
-    findByIdUsingGET3(id: string, options?: any): Promise<Workflow>;
+  /**
+   *
+   * @summary Find a specific workflow.
+   * @param {string} id id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApiInterface
+   */
+  findByIdUsingGET3(id: string, options?: any): Promise<Workflow>;
 
-    /**
-     * 
-     * @summary Return a workflow that contains a specific node.
-     * @param {string} nodeId nodeId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApiInterface
-     */
-    findByNodeUsingGET(nodeId: string, options?: any): Promise<Workflow>;
+  /**
+   *
+   * @summary Return a workflow that contains a specific node.
+   * @param {string} nodeId nodeId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApiInterface
+   */
+  findByNodeUsingGET(nodeId: string, options?: any): Promise<Workflow>;
 
-    /**
-     * 
-     * @summary Return a list of all workflows that are active throughout all processes.
-     * @param {string} page Results page wanting to be retrieved
-     * @param {string} size The number of elements to be returned
-     * @param {string} [query] query
-     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApiInterface
-     */
-    findByQueryWithProcessUsingGET(page: string, size: string, query?: string, sort?: string, options?: any): Promise<Array<Workflow>>;
+  /**
+   *
+   * @summary Return a list of all workflows that are active throughout all processes.
+   * @param {string} page Results page wanting to be retrieved
+   * @param {string} size The number of elements to be returned
+   * @param {string} [query] query
+   * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApiInterface
+   */
+  findByQueryWithProcessUsingGET(
+    page: string,
+    size: string,
+    query?: string,
+    sort?: string,
+    options?: any
+  ): Promise<Array<Workflow>>;
 
-    /**
-     * 
-     * @summary Return a workflow that contains a specific step.
-     * @param {string} stepId stepId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApiInterface
-     */
-    findByStepUsingGET(stepId: string, options?: any): Promise<Workflow>;
-
+  /**
+   *
+   * @summary Return a workflow that contains a specific step.
+   * @param {string} stepId stepId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApiInterface
+   */
+  findByStepUsingGET(stepId: string, options?: any): Promise<Workflow>;
 }
 
 /**
@@ -14695,80 +16496,84 @@ export interface WorkflowsApiInterface {
  * @extends {BaseAPI}
  */
 export class WorkflowsApi extends BaseAPI implements WorkflowsApiInterface {
-    /**
-     * If the distinct parameter is passed as true, then this list will filter to distinct relative workflows.If the distinct parameter is omitted or passed as false, then relative workflows will be repeated if there are multiple paths to the relative.
-     * @summary Identify all paths from a particular workflow to relative workflows. 
-     * @param {string} workflow workflow
-     * @param {boolean} [distinct] distinct
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApi
-     */
-    public findAllRelativesUsingGET(workflow: string, distinct?: boolean, options?: any) {
-        return WorkflowsApiFp(this.configuration).findAllRelativesUsingGET(workflow, distinct, options)(this.fetch, this.basePath);
-    }
+  /**
+   * If the distinct parameter is passed as true, then this list will filter to distinct relative workflows.If the distinct parameter is omitted or passed as false, then relative workflows will be repeated if there are multiple paths to the relative.
+   * @summary Identify all paths from a particular workflow to relative workflows.
+   * @param {string} workflow workflow
+   * @param {boolean} [distinct] distinct
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApi
+   */
+  public findAllRelativesUsingGET(workflow: string, distinct?: boolean, options?: any) {
+    return WorkflowsApiFp(this.configuration).findAllRelativesUsingGET(workflow, distinct, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * 
-     * @summary Return a list of all workflows that are active throughout all processes.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApi
-     */
-    public findAllUsingGET4(options?: any) {
-        return WorkflowsApiFp(this.configuration).findAllUsingGET4(options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a list of all workflows that are active throughout all processes.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApi
+   */
+  public findAllUsingGET4(options?: any) {
+    return WorkflowsApiFp(this.configuration).findAllUsingGET4(options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Find a specific workflow.
-     * @param {string} id id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApi
-     */
-    public findByIdUsingGET3(id: string, options?: any) {
-        return WorkflowsApiFp(this.configuration).findByIdUsingGET3(id, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Find a specific workflow.
+   * @param {string} id id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApi
+   */
+  public findByIdUsingGET3(id: string, options?: any) {
+    return WorkflowsApiFp(this.configuration).findByIdUsingGET3(id, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a workflow that contains a specific node.
-     * @param {string} nodeId nodeId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApi
-     */
-    public findByNodeUsingGET(nodeId: string, options?: any) {
-        return WorkflowsApiFp(this.configuration).findByNodeUsingGET(nodeId, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a workflow that contains a specific node.
+   * @param {string} nodeId nodeId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApi
+   */
+  public findByNodeUsingGET(nodeId: string, options?: any) {
+    return WorkflowsApiFp(this.configuration).findByNodeUsingGET(nodeId, options)(this.fetch, this.basePath);
+  }
 
-    /**
-     * 
-     * @summary Return a list of all workflows that are active throughout all processes.
-     * @param {string} page Results page wanting to be retrieved
-     * @param {string} size The number of elements to be returned
-     * @param {string} [query] query
-     * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApi
-     */
-    public findByQueryWithProcessUsingGET(page: string, size: string, query?: string, sort?: string, options?: any) {
-        return WorkflowsApiFp(this.configuration).findByQueryWithProcessUsingGET(page, size, query, sort, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Return a list of all workflows that are active throughout all processes.
+   * @param {string} page Results page wanting to be retrieved
+   * @param {string} size The number of elements to be returned
+   * @param {string} [query] query
+   * @param {string} [sort] Sorting criteria in the format: object.property(,asc|desc)
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApi
+   */
+  public findByQueryWithProcessUsingGET(page: string, size: string, query?: string, sort?: string, options?: any) {
+    return WorkflowsApiFp(this.configuration).findByQueryWithProcessUsingGET(page, size, query, sort, options)(
+      this.fetch,
+      this.basePath
+    );
+  }
 
-    /**
-     * 
-     * @summary Return a workflow that contains a specific step.
-     * @param {string} stepId stepId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApi
-     */
-    public findByStepUsingGET(stepId: string, options?: any) {
-        return WorkflowsApiFp(this.configuration).findByStepUsingGET(stepId, options)(this.fetch, this.basePath);
-    }
-
+  /**
+   *
+   * @summary Return a workflow that contains a specific step.
+   * @param {string} stepId stepId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof WorkflowsApi
+   */
+  public findByStepUsingGET(stepId: string, options?: any) {
+    return WorkflowsApiFp(this.configuration).findByStepUsingGET(stepId, options)(this.fetch, this.basePath);
+  }
 }
-
