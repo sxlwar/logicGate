@@ -1,3 +1,5 @@
+export const contactStepId = '7Ycf0hko';
+
 export const AUTH = {
   client: 'YWdpbGVncmNzb2x1dGlvbnM6RUIxMnhWM0s6RVhURVJOQUw=',
   secret: 'a5trtjfdfbqvh881rqp2kaec33',
