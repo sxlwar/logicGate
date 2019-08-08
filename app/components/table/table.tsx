@@ -4,41 +4,47 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { SearchEntry } from 'ldapjs';
-import { connect } from 'react-redux';
-import { IState } from '../../reducers';
 import React from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Field } from '../../api/logicgate-api/Field';
+import { IState } from '../../reducers';
 
 interface TableProps {
   classes: any;
-  token: string;
-  entries: SearchEntry[];
   records: Field[];
 }
 
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
-  return { name, calories, fat, carbs, protein };
+function createData(name: string, id: string, status: string, updated: string, created: string, sequenceId: string) {
+  return { name, id, status, updated, created, sequenceId };
 }
 
 const rows = [
-  createData('Data A', 159, 6.0, 24, 4.0),
-  createData('Data B', 237, 9.0, 37, 4.3),
-  createData('Data C', 262, 16.0, 24, 6.0),
-  createData('Data D', 305, 3.7, 67, 4.3),
-  createData('Data E', 356, 16.0, 49, 3.9)
+  createData('name1', 'id', 'status', 'updated', 'created', 'sequenceId'),
+  createData('name2', 'id', 'status', 'updated', 'created', 'sequenceId'),
+  createData('name3', 'id', 'status', 'updated', 'created', 'sequenceId'),
+  createData('name4', 'id', 'status', 'updated', 'created', 'sequenceId'),
+  createData('name5', 'id', 'status', 'updated', 'created', 'sequenceId'),
+  createData('name6', 'id', 'status', 'updated', 'created', 'sequenceId'),
+  createData('name7', 'id', 'status', 'updated', 'created', 'sequenceId'),
+  createData('name8', 'id', 'status', 'updated', 'created', 'sequenceId'),
+  createData('name9', 'id', 'status', 'updated', 'created', 'sequenceId'),
+  createData('name10', 'id', 'status', 'updated', 'created', 'sequenceId')
 ];
 
-class TableComponent extends React.Component {
+class TableComponent extends React.Component<TableProps> {
+  private renderCaseCaculator() {
+    return !!(this.props as TableProps).records && Array.isArray((this.props as TableProps).records);
+  }
+
   public render() {
-    // 有条目时，才渲染
-    console.log(`>`, this.props);
-    return (this.props as TableProps).entries.length > 0 ? (
+    // 有记录时，才渲染
+    return this.renderCaseCaculator ? (
       <Paper>
         <Table>
           <TableHead>
             <TableRow>
-              {['HELLO', 'WORLD', 'IS', 'DOG', 'SHIT'].map((s, i) => (
+              {['name', 'id', 'status', 'updated', 'created', 'sequenceId'].map((s, i) => (
                 <TableCell key={i}>{s}</TableCell>
               ))}
             </TableRow>
@@ -50,10 +56,12 @@ class TableComponent extends React.Component {
                   {' '}
                   {row.name}{' '}
                 </TableCell>
-                <TableCell align="inherit">{row.calories}</TableCell>
-                <TableCell align="inherit">{row.fat}</TableCell>
-                <TableCell align="inherit">{row.carbs}</TableCell>
-                <TableCell align="inherit">{row.protein}</TableCell>
+                <TableCell align="inherit">{row.name}</TableCell>
+                <TableCell align="inherit">{row.created}</TableCell>
+                <TableCell align="inherit">{row.id}</TableCell>
+                <TableCell align="inherit">{row.sequenceId}</TableCell>
+                <TableCell align="inherit">{row.status}</TableCell>
+                <TableCell align="inherit">{row.updated}</TableCell>
               </TableRow>
             ))}
           </TableBody>
