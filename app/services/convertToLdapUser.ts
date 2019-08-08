@@ -18,6 +18,11 @@ function itemsToString(items: string | string[] | undefined): string | undefined
   }
 }
 
+/**
+ *  从 ldap 获取的 entry 的 object 字段用于构造
+ *  `ldap user` 实体
+ */
+
 export default function convertToLdapUser(entry: SearchEntry): LdapUser {
   console.log('> convertToLdapUser', entry);
 

@@ -45,4 +45,5 @@ export default async function createContactRecordForLdapUser(
   const record: Record = buildContactRecord(fields, stepId, ldapUser);
   const res = await createRecord(baseUrl, record, oauth);
   console.log('record creation response: ', res);
+  return res.body;
 }

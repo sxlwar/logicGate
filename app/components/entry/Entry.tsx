@@ -7,6 +7,7 @@ import * as EntriesActions from '../../actions/entries';
 import { bindActionCreators } from 'redux';
 import LdapClient from '../../services/searchLdap';
 import { SearchEntry } from 'ldapjs';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface EntryProps {
   token: string;
@@ -24,13 +25,16 @@ const themes: any = (theme: Theme) => ({
 
 class EntryComponent extends React.Component<EntryProps> {
   private ldapClient = new LdapClient();
-
+  public state = {
+    isBtnClick: false
+  };
   private fetchUsers = async () => {
+    this.setState({ isBtnClick: true });
     const { setEntries } = this.props;
-
     await this.ldapClient.connect();
     const searchEntries = await this.ldapClient.searchUsers();
     setEntries(searchEntries);
+    this.setState({ isBtnClick: false });
   };
 
   public async componentWillUnmount() {
@@ -41,9 +45,12 @@ class EntryComponent extends React.Component<EntryProps> {
     const { classes } = this.props;
 
     return (
-      <Button variant="contained" color="primary" onClick={this.fetchUsers} className={classes.button}>
-        Fetch User
-      </Button>
+      <div>
+        <Button variant="contained" color="primary" onClick={this.fetchUsers} className={classes.button}>
+          Fetch User
+          {this.state.isBtnClick ? <CircularProgress color="secondary" /> : ''}
+        </Button>
+      </div>
     );
   }
 }
