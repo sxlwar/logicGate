@@ -1,6 +1,6 @@
 import { IActionWithPayload } from '../actions/helpers';
 import { Record } from '../api/logicgate-api/Record';
-import { setRecordHelper } from './../actions/record';
+import { setRecordHelper } from '../actions/records';
 
 export type TRecordState = Record[];
 

@@ -33,13 +33,11 @@ const rows = [
 ];
 
 class TableComponent extends React.Component<TableProps> {
-  private renderCaseCaculator() {
-    return !!(this.props as TableProps).records && Array.isArray((this.props as TableProps).records);
-  }
-
   public render() {
-    // 有记录时，才渲染
-    return this.renderCaseCaculator ? (
+    const { records } = this.props;
+    const hasRecords = records && records.length > 0;
+    
+    return hasRecords ? (
       <Paper>
         <Table>
           <TableHead>
@@ -67,9 +65,7 @@ class TableComponent extends React.Component<TableProps> {
           </TableBody>
         </Table>
       </Paper>
-    ) : (
-      ''
-    );
+    ) : null;
   }
 }
 

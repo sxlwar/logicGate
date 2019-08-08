@@ -2,7 +2,7 @@ import { Field } from '../api/logicgate-api/Field';
 import { LdapUser } from './convertToLdapUser';
 import { Record } from '../api/logicgate-api/Record';
 
-function buildTextField(fields: Field[], fieldName: string, value: string) {
+function buildTextField(fields: Field[], fieldName: string, value: string = '') {
   const field = fields.find(it => it.name === fieldName)!;
   return {
     currentValues: [
@@ -24,11 +24,11 @@ export function buildContactRecord(fields: Field[], stepId: string, ldapUser: Ld
       id: stepId
     },
     currentValueMaps: [
-      // FIXME more fields
-      buildTextField(fields, 'Name (Full):', ldapUser.cn || ''),
-      buildTextField(fields, 'Phone (Business Direct):', ldapUser.telephoneNumber || ''),
-      buildTextField(fields, 'Email (Personal):', ldapUser.mail || ''),
-      buildTextField(fields, 'Reports To:', ldapUser.manager || '')
+      buildTextField(fields, 'Company Name:', ldapUser.dn),
+      buildTextField(fields, 'Reports To:', ldapUser.manager),
+      buildTextField(fields, 'Phone (Business Direct):', ldapUser.telephoneNumber),
+      buildTextField(fields, 'Email (Personal):', ldapUser.mail),
+      buildTextField(fields, 'Name (Full):', ldapUser.cn)
     ]
   };
 }

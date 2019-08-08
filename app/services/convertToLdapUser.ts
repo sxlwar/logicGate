@@ -24,9 +24,9 @@ function itemsToString(items: string | string[] | undefined): string | undefined
  */
 
 export default function convertToLdapUser(entry: SearchEntry): LdapUser {
-  console.log('> convertToLdapUser', entry);
-
+//   console.log('> convertToLdapUser', entry);
   const { object } = entry;
+  
   return {
     dn: entry['dn'],
     cn: itemsToString(object['cn']),

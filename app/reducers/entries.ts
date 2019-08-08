@@ -1,10 +1,11 @@
 import { IActionWithPayload } from '../actions/helpers';
 import { setEntriesHelper } from '../actions/entries';
 import { SearchEntry } from 'ldapjs';
+import { LdapUser } from '../services/convertToLdapUser';
 
-export type TEntriesState = SearchEntry[];
+export type TEntriesState = LdapUser[];
 
-export default function entries(state: SearchEntry[] = [], action: IActionWithPayload<SearchEntry[]>) {
+export default function entries(state: LdapUser[] = [], action: IActionWithPayload<LdapUser[]>) {
   if (setEntriesHelper.test(action)) {
     state = action.payload;
   }

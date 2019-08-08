@@ -8,16 +8,13 @@ const styles = require('./HomePage.scss');
 export class HomePage extends React.Component<RouteComponentProps<any>, void> {
   render() {
     return (
-      <div>
-        <div className={styles.container} data-tid="container">
-          <div className={styles.flexRow}>
-            <EntryButton />
-            <RecordButton />
-          </div>
-          <div>
-            <Table />
-          </div>
+      <div className={styles.container} data-tid="container">
+        <div className={styles.flexRow}>
+          <EntryButton />
+          <RecordButton />
         </div>
+
+        <Table />
       </div>
     );
   }

@@ -1,16 +1,16 @@
+import { Button } from '@material-ui/core';
+import { Theme, withStyles } from '@material-ui/core/styles';
+
+import { SearchEntry } from 'ldapjs';
 import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button } from '@material-ui/core';
-import { Theme, withStyles } from '@material-ui/core/styles';
-import { SearchEntry } from 'ldapjs';
+
+import * as RecordActions from '../../actions/records';
 import { Record } from '../../api/logicgate-api/Record';
-import { baseUrl } from '../../config/endpoint';
 import { contactStepId } from '../../config/logicgate';
 import { IState } from '../../reducers';
-import convertToLdapUser from '../../services/convertToLdapUser';
 import createContactRecordForLdapUser from '../../services/createContactRecordForLdapUser';
-import * as RecordActions from '../../actions/record';
 
 const themes: any = (theme: Theme) => ({
   button: {
@@ -22,30 +22,31 @@ interface RecordProps {
   classes: any;
   token: string;
   entries: SearchEntry[];
-  setRecords(records: Record): void;
+  setRecords(records: Record[]): void;
 }
 
 class RecordComponent extends React.Component<RecordProps> {
-  /**
-   * 将 convert(ldap) => Record;
-   */
   public async addRecords() {
     const { token, entries, setRecords } = this.props;
-    console.log('> addRecords', this.props);
+    const record = await createContactRecordForLdapUser(token, contactStepId, entries[0]);
+    const record1 = await createContactRecordForLdapUser(token, contactStepId, entries[1]);
+    const record2 = await createContactRecordForLdapUser(token, contactStepId, entries[2]);
 
-    const response = await Promise.all(
-      entries
-        .map(e => convertToLdapUser(e))
-        .map(ldapUser => createContactRecordForLdapUser(baseUrl, token, contactStepId, ldapUser))
-    );
+    console.log(record, record1, record2);
 
-    console.log('created!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log(response);
-    response.map(r => setRecords(r));
+    // const response = await Promise.all(
+    //   entries
+    //     .map(ldapUser => createContactRecordForLdapUser(token, contactStepId, ldapUser))
+    // ).catch(err => {
+    //   console.error('create contact record error :', err);
+    // });
+
+    // console.log(response);
+    // setRecords(response || []);
   }
+
   public render() {
-    const { classes, entries } = this.props;
-    console.log(entries);
+    const { classes } = this.props;
 
     return (
       <Button variant="contained" color="secondary" onClick={() => this.addRecords()} className={classes.button}>

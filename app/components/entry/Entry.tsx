@@ -8,11 +8,12 @@ import { bindActionCreators } from 'redux';
 import LdapClient from '../../services/searchLdap';
 import { SearchEntry } from 'ldapjs';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import convertToLdapUser, { LdapUser } from '../../services/convertToLdapUser';
 
 interface EntryProps {
   token: string;
 
-  setEntries(entries: SearchEntry[]): void;
+  setEntries(entries: LdapUser[]): void;
 
   classes: any;
 }
@@ -25,15 +26,18 @@ const themes: any = (theme: Theme) => ({
 
 class EntryComponent extends React.Component<EntryProps> {
   private ldapClient = new LdapClient();
+  
   public state = {
     isBtnClick: false
   };
+  
   private fetchUsers = async () => {
     this.setState({ isBtnClick: true });
     const { setEntries } = this.props;
     await this.ldapClient.connect();
     const searchEntries = await this.ldapClient.searchUsers();
-    setEntries(searchEntries);
+    const ldapUsers = searchEntries.map(e => convertToLdapUser(e));
+    setEntries(ldapUsers);
     this.setState({ isBtnClick: false });
   };
 
