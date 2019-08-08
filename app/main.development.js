@@ -22,11 +22,12 @@ app.on('window-all-closed', () => {
 
 const installExtensions = () => {
   if (process.env.NODE_ENV === 'development') {
-    const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
-
-    const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-    return Promise.all(extensions.map(name => installer.default(installer[name], forceDownload)));
+    // FIXME Freeze on this step, disable it for now
+    // const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
+    //
+    // const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
+    // const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+    // return Promise.all(extensions.map(name => installer.default(installer[name], forceDownload)));
   }
 
   return Promise.resolve([]);
