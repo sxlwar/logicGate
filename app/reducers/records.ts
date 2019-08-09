@@ -4,7 +4,7 @@ import { setRecordHelper } from '../actions/records';
 
 export type TRecordState = Record[];
 
-export default function record(state: Record[] = [], action: IActionWithPayload<Record[]>) {
+export default function records(state: Record[] = [], action: IActionWithPayload<Record[]>) {
   if (setRecordHelper.test(action)) {
     state = action.payload;
   }

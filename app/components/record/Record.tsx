@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import { Theme, withStyles } from '@material-ui/core/styles';
 
 import { SearchEntry } from 'ldapjs';
@@ -26,23 +26,23 @@ interface RecordProps {
 }
 
 class RecordComponent extends React.Component<RecordProps> {
+  public state = {
+    isBtnClick: false
+  };
   public async addRecords() {
+    this.setState({
+      isBtnClick: true
+    });
     const { token, entries, setRecords } = this.props;
-    const record = await createContactRecordForLdapUser(token, contactStepId, entries[0]);
-    const record1 = await createContactRecordForLdapUser(token, contactStepId, entries[1]);
-    const record2 = await createContactRecordForLdapUser(token, contactStepId, entries[2]);
-
-    console.log(record, record1, record2);
-
-    // const response = await Promise.all(
-    //   entries
-    //     .map(ldapUser => createContactRecordForLdapUser(token, contactStepId, ldapUser))
-    // ).catch(err => {
-    //   console.error('create contact record error :', err);
-    // });
-
-    // console.log(response);
-    // setRecords(response || []);
+    const arr: Record[] = [];
+    for (let entry of entries.slice(0, 2)) { // for test purpose, only create two;
+      const record = await createContactRecordForLdapUser(token, contactStepId, entry);
+      arr.push(record);
+    }
+    this.setState({
+      isBtnClick: false
+    });
+    setRecords(arr);
   }
 
   public render() {
@@ -50,7 +50,7 @@ class RecordComponent extends React.Component<RecordProps> {
 
     return (
       <Button variant="contained" color="secondary" onClick={() => this.addRecords()} className={classes.button}>
-        Add Record
+        Add all to Record {this.state.isBtnClick ? <CircularProgress /> : ''}
       </Button>
     );
   }

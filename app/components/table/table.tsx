@@ -5,67 +5,50 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import React from 'react';
-import { connect, Dispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { Field } from '../../api/logicgate-api/Field';
+import { connect } from 'react-redux';
+import { Record } from '../../api/logicgate-api/Record';
 import { IState } from '../../reducers';
 
 interface TableProps {
   classes: any;
-  records: Field[];
+  records: Record[];
+  entries: any[];
 }
-
-function createData(name: string, id: string, status: string, updated: string, created: string, sequenceId: string) {
-  return { name, id, status, updated, created, sequenceId };
-}
-
-const rows = [
-  createData('name1', 'id', 'status', 'updated', 'created', 'sequenceId'),
-  createData('name2', 'id', 'status', 'updated', 'created', 'sequenceId'),
-  createData('name3', 'id', 'status', 'updated', 'created', 'sequenceId'),
-  createData('name4', 'id', 'status', 'updated', 'created', 'sequenceId'),
-  createData('name5', 'id', 'status', 'updated', 'created', 'sequenceId'),
-  createData('name6', 'id', 'status', 'updated', 'created', 'sequenceId'),
-  createData('name7', 'id', 'status', 'updated', 'created', 'sequenceId'),
-  createData('name8', 'id', 'status', 'updated', 'created', 'sequenceId'),
-  createData('name9', 'id', 'status', 'updated', 'created', 'sequenceId'),
-  createData('name10', 'id', 'status', 'updated', 'created', 'sequenceId')
-];
 
 class TableComponent extends React.Component<TableProps> {
   public render() {
     const { records } = this.props;
-    const hasRecords = records && records.length > 0;
-    
-    return hasRecords ? (
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {['name', 'id', 'status', 'updated', 'created', 'sequenceId'].map((s, i) => (
-                <TableCell key={i}>{s}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map(row => (
-              <TableRow key={row.name}>
-                <TableCell component="th" scope="row">
-                  {' '}
-                  {row.name}{' '}
-                </TableCell>
-                <TableCell align="inherit">{row.name}</TableCell>
-                <TableCell align="inherit">{row.created}</TableCell>
-                <TableCell align="inherit">{row.id}</TableCell>
-                <TableCell align="inherit">{row.sequenceId}</TableCell>
-                <TableCell align="inherit">{row.status}</TableCell>
-                <TableCell align="inherit">{row.updated}</TableCell>
+    return (
+      records &&
+      records.length && (
+        <Paper>
+          <Table>
+            <TableHead>
+              <TableRow>
+                {['name', 'id', 'status', 'updated', 'created', 'sequenceId'].map((s, i) => (
+                  <TableCell key={i}>{s}</TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
-    ) : null;
+            </TableHead>
+
+            <TableBody>
+              {records.map(row => (
+                <TableRow key={row.name}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right">{row.id}</TableCell>
+                  <TableCell align="right">{row.status}</TableCell>
+                  <TableCell align="right">{row.updated!.toDateString()}</TableCell>
+                  <TableCell align="right">{row.created!.toDateString()}</TableCell>
+                  <TableCell align="right">{row.sequenceId}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      )
+    );
   }
 }
 

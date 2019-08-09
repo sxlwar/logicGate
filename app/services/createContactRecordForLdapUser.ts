@@ -30,14 +30,18 @@ async function createRecord(baseUrl: string, record: Record, oauth: OAuth) {
   return res;
 }
 
-export default async function createContactRecordForLdapUser(token: string, stepId: string, ldapUser: LdapUser): Promise<Record> {
+export default async function createContactRecordForLdapUser(
+  token: string,
+  stepId: string,
+  ldapUser: LdapUser
+): Promise<Record> {
   const oauth = await createOAuth(token);
 
   const workflowId = await fetchWorkflowId(baseUrl, stepId, oauth);
-  console.log('workflowId: ', workflowId);
+  // console.log('workflowId: ', workflowId);
 
   const fields = await fetchWorkflowFields(baseUrl, workflowId, oauth);
-  console.log('fields:', fields);
+  // console.log('fields:', fields);
 
   const record: Record = buildContactRecord(fields, stepId, ldapUser);
   const res = await createRecord(baseUrl, record, oauth);
