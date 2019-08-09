@@ -1,7 +1,7 @@
-[https://docs.logicgate.com/](https://docs.logicgate.com/) 这里是logicgate api的详细文档
-[https://agilegrcsolutions.logicgate.com/access/login](https://agilegrcsolutions.logicgate.com/access/login) logicgate的登录地址
-[logicgate swagger API](https://help.logicgate.com/en/collections/190052-api-sso-resources-integrating-logicgate-with-other-systems) logicgate API 帮助文档
-[https://github.com/freewind-demos/typescript-logicgate-api-node-client-demo](https://github.com/freewind-demos/typescript-logicgate-api-node-client-demo) 本项目的类型定义文件
+[https://docs.logicgate.com/](https://docs.logicgate.com/) logicGate api docs
+[https://agilegrcsolutions.logicgate.com/access/login](https://agilegrcsolutions.logicgate.com/access/login) logicGate login
+[logicgate swagger API](https://help.logicgate.com/en/collections/190052-api-sso-resources-integrating-logicgate-with-other-systems) logicGate API help docs
+[https://github.com/freewind-demos/typescript-logicgate-api-node-client-demo](https://github.com/freewind-demos/typescript-logicgate-api-node-client-demo) type definition of this repo
 
 
 

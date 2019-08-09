@@ -1,6 +1,5 @@
-import { IActionWithPayload } from '../actions/helpers';
 import { setEntriesHelper } from '../actions/entries';
-import { SearchEntry } from 'ldapjs';
+import { IActionWithPayload } from '../actions/helpers';
 import { LdapUser } from '../services/convertToLdapUser';
 
 export type TEntriesState = LdapUser[];

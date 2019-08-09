@@ -1,5 +1,4 @@
-import { Table, Card, Button } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
+import { Button, Card, Table } from '@material-ui/core';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -9,7 +8,7 @@ import { connect } from 'react-redux';
 import { Record } from '../../api/logicgate-api/Record';
 import { IState } from '../../reducers';
 import { LdapUser } from '../../services/convertToLdapUser';
-const styles = require('./entry-list.scss');
+const styles = require('./entry.scss');
 interface ListProps {
   classes: any;
   records: Record[];
@@ -23,11 +22,11 @@ class ListComponent extends React.Component<ListProps> {
     return (
       <Card className={styles.containerCard}>
         {this.props.entries.length > 0 ? (
-          <Table size="small" className={styles.userTable}>
+          <Table className={styles.userTable}>
             <TableHead>
               <TableRow>
                 {this.fields.map((field, i) => (
-                  <TableCell align="left" key={i}>
+                  <TableCell align="center" key={i}>
                     {field}
                   </TableCell>
                 ))}

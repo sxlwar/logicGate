@@ -2,11 +2,9 @@
   width: 1200px;
   max-height: 400px;
   overflow-y: auto !important;
+  text-indent: 10px;
 }
 
-.dashedBorder {
-  border: 2px dashed #000;
-}
 .table {
   height: 463px;
   border-radius: 5px;
@@ -17,4 +15,8 @@
       padding: 2px 0 5px 10px;
     }
   }
+}
+
+.margin {
+  margin: 10px !important;
 }

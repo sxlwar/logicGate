@@ -12,3 +12,20 @@
 .marginLeft {
   margin-left: 5px;
 }
+
+.containerCard {
+  width: 1200px;
+  max-height: 400px;
+  overflow-y: auto !important;
+}
+
+.userTable {
+  border-radius: 5px;
+  thead,
+  tbody {
+    th,
+    td {
+      padding: 2px 0 5px 10px;
+    }
+  }
+}

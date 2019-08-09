@@ -1,37 +1,54 @@
-import { Button, Card, CardActions, TextField, Divider } from '@material-ui/core';
+import { Button, Card, CardActions, Divider, Snackbar, TextField } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
 import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import * as EntriesActions from '../../actions/entries';
 import { IState } from '../../reducers';
 import convertToLdapUser, { LdapUser } from '../../services/convertToLdapUser';
 import LdapClient, { searchOptions } from '../../services/searchLdap';
+
 const styles = require('./entry.scss');
+
 interface EntryProps {
   token: string;
-
   setEntries(entries: LdapUser[]): void;
-
   classes: any;
 }
 
-class EntryComponent extends React.Component<EntryProps> {
+interface EntryState {
+    loading: boolean;
+    showSnack: boolean;
+}
+
+class EntryComponent extends React.Component<EntryProps, EntryState> {
   private ldapClient = new LdapClient();
 
   public state = {
-    isBtnClick: false
+    loading: false,
+    showSnack: false,
   };
 
+  private tipMessage: string = 'Fetch user across ldap success!'
+
   private fetchUsers = async () => {
-    this.setState({ isBtnClick: true });
+    this.setState({ loading: true });
     const { setEntries } = this.props;
     await this.ldapClient.connect();
     const searchEntries = await this.ldapClient.searchUsers();
     const ldapUsers = searchEntries.map(e => convertToLdapUser(e));
     setEntries(ldapUsers);
-    this.setState({ isBtnClick: false });
+    this.setState({ loading: false, showSnack: true });
+    this.hideSnack();
   };
+
+  private hideSnack() {
+      setTimeout(() => {
+        this.setState({showSnack: false})
+      }, 3000);
+  }
 
   public async componentWillUnmount() {
     await this.ldapClient.disconnect();
@@ -60,9 +77,14 @@ class EntryComponent extends React.Component<EntryProps> {
         <CardActions>
           <Button variant="contained" color="primary" onClick={this.fetchUsers}>
             Fetch User
-            {this.state.isBtnClick ? <CircularProgress color="secondary" className={styles.marginLeft} /> : ''}
+            {this.state.loading ? <CircularProgress color="secondary" className={styles.marginLeft} /> : ''}
           </Button>
         </CardActions>
+        <Snackbar
+          open={this.state.showSnack}
+          anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+          message={<span>{this.tipMessage}</span>}
+        />
       </Card>
     );
   }

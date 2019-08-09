@@ -17,7 +17,9 @@ const BASE_ENDPOINT = {
   token: `/api/v1/account/token`
 };
 
-/**split type */
+/**
+ * split type 
+ */
 type PointType = keyof typeof BASE_ENDPOINT;
 
 export function getEndPoint(point: PointType) {

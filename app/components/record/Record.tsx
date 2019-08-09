@@ -1,25 +1,16 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CircularProgress,
-  Snackbar,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Divider
-} from '@material-ui/core';
+import { Button, Card, CardActions, CircularProgress, Divider, Snackbar, TextField } from '@material-ui/core';
+
 import { SearchEntry } from 'ldapjs';
 import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import * as RecordActions from '../../actions/records';
 import { Record } from '../../api/logicgate-api/Record';
 import { contactStepId } from '../../config/logicgate';
 import { IState } from '../../reducers';
 import createContactRecordForLdapUser from '../../services/createContactRecordForLdapUser';
+
 const styles = require('./record.scss');
 
 interface RecordProps {
@@ -30,99 +21,82 @@ interface RecordProps {
   records: Record[];
 }
 
-class RecordComponent extends React.Component<RecordProps> {
+interface RecordState {
+  loading: boolean;
+  showSnack: boolean;
+  tipMessage: string;
+}
+
+class RecordComponent extends React.Component<RecordProps, RecordState> {
   public state = {
-    isBtnClick: false,
-    open: false
+    loading: false,
+    showSnack: false,
+    tipMessage: 'please excute step1 before post to logicgate!'
   };
+
   public async addRecords() {
+    if (!this.props.entries || this.props.entries.length === 0) {
+      this.setState({ showSnack: true });
+      this.hideSnack();
+      return;
+    }
+
     this.setState({
-      isBtnClick: true
+      loading: true,
+      tipMessage: 'please excute step1 before post to logicgate!'
     });
+
     const { token, entries, setRecords } = this.props;
     const arr: Record[] = [];
+
+    /**
+     * The server may have a frequency limit.
+     * Using the promise.all concurrent request will cause a server error, so use 'for of' loop request instead.
+     */
     for (let entry of entries) {
       const record = await createContactRecordForLdapUser(token, contactStepId, entry);
       arr.push(record);
     }
-    this.setState({
-      isBtnClick: false
-    });
+
     setRecords(arr);
 
     this.setState({
-      open: true
+      loading: false,
+      showSnack: true,
+      tipMessage: 'all data lodaed from origin'
     });
-    setTimeout(() => {
-      this.setState({
-        open: false
-      });
-    }, 4000);
+  }
+
+  /**
+   * !FIXME without this function, snack bar cannot disappear. autoHideDuration has no effect;
+   * 
+   * use a global snake instead.
+   */
+  private hideSnack() {
+      setTimeout(() => {
+        this.setState({showSnack: false})
+      }, 3000);
   }
 
   public render() {
-    const { records } = this.props;
     return (
       <Card className={styles.containerCard}>
-        <h3 style={{ textIndent: '10px' }}>
-          Step2. post to logicgate
-          <br />
-          <Button
-            variant="contained"
-            color="secondary"
-            size="medium"
-            onClick={() => this.addRecords()}
-            style={{ margin: '10px' }}
-          >
-            Add all to Record {this.state.isBtnClick ? <CircularProgress /> : ''}
-          </Button>
-        </h3>
+        <h3>Step2. post to logicGate</h3>
         <Divider />
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              {['name', 'id', 'status', 'updated', 'created', 'sequenceId'].map((s, i) => (
-                <TableCell key={i}>{s}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          {records.length > 0 ? (
-            <TableBody>
-              {records.map(row => (
-                <TableRow key={row.name}>
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="right">{row.id}</TableCell>
-                  <TableCell align="right">{row.status}</TableCell>
-                  <TableCell align="right">{row.updated!.toDateString()}</TableCell>
-                  <TableCell align="right">{row.created!.toDateString()}</TableCell>
-                  <TableCell align="right">{row.sequenceId}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          ) : (
-            <TableBody />
-          )}
-        </Table>
+        <h4>base credential (readonly)</h4>
+        <TextField label="username" className={styles.margin} value="exampleUsername" variant="outlined" />
+        <TextField label="password" className={styles.margin} value="examplePassword" variant="outlined" />
+        <TextField label="access_token" className={styles.margin} value="exampleAccessToken" variant="outlined" />
 
         <CardActions>
-          {records.length > 0 ? (
-            ''
-          ) : (
-            <h5 style={{ width: '1200px', textAlign: 'center', textIndent: '10px' }}>
-              No entries data here, try to click
-              <Button variant="contained" size="small" color="secondary" style={{ margin: 'auto 5px' }} disabled>
-                Add all to Record
-              </Button>
-              button
-            </h5>
-          )}
+          <Button variant="contained" color="secondary" onClick={() => this.addRecords()} className={styles.margin}>
+            Add all to Record {this.state.loading ? <CircularProgress /> : ''}
+          </Button>
         </CardActions>
         <Snackbar
-          open={this.state.open}
-          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-          message={<span>all data lodaed from origin</span>}
+          open={this.state.showSnack}
+          anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+          message={<span>{this.state.tipMessage}</span>}
         />
       </Card>
     );
