@@ -39,7 +39,7 @@ class EntryComponent extends React.Component<EntryProps> {
 
   public render() {
     return (
-      <Card style={{ width: '900px' }}>
+      <Card style={{ width: '1200px' }}>
         <form className={styles.form}>
           <h3>Step1. fetch user</h3>
           <Divider />

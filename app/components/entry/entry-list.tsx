@@ -23,7 +23,7 @@ class ListComponent extends React.Component<ListProps> {
     return (
       <Card className={styles.containerCard}>
         {this.props.entries.length > 0 ? (
-          <Table size="small" className={styles.table}>
+          <Table size="small" className={styles.userTable}>
             <TableHead>
               <TableRow>
                 {this.fields.map((field, i) => (
@@ -51,11 +51,10 @@ class ListComponent extends React.Component<ListProps> {
             </TableBody>
           </Table>
         ) : (
-          <h5 style={{ width: '900px', textAlign: 'center', textIndent: '10px' }}>
+          <h5 style={{ width: '1200px', textAlign: 'center', textIndent: '10px' }}>
             No entries data here, try to click
             <Button variant="contained" color="primary" size="small" style={{ margin: 'auto 5px' }} disabled>
-              {' '}
-              Fetch User{' '}
+              Fetch User
             </Button>
             button
           </h5>

@@ -2,7 +2,6 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import EntryComponent from '../../components/entry/entry';
 import RecordComponent from '../../components/record/Record';
-import RecordListComponent from '../../components/record/record-list';
 import EntryListComponent from '../../components/entry/entry-list';
 import { Divider } from '@material-ui/core';
 
@@ -23,9 +22,6 @@ export class HomePage extends React.Component<RouteComponentProps<any>, void> {
 
         <div className={styles.flexColumn}>
           <RecordComponent />
-          <div className={styles.flexRowInner}>
-            <RecordListComponent />
-          </div>
         </div>
       </div>
     );
