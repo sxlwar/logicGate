@@ -1,10 +1,10 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import EntryComponent from '../../components/entry/Entry';
+import EntryComponent from '../../components/entry/entry';
 import RecordComponent from '../../components/record/Record';
-import TableComponent from '../../components/record/record-list';
-import ListComponent from '../../components/entry/entry-list';
-import FormComponent from '../../components/form/form';
+import RecordListComponent from '../../components/record/record-list';
+import EntryListComponent from '../../components/entry/entry-list';
+import { Divider } from '@material-ui/core';
 
 const styles = require('./HomePage.scss');
 
@@ -12,15 +12,20 @@ export class HomePage extends React.Component<RouteComponentProps<any>, void> {
   render() {
     return (
       <div className={styles.container} data-tid="container">
-        <div className={styles.flexRow}>
+        <div className={styles.flexColumn}>
           <EntryComponent />
-          <FormComponent />
-          <ListComponent />
+          <div className={styles.flexRowInner}>
+            <EntryListComponent />
+          </div>
         </div>
 
-        <div className={styles.flexRow}>
+        <Divider />
+
+        <div className={styles.flexColumn}>
           <RecordComponent />
-          <TableComponent />
+          <div className={styles.flexRowInner}>
+            <RecordListComponent />
+          </div>
         </div>
       </div>
     );

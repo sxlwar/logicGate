@@ -1,10 +1,23 @@
-.smallPadding {
-  border-radius: 5px;
-  thead,
-  tbody {
-    th,
-    td {
-      padding: 2px 0 5px 10px;
+:host {
+  .containerCard {
+    width: 900px;
+    margin-top: 50px;
+    height: 463px;
+    overflow: auto;
+  }
+
+  .dashedBorder {
+    border: 2px dashed #000;
+  }
+  .table {
+    height: 463px;
+    border-radius: 5px;
+    thead,
+    tbody {
+      th,
+      td {
+        padding: 2px 0 5px 10px;
+      }
     }
   }
 }

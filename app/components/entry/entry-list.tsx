@@ -1,4 +1,4 @@
-import { Table } from '@material-ui/core';
+import { Table, Card, Button } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -20,38 +20,47 @@ class ListComponent extends React.Component<ListProps> {
   private fields = ['dn', 'cn', 'givenName', 'telephoneNumber', 'mail', 'manager', 'objectClass'];
 
   public render() {
-    return this.props.entries.length > 0 ? (
-      <Paper>
-        <Table size="small" className={styles.smallPadding}>
-          <TableHead>
-            <TableRow>
-              {this.fields.map((field, i) => (
-                <TableCell align="left" key={i}>
-                  {field}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {this.props.entries.map((user: LdapUser, index) => (
-              <TableRow key={index}>
-                <TableCell align="left" component="th" scope="row">
-                  {user.cn}
-                </TableCell>
-                <TableCell align="left">{user.dn}</TableCell>
-                <TableCell align="left">{user.givenName}</TableCell>
-                <TableCell align="left">{user.mail}</TableCell>
-                <TableCell align="left">{user.manager}</TableCell>
-                <TableCell align="left">{user.objectClass}</TableCell>
-                <TableCell align="left">{user.telephoneNumber}</TableCell>
+    return (
+      <Card className={styles.containerCard}>
+        {this.props.entries.length > 0 ? (
+          <Table size="small" className={styles.table}>
+            <TableHead>
+              <TableRow>
+                {this.fields.map((field, i) => (
+                  <TableCell align="left" key={i}>
+                    {field}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
-    ) : (
-      <p> No entries data here, try to click 'FETCH USER' button.</p>
+            </TableHead>
+
+            <TableBody>
+              {this.props.entries.map((user: LdapUser, index) => (
+                <TableRow key={index}>
+                  <TableCell align="left" component="th" scope="row">
+                    {user.cn}
+                  </TableCell>
+                  <TableCell align="left">{user.dn}</TableCell>
+                  <TableCell align="left">{user.givenName}</TableCell>
+                  <TableCell align="left">{user.mail}</TableCell>
+                  <TableCell align="left">{user.manager}</TableCell>
+                  <TableCell align="left">{user.objectClass}</TableCell>
+                  <TableCell align="left">{user.telephoneNumber}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <h5 style={{ width: '900px', textAlign: 'center', textIndent: '10px' }}>
+            No entries data here, try to click
+            <Button variant="contained" color="primary" size="small" style={{ margin: 'auto 5px' }} disabled>
+              {' '}
+              Fetch User{' '}
+            </Button>
+            button
+          </h5>
+        )}
+      </Card>
     );
   }
 }

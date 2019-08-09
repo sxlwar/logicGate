@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Snackbar } from '@material-ui/core';
+import { Button, CircularProgress, Snackbar, Card, CardActions } from '@material-ui/core';
 import { Theme, withStyles } from '@material-ui/core/styles';
 import { SearchEntry } from 'ldapjs';
 import React from 'react';
@@ -56,16 +56,19 @@ class RecordComponent extends React.Component<RecordProps> {
   public render() {
     const { classes } = this.props;
     return (
-      <div>
-        <Button variant="contained" color="secondary" onClick={() => this.addRecords()} className={classes.button}>
-          Add all to Record {this.state.isBtnClick ? <CircularProgress /> : ''}
-        </Button>
+      <Card>
+
+        <CardActions>
+          <Button variant="contained" color="secondary" onClick={() => this.addRecords()} className={classes.button}>
+            Add all to Record {this.state.isBtnClick ? <CircularProgress /> : ''}
+          </Button>
+        </CardActions>
         <Snackbar
           open={this.state.open}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           message={<span>all data lodaed from origin</span>}
         />
-      </div>
+      </Card>
     );
   }
 }

@@ -1,13 +1,13 @@
-import { Button, Theme, withStyles } from '@material-ui/core';
+import { Button, Card, CardActions, TextField, Divider } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { IState } from '../../reducers';
-import * as EntriesActions from '../../actions/entries';
 import { bindActionCreators } from 'redux';
-import LdapClient from '../../services/searchLdap';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import * as EntriesActions from '../../actions/entries';
+import { IState } from '../../reducers';
 import convertToLdapUser, { LdapUser } from '../../services/convertToLdapUser';
-
+import LdapClient, { searchOptions } from '../../services/searchLdap';
+const styles = require('./entry.scss');
 interface EntryProps {
   token: string;
 
@@ -15,12 +15,6 @@ interface EntryProps {
 
   classes: any;
 }
-
-const themes: any = (theme: Theme) => ({
-  button: {
-    margin: theme.spacing()
-  }
-});
 
 class EntryComponent extends React.Component<EntryProps> {
   private ldapClient = new LdapClient();
@@ -44,15 +38,32 @@ class EntryComponent extends React.Component<EntryProps> {
   }
 
   public render() {
-    const { classes } = this.props;
-
     return (
-      <div>
-        <Button variant="contained" color="primary" onClick={this.fetchUsers} className={classes.button}>
-          Fetch User
-          {this.state.isBtnClick ? <CircularProgress color="secondary" /> : ''}
-        </Button>
-      </div>
+      <Card style={{ width: '900px' }}>
+        <form className={styles.form}>
+          <h3>Step1. fetch user</h3>
+          <Divider />
+          <h4>base config of entries (readonly)</h4>
+          <TextField label="scope" className={styles.input} value="exampleScope" variant="outlined" />
+          <TextField label="filter" className={styles.input} value="exampleFilter" variant="outlined" />
+          <br />
+          {searchOptions.attributes.map((attr: string, index) => (
+            <TextField
+              label={'attributes.' + attr}
+              className={styles.input}
+              value={attr}
+              key={index}
+              variant="outlined"
+            />
+          ))}
+        </form>
+        <CardActions>
+          <Button variant="contained" color="primary" onClick={this.fetchUsers}>
+            Fetch User
+            {this.state.isBtnClick ? <CircularProgress color="secondary" className={styles.marginLeft} /> : ''}
+          </Button>
+        </CardActions>
+      </Card>
     );
   }
 }
@@ -68,4 +79,4 @@ export default connect(
   }),
   mapDispatchToProps
   // @ts-ignore FIXME
-)(withStyles(themes)(EntryComponent));
+)(EntryComponent);

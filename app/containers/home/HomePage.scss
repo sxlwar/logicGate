@@ -1,8 +1,9 @@
 .container {
   width: 100%;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .container h2 {
@@ -12,11 +13,26 @@
 .container a {
   font-size: 1.4rem;
 }
-
-.flexRow {
-  width: 50%;
+.flex {
   display: flex;
-  flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+}
+.flexRow {
+  @extend .flex;
+  width: 900px;
+  flex-direction: row;
+}
+.flexRowInner {
+  @extend .flexRow;
+  margin-top: 10px;
+}
+.flexRowOutter {
+  @extend .flexRow;
+  margin-top: 30px;
+}
+.flexColumn {
+  margin-top: 30px;
+  @extend .flex;
+  flex-direction: column;
 }
