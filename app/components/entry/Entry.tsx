@@ -1,12 +1,10 @@
 import { Button, Theme, withStyles } from '@material-ui/core';
-
 import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IState } from '../../reducers';
 import * as EntriesActions from '../../actions/entries';
 import { bindActionCreators } from 'redux';
 import LdapClient from '../../services/searchLdap';
-import { SearchEntry } from 'ldapjs';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import convertToLdapUser, { LdapUser } from '../../services/convertToLdapUser';
 
@@ -26,11 +24,11 @@ const themes: any = (theme: Theme) => ({
 
 class EntryComponent extends React.Component<EntryProps> {
   private ldapClient = new LdapClient();
-  
+
   public state = {
     isBtnClick: false
   };
-  
+
   private fetchUsers = async () => {
     this.setState({ isBtnClick: true });
     const { setEntries } = this.props;

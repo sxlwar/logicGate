@@ -1,11 +1,9 @@
-import { Button, CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress, Snackbar } from '@material-ui/core';
 import { Theme, withStyles } from '@material-ui/core/styles';
-
 import { SearchEntry } from 'ldapjs';
 import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import * as RecordActions from '../../actions/records';
 import { Record } from '../../api/logicgate-api/Record';
 import { contactStepId } from '../../config/logicgate';
@@ -27,7 +25,8 @@ interface RecordProps {
 
 class RecordComponent extends React.Component<RecordProps> {
   public state = {
-    isBtnClick: false
+    isBtnClick: false,
+    open: false
   };
   public async addRecords() {
     this.setState({
@@ -35,7 +34,7 @@ class RecordComponent extends React.Component<RecordProps> {
     });
     const { token, entries, setRecords } = this.props;
     const arr: Record[] = [];
-    for (let entry of entries.slice(0, 2)) { // for test purpose, only create two;
+    for (let entry of entries) {
       const record = await createContactRecordForLdapUser(token, contactStepId, entry);
       arr.push(record);
     }
@@ -43,15 +42,30 @@ class RecordComponent extends React.Component<RecordProps> {
       isBtnClick: false
     });
     setRecords(arr);
+
+    this.setState({
+      open: true
+    });
+    setTimeout(() => {
+      this.setState({
+        open: false
+      });
+    }, 4000);
   }
 
   public render() {
     const { classes } = this.props;
-
     return (
-      <Button variant="contained" color="secondary" onClick={() => this.addRecords()} className={classes.button}>
-        Add all to Record {this.state.isBtnClick ? <CircularProgress /> : ''}
-      </Button>
+      <div>
+        <Button variant="contained" color="secondary" onClick={() => this.addRecords()} className={classes.button}>
+          Add all to Record {this.state.isBtnClick ? <CircularProgress /> : ''}
+        </Button>
+        <Snackbar
+          open={this.state.open}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          message={<span>all data lodaed from origin</span>}
+        />
+      </div>
     );
   }
 }

@@ -2,7 +2,7 @@ import { createClient, SearchCallbackResponse, SearchEntry, LDAPResult, Client }
 
 const adSuffix = 'dc=example,dc=com';
 
-const searchOptions = {
+export const searchOptions = {
   filter: `(mail=*@ldap.forumsys.com)`,
   scope: 'sub',
   attributes: ['dn', 'cn', 'givenName', 'sn', 'telephoneNumber', 'mail', 'manager', 'objectClass']
