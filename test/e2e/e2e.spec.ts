@@ -4,7 +4,7 @@ import path from 'path';
 const { Application } = require('spectron');
 
 const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time));
-// 1 -> 2 -> 3
+// 1 -> 2 -> 3 -> 4
 
 describe('main window', function spec() {
   let app: any;
